@@ -1,0 +1,566 @@
+/* CSS DEL SIDEMENU */
+
+
+/* Import Google font - Montserrat */
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700&display=swap");
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Montserrat", sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    text-align: inherit;
+    /* Alinea el texto en el cuerpo del documento */
+    margin-left: 20vh;
+    background-color: #F6F2EA !important;
+    margin-right: 20vh;
+
+}
+
+/* Pre css */
+.flex {
+    display: flex;
+    align-items: center;
+}
+
+.nav_image {
+    display: flex;
+    min-width: 55px;
+    justify-content: center;
+}
+
+.nav_image img {
+    height: 35px;
+    width: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Sidebar */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 280px;
+    background: #0e3b32;
+    padding: 15px 10px;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s ease;
+    z-index: 9999;
+}
+
+.logo_items {
+    gap: 15px;
+}
+
+.logo_name {
+    font-size: 17px;
+    align-items: center;
+    color: #ffffff;
+    font-weight: 500px;
+    transition: all 0.3s ease;
+
+}
+
+
+
+.menu_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-top: 40px;
+    overflow-y: auto;
+    height: calc(100% - 82px);
+}
+
+.menu_container::-webkit-scrollbar {
+    display: none;
+}
+
+.menu_title {
+    position: relative;
+    height: 50px;
+    width: 55px;
+    color: rgb(184, 184, 184);
+
+}
+
+.tc {
+    size: 10px;
+}
+
+.sidebar.close .title {
+    opacity: 0;
+}
+
+.menu_title .line {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 3px;
+    width: 20px;
+    border-radius: 25px;
+    background: #ffffff;
+    transition: all 0.3s ease;
+}
+
+.menu_title .line {
+    opacity: 0;
+}
+
+.item {
+    list-style: none;
+}
+
+.link {
+    text-decoration: none;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    font-style: inherit;
+    color: #ffffff;
+}
+
+.link:hover {
+    color: #fff;
+    background-color: #ffffff2c;
+}
+
+.link span {
+    white-space: nowrap;
+}
+
+.link i {
+    height: 45px;
+    min-width: 35px;
+    display: flex;
+    font-size: 25px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+
+
+}
+
+.sidebar_profile {
+    padding-top: 15px;
+    margin-top: 15px;
+    gap: 15px;
+    border-top: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+.sidebar_profile .name {
+    font-size: 18px;
+    color: #707070;
+}
+
+.sidebar_profile .email {
+    font-size: 12px;
+    color: #707070;
+}
+
+
+#sidebar-open {
+    font-size: 25px;
+    color: #ffffff;
+    cursor: pointer;
+    margin-right: 20px;
+    display: none;
+}
+
+
+
+/* Responsive */
+@media screen and (max-width: 1100px) {
+    .navbar {
+        left: 65%;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .sidebar {
+        left: 0;
+        z-index: 1000;
+    }
+
+    #lock-icon {
+        display: none;
+    }
+
+    .navbar {
+        left: 0;
+        max-width: 100%;
+        transform: translateX(0%);
+    }
+
+    #sidebar-open {
+        display: block;
+    }
+}
+
+
+
+/* formulario */
+
+
+/* CSS DEL FORMULARIO */
+
+.input {
+   border: 2px solid transparent;
+    height: 2.4em;
+     padding-left: 0.3em;
+    outline: none;
+    overflow: hidden;
+    background-color: #d8d6d6;
+    border-radius: 10px;
+    transition: all 1.9s;
+
+
+}
+
+
+.radio-button {
+    display: flex;
+    gap: 10px;
+    justify-content: start;
+    margin: 10px;
+    position: relative;
+    align-items: center;
+    color: rgb(0, 0, 0);
+  }
+  
+  .radio-button input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+  }
+  
+  .radio {
+    position: relative;
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+    transform: translateZ(-25px);
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .radio::before {
+    position: absolute;
+    content: '';
+    width: 10px;
+    height: 10px;
+    top: 5px;
+    left: 5px;
+    border-radius: 50%;
+    background-color: #ffe600;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .radio-button input[type="radio"]:checked + .radio {
+    border-color: #24864d;
+    transform: translateZ(0px);
+    background-color: #ffffff;
+  }
+  
+  .radio-button input[type="radio"]:checked + .radio::before {
+    opacity: 1;
+  }
+  
+
+
+.content-accordion-3{
+    align-items: center;
+}
+.dom{
+    text-decoration-color: #ff0000;
+}
+.logo-2-icon {
+    height: 69px;
+    width: 291px;
+    position: absolute;
+    margin: 5 !important;
+    top: 10vh;
+    right: 10vh !important;
+    object-fit: cover;
+    z-index: 2;
+}
+
+.input:hover,
+.input:focus {
+    border: 1px solid #4A9DEC;
+    box-shadow: 0px 0px 0px 7px rgb(74, 157, 236, 5%);
+
+}
+
+.logo-2-icon {
+    height: 69px;
+    width: 291px;
+    position: absolute;
+    margin: 5 !important;
+    top: 5vh;
+    right: 19vh !important;
+    object-fit: cover;
+    z-index: 2;
+}
+
+#formulario {
+
+    width: 1250px;
+    /* Ancho deseado */
+    margin: auto;
+    /* Para centrar el formulario */
+}
+
+.container-fluid.row {
+
+    width: 1980px !important;
+
+}
+
+.acordeon5 {
+    background-color: #4A9DEC;
+}
+
+/* Estilos para alinear elementos */
+
+.container-fluid {
+    margin-top: 0px;
+    /* Espacio superior para separar del borde superior */
+
+}
+
+
+.antes-de-poder {
+    align-self: stretch;
+    position: relative;
+    height: 1000px !important;
+    width: 1000px !important;
+    text-align: center;
+    z-index: 2;
+}
+
+/* Estilos para el botón "Registrar" */
+.btn-primary {
+    margin-top: 10px;
+    /* Espacio superior para separar del contenido anterior */
+}
+
+/* Estilos para el espacio entre columnas */
+.col {
+    margin-bottom: 20px;
+    /* Espacio inferior entre columnas */
+}
+
+/* Estilos para el espacio superior e inferior del título "Ficha de inscripción" */
+#bs {
+    margin-top: 4vh;
+    margin-bottom: 20px;
+}
+
+
+
+.close1-child {
+    width: 2000px !important;
+    height: 1176px !important;
+    position: relative;
+
+    backdrop-filter: blur(100px);
+    display: none;
+    max-width: 100%;
+}
+
+.ui-checkbox {
+    --primary-color: #1677ff;
+    --secondary-color: #fff;
+    --primary-hover-color: #4096ff;
+    /* checkbox */
+    --checkbox-diameter: 20px;
+    --checkbox-border-radius: 5px;
+    --checkbox-border-color: #d9d9d9;
+    --checkbox-border-width: 1px;
+    --checkbox-border-style: solid;
+    /* checkmark */
+    --checkmark-size: 1.2;
+}
+
+.btn btn-primary {
+    background-color: #d9d9d9;
+}
+
+.ui-checkbox,
+.ui-checkbox *,
+.ui-checkbox *::before,
+.ui-checkbox *::after {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.ui-checkbox {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: var(--checkbox-diameter);
+    height: var(--checkbox-diameter);
+    border-radius: var(--checkbox-border-radius);
+    background: var(--secondary-color);
+    border: var(--checkbox-border-width) var(--checkbox-border-style) var(--checkbox-border-color);
+    -webkit-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+    cursor: pointer;
+    position: relative;
+}
+
+.ui-checkbox::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    -webkit-box-shadow: 0 0 0 calc(var(--checkbox-diameter) / 2.5) var(--primary-color);
+    box-shadow: 0 0 0 calc(var(--checkbox-diameter) / 2.5) var(--primary-color);
+    border-radius: inherit;
+    opacity: 0;
+    -webkit-transition: all 0.5s cubic-bezier(0.12, 0.4, 0.29, 1.46);
+    -o-transition: all 0.5s cubic-bezier(0.12, 0.4, 0.29, 1.46);
+    transition: all 0.5s cubic-bezier(0.12, 0.4, 0.29, 1.46);
+}
+
+.ui-checkbox::before {
+    top: 40%;
+    left: 50%;
+    content: "";
+    position: absolute;
+    width: 4px;
+    height: 7px;
+    border-right: 2px solid var(--secondary-color);
+    border-bottom: 2px solid var(--secondary-color);
+    -webkit-transform: translate(-50%, -50%) rotate(45deg) scale(0);
+    -ms-transform: translate(-50%, -50%) rotate(45deg) scale(0);
+    transform: translate(-50%, -50%) rotate(45deg) scale(0);
+    opacity: 0;
+    -webkit-transition: all 0.1s cubic-bezier(0.71, -0.46, 0.88, 0.6), opacity 0.1s;
+    -o-transition: all 0.1s cubic-bezier(0.71, -0.46, 0.88, 0.6), opacity 0.1s;
+    transition: all 0.1s cubic-bezier(0.71, -0.46, 0.88, 0.6), opacity 0.1s;
+}
+
+
+
+.ui-checkbox:hover {
+    border-color: var(--primary-color);
+}
+
+.ui-checkbox:checked {
+    background: var(--primary-color);
+    border-color: transparent;
+}
+
+.ui-checkbox:checked::before {
+    opacity: 1;
+    -webkit-transform: translate(-50%, -50%) rotate(45deg) scale(var(--checkmark-size));
+    -ms-transform: translate(-50%, -50%) rotate(45deg) scale(var(--checkmark-size));
+    transform: translate(-50%, -50%) rotate(45deg) scale(var(--checkmark-size));
+    -webkit-transition: all 0.2s cubic-bezier(0.12, 0.4, 0.29, 1.46) 0.1s;
+    -o-transition: all 0.2s cubic-bezier(0.12, 0.4, 0.29, 1.46) 0.1s;
+    transition: all 0.2s cubic-bezier(0.12, 0.4, 0.29, 1.46) 0.1s;
+}
+
+.ui-checkbox:active:not(:checked)::after {
+    -webkit-transition: none;
+    -o-transition: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    transition: none;
+    opacity: 1;
+}
+
+
+/* Estilos para la barra de desplazamiento */
+/* Cambia el color de fondo y el grosor de la barra */
+::-webkit-scrollbar {
+    width: 3px;
+    background-color: #f7f3ea;
+}
+
+/* Cambia el color del riel de la barra */
+::-webkit-scrollbar-track {
+    background-color: #f7f3ea;
+}
+
+/* Cambia el color del pulgar de la barra */
+::-webkit-scrollbar-thumb {
+    background-color: #f7f3ea;
+    border-radius: 3px;
+    border-color: #f7f3ea;
+    border: 3px solid #f7f3ea;
+    /* Define el borde del pulgar */
+}
+
+/* Cambia el color del pulgar de la barra cuando se desplaza */
+::-webkit-scrollbar-thumb:hover {
+    background-color: #ffffff;
+
+}
+
+
+
+
+
+
+
+
+
+/*   FOOTER  */
+
+/* Contenedor del footer */
+.footer {
+    background-color: #0e3b32;
+    color: #ffffff;
+    padding: 1px 0;
+    text-align: right;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+
+    z-index: 99;
+  }
+  
+  /* Enlaces del footer */
+  .footer a {
+    color: #ffffff;
+    text-decoration: none;
+    margin: 0 10px;
+  }
+  
+  /* Enlaces del footer al pasar el mouse */
+  .footer a:hover {
+    color: #ff0000;
+  }
+  
+  /* Información del copyright */
+  .copyright {
+    font-size: 12px;
+    margin-top: 10px;
+  }
+  
+  /* Diseñador del sitio web */
+  .diseñador {
+    font-size: 12px;
+    margin-top: 5px;
+  }
+
+
+
+
+
+
+
