@@ -202,8 +202,7 @@ function crearDataTable(idTabla) {
     if ($.fn.DataTable.isDataTable(idTabla)) {
         $(idTabla).DataTable().clear().destroy();
     }
-
-    // Initialize the DataTable with the specified options
+    
     var tabla = $(idTabla).DataTable({
         retrieve: true,
         responsive: true,
@@ -212,8 +211,8 @@ function crearDataTable(idTabla) {
         },
         order: [[0, "asc"]],
         lengthMenu: [
-            [-1, 5, 10, 25, 50],
-            ["Mostrar todo", 5, 10, 25, 50]
+            [5, 10, 25, 50, -1],
+            [5, 10, 25, 50, "Mostrar todo"]
         ],
         language: {
             sProcessing: "Procesando...",
