@@ -2,10 +2,10 @@
 
 class Conexion {
 
-    private const SERVIDOR = "localhost:3306";
-    private const USUARIO = "root";
-    private const CONTRASENIA = "";
-    private const BD = "supervision_docente";
+    private const SERVIDOR = "154.56.47.204";
+    private const USUARIO = "u487588057_supervision";
+    private const CONTRASENIA = "Ch@rly1996";
+    private const BD = "u487588057_sup_docente";
 
     private $conexion;
     

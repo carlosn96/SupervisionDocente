@@ -57,6 +57,7 @@
                                                 <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuCoordinadores">
                                                     <li><a class="dropdown-item" href="../coordinadores/"><i class="ti ti-list"></i> Ver listado</a></li>
                                                     <li><a class="dropdown-item" href="../coordinadores/agregarCoordinador.php"><i class="ti ti-plus"></i> Agregar nuevo</a></li>
+                                                    <li><a class="dropdown-item" href="../coordinadoresAgenda/"><i class="ti ti-calendar-bolt"></i> Agenda por coordinador</a></li>
                                                 </ul>
                                             </div>
                                         </div>

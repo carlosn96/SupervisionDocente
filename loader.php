@@ -120,7 +120,7 @@ define("NO_DATA_ERROR", Util::enum("No existe información disponible", true));
 define("NO_COMPLETE_DATA_ERROR", Util::enum("La información solicitada no está completa", true));
 
 spl_autoload_register(function ($clase) {
-    $directorios = ["admin", "dao", "dao\util", "modelo", "controller"];
+    $directorios = ["admin", "dao", "dao/util", "modelo", "controller"];
     foreach ($directorios as $directorio) {
         if (buscar(ROOT_APP . $directorio, $clase)) {
             return;

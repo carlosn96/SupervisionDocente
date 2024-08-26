@@ -19,6 +19,10 @@ class AdminPlantel {
     public function recuperar_listado() {
         return $this->construir_listado($this->dao->recuperar_listado(""));
     }
+    
+    public function recuperar_plantel_id($id) {
+        return $this->dao->recuperar_listado("WHERE id_plantel=$id")[0];
+    }
 
     public function recuperar_listado_por_carrera($id_carrera) {
         return $this->construir_listado($this->dao->recuperar_listado_por_carrera($id_carrera));

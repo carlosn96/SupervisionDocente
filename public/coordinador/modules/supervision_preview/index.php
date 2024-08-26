@@ -116,9 +116,6 @@
                                                     <figcaption class="text-muted mt-2">Escanea este código QR para acceder al reporte o copia la liga </figcaption>
                                                 </figure>
                                                 <div class="d-flex justify-content-center">
-                                                    <button onclick="copiarURL()" class="btn btn-sm btn-outline-primary me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Copiar">
-                                                        <i class="ti ti-copy"></i>
-                                                    </button>
                                                     <button class="btn btn-sm btn-outline-primary me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Compartir por Gmail">
                                                         <i class="ti ti-mail"></i>
                                                     </button>
@@ -132,7 +129,15 @@
                                                 <div class="card-body">
                                                     <h5 class="card-title">Compartir reporte de supervisión</h5>
                                                     <p class="card-text">
-                                                        <strong>Sitio</strong> <a href="http://localhost/supervision_docente/public/docente/" id="url-supervision" target="_blank" class="text-decoration-none">http://localhost/supervision_docente/public/docente/</a>
+                                                        <?php
+                                                        $server = ($server = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https://" : "http://") .
+                                                                ($_SERVER["SERVER_NAME"] == "localhost" ? $_SERVER["SERVER_NAME"] . "/supervision_docente" :
+                                                                $_SERVER["SERVER_NAME"])) . "/public/docente";
+                                                        ?>
+                                                        <strong>Sitio</strong> <a href="<?= $server ?>" id="url-supervision" target="_blank" class="text-decoration-none"><?= $server ?></a>
+                                                        <button onclick="copiarURL()" class="btn btn-sm btn-outline-primary me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Copiar">
+                                                            <i class="ti ti-copy"></i>
+                                                        </button>
                                                     </p>
                                                     <p class="card-text">
                                                         <strong>Número de expediente:</strong> <span class="badge bg-primary" id="id-expediente"></span>

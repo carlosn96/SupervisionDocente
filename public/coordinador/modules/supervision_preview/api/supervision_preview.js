@@ -163,8 +163,7 @@ function calcularValoracion(selector) {
 }
 
 function construirSeccionCompatirResultados(supervision) {
-    print(supervision);
-    let url = "http://localhost/supervision_docente/public/docente/modules/get/?exp=" + supervision.id_agenda;
+    let url = `${window.location.protocol}//${window.location.hostname}${window.location.hostname === "localhost" ? "/supervision_docente" : ""}/public/docente/modules/get/?exp=${supervision.id_agenda}`;
     $("#id-expediente").text(supervision.id_supervision);
     var qr = new QRCode(document.getElementById("qrContainer"), {
         text: url,
