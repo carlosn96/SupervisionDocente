@@ -1,35 +1,46 @@
 <?php
 
 class Conexion {
-
     private const SERVIDOR = "154.56.47.204";
     private const USUARIO = "u487588057_supervision";
     private const CONTRASENIA = "Ch@rly1996";
     private const BD = "u487588057_sup_docente";
 
     private $conexion;
+    private $conexion_abierta = false;
     
     public function __construct() {
         $this->crear_conexion();
     }
 
     public function crear_conexion($servidor = self::SERVIDOR, $usuario = self::USUARIO, $contrasenia = self::CONTRASENIA, $bd = self::BD) {
-        $this->cerrar_conexion();
-        $conexion = new mysqli($servidor, $usuario, $contrasenia, $bd);
-        if ($conexion->connect_errno) {
-            die("Connection failed: " . $conexion->connect_error);
+        if ($this->conexion_abierta) {
+            $this->cerrar_conexion();
+        }
+        $this->conexion = new mysqli($servidor, $usuario, $contrasenia, $bd);
+        if ($this->conexion->connect_errno) {
+            die("Connection failed: " . $this->conexion->connect_error);
             exit();
         } else {
-            $conexion->set_charset("utf8");
+            $this->conexion->set_charset("utf8");
+            $this->conexion_abierta = true;
         }
-        $this->conexion = $conexion;
     }
 
     public function cerrar_conexion() {
-        if ($this->conexion !== null) {
+        if ($this->conexion_abierta) {
             $this->conexion->close();
             $this->conexion = null;
+            $this->conexion_abierta = false;
         }
+    }
+
+    public function es_conexion_nueva() {
+        return !$this->conexion_abierta;
+    }
+
+    public function is_connected() {
+        return $this->conexion !== null && $this->conexion->ping();
     }
 
     public function ejecutar_instruccion($instruccion) {
@@ -44,7 +55,6 @@ class Conexion {
     public function error_info() {
         return $this->conexion->error;
     }
-    
 
     public function affected_rows() {
         return $this->conexion->affected_rows;
@@ -53,5 +63,4 @@ class Conexion {
     public function obtener_id_autogenerado() {
         return $this->conexion->insert_id;
     }
-
 }

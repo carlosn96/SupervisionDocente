@@ -7,6 +7,7 @@ $(document).ready(function () {
         let docentes = res.docentes;
         
         if(docentes) {
+            $("#nombreCarrera").text(res.carrera.carrera.tipo+" "+res.carrera.carrera.nombre);
             if (Object.values(docentes).length > 0) {
                 iniciarCalendario(crearListaProfesores(docentes));
             } else {

@@ -24,6 +24,8 @@
                     <div class="card">
                         <div class="card-body position-relative">
                             <h2 class="text-center mb-5">Agenda de Supervisiones</h2>
+                            <h5 class="text-center mb-5" id="nombreCarrera"></h5>
+                            
                             <div class="row">
                                 <div class="col">
                                     <div class="card" id="calendar">
