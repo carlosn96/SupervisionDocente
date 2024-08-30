@@ -11,8 +11,11 @@ class Supervision {
     private $id_agenda;
     private $criterios_contables;
     private $criterios_no_contables;
+    private $contrasenia;
 
-    public function __construct($fecha, $id_agenda, $tema, $conclusion_general, array $criterios_contables, array $criterios_no_contables, $id_supervision = "") {
+    public function __construct($fecha, $id_agenda, $tema, $conclusion_general,
+            array $criterios_contables, array $criterios_no_contables,
+            $contrasenia, $id_supervision = "") {
         $this->id_supervision = $id_supervision;
         $this->fecha = $fecha;
         $this->conclusion_general = $conclusion_general;
@@ -20,6 +23,11 @@ class Supervision {
         $this->id_agenda = $id_agenda;
         $this->criterios_contables = $criterios_contables;
         $this->criterios_no_contables = $criterios_no_contables;
+        $this->contrasenia = $contrasenia;
+    }
+
+    public function get_contrasenia() {
+        return $this->contrasenia;
     }
 
     public function get_id_supervision() {

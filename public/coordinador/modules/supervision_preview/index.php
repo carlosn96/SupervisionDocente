@@ -14,6 +14,29 @@
             height: 300px; /* Set a fixed height for each tab pane */
             overflow-y: auto; /* Add vertical scroll */
         }
+        .card {
+            position: relative;
+            padding: 20px;
+        }
+        .edit-button-header {
+            position: absolute;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+        .edit-button-footer {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+        .card-header {
+            position: relative;
+        }
+        .card-body {
+            position: relative;
+        }
     </style>
     <body>
         <!--  Body Wrapper -->
@@ -36,19 +59,26 @@
                         <input hidden="" id="id_agenda" value="<?= $_GET["id_agenda"] ?? "0" ?>">
                         <div class="card-body">
                             <h5 class="card-title fw-semibold mb-4">Reporte de Supervision docente</h5>
-                            <div class="input-group input-group-lg">
+                            <div class="input-group">
                                 <span class="input-group-text" id="inputGroup-sizing-lg">Fecha y hora</span>
                                 <input id="fechaHoraSupervision" readonly type="datetime-local" class="form-control" aria-label="Fecha y hora" aria-describedby="inputGroup-sizing-lg">
                             </div>
                         </div>
                     </div>
                     <div class="card">
-                        <div class="card-header" id="temaSupervision">
-                            Tema: 
+                        <div class="card-header">
+                            <button data-column="tema" class="btn btn-outline-primary btn-sm edit-button-header" data-bs-toggle="modal" data-bs-target="#editModal" data-id="temaSupervision" data-type="tema" title="Editar Tema">
+                                <i class="ti ti-pencil text-primary"></i>
+                            </button>
+                            Tema:
+                            <p id="temaSupervision" class="mb-0"></p> 
                         </div>
                         <div class="card-body">
                             <h5 class="card-title">Conclusiones y comentarios sobre la clase</h5>
-                            <p class="card-text" id="conclusionGeneral"></p>
+                            <p class="card-text" id="conclusionGeneral">Conclusiones actuales</p>
+                            <button data-column="conclusion_generales" class="btn btn-outline-primary btn-sm edit-button-footer" data-bs-toggle="modal" data-bs-target="#editModal" data-id="conclusionGeneral" data-type="conclusion" title="Editar Conclusiones">
+                                <i class="ti ti-pencil text-primary"></i>
+                            </button>
                         </div>
                     </div>
                     <div class="card">
@@ -116,9 +146,9 @@
                                                     <figcaption class="text-muted mt-2">Escanea este código QR para acceder al reporte o copia la liga </figcaption>
                                                 </figure>
                                                 <div class="d-flex justify-content-center">
-                                                    <button class="btn btn-sm btn-outline-primary me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Compartir por Gmail">
+                                                    <a href="#" id="urlResultadosGmail" class="btn btn-sm btn-outline-primary me-2" target="_blank"  data-bs-toggle="tooltip" data-bs-placement="top" title="Compartir por Gmail">
                                                         <i class="ti ti-mail"></i>
-                                                    </button>
+                                                    </a>
                                                     <button onclick="descargarQR()" class="btn btn-sm btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Descargar QR">
                                                         <i class="ti ti-download"></i>
                                                     </button>
@@ -142,11 +172,35 @@
                                                     <p class="card-text">
                                                         <strong>Número de expediente:</strong> <span class="badge bg-primary" id="id-expediente"></span>
                                                     </p>
+                                                    <p class="card-text">
+                                                        <strong>Contraseña:</strong> <span class="badge bg-primary" id="contrasenia"></span>
+                                                    </p>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editModalLabel">Editar</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="editInput">Contenido:</label>
+                                    <textarea class="form-control" id="editInput" rows="3"></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                <button type="button" class="btn btn-primary" id="saveChanges">Guardar cambios</button>
                             </div>
                         </div>
                     </div>

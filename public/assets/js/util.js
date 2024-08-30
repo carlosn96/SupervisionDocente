@@ -24,7 +24,7 @@ function crearPeticion(url, data, fnSuccess = mostrarMensajeResultado, dataType 
             if (jqXHR.status === 0) {
                 mostrarMensajeError("Sesión caducada");
             } else if (jqXHR.status === 404) {
-                mostrarMensajeAdvertencia('Solicitud denegada: recurso'+url+' no encontrado');
+                mostrarMensajeAdvertencia('Solicitud denegada: recurso' + url + ' no encontrado');
             } else if (jqXHR.status === 500) {
                 mostrarMensajeError(JSON.stringify(jqXHR));
             } else if (textStatus === 'parsererror') {
@@ -202,7 +202,7 @@ function crearDataTable(idTabla) {
     if ($.fn.DataTable.isDataTable(idTabla)) {
         $(idTabla).DataTable().clear().destroy();
     }
-    
+
     var tabla = $(idTabla).DataTable({
         retrieve: true,
         responsive: true,
@@ -275,7 +275,15 @@ function formatDate(date) {
 }
 
 function getFechaHoraActual() {
-    return getFechaActual() + "T" + (new Date().toLocaleTimeString());
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    const milliseconds = String(now.getMilliseconds()).padStart(3, '0');
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
 }
 
 

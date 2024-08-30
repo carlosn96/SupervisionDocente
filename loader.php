@@ -2,6 +2,10 @@
 
 class Util {
 
+    public static function generarCadenaAleatoria($len = 5) {
+        return substr(bin2hex(random_bytes($len)), 0, $len);
+    }
+
     public static function callOpenAI($prompt, $APIKey) {
         $data = [
             'model' => 'gpt-3.5-turbo',
@@ -31,10 +35,10 @@ class Util {
         $repo_id = "bigscience/bloom";
         $data = array(
             'inputs' => $prompt,
-            //"task"=>"text-generation"
+                //"task"=>"text-generation"
         );
         $dataString = json_encode($data);
-        $ch = curl_init("https://api-inference.huggingface.co/models/".$repo_id);
+        $ch = curl_init("https://api-inference.huggingface.co/models/" . $repo_id);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);

@@ -12,6 +12,12 @@ class VerSupervisionAPI extends API {
             "supervision" => $adminSupervision->recuperar_supervision($id_agenda)
         ]);
     }
+    
+    public function actualizar_supervision() {
+        $campo = $this->data["columna"];
+        $valor = $this->data["valor"];
+        $this->enviar_resultado_operacion((new AdminSupervision)->actualizar_supervision($campo, $valor));
+    }
 
     private function resumir_info_agenda($data) {
         foreach ($data as $key => $profesor) {

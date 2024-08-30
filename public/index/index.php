@@ -27,11 +27,11 @@
                                     <form id="iniciar_sesion_form">
                                         <div class="mb-3">
                                             <label for="correo_inicio_sesion" class="form-label">Correo electrónico</label>
-                                            <input type="email" class="form-control" id="correo_inicio_sesion" name="correo_inicio_sesion" aria-describedby="emailHelp">
+                                            <input value="juancarlos.gonzalez@universidad-une.com" type="email" class="form-control" id="correo_inicio_sesion" name="correo_inicio_sesion" aria-describedby="emailHelp">
                                         </div>
                                         <div class="mb-4">
                                             <label for="contrasenia_inicio_sesion" class="form-label">Contraseña</label>
-                                            <input type="password" class="form-control" id="contrasenia_inicio_sesion" name="contrasenia_inicio_sesion" required>
+                                            <input value="coordinador2024" type="password" class="form-control" id="contrasenia_inicio_sesion" name="contrasenia_inicio_sesion" required>
                                         </div>
                                         <div class="d-flex align-items-center justify-content-between mb-4">
                                             <div class="form-check">

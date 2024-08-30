@@ -29,7 +29,7 @@ function guardarSupervision() {
         conclusion_general: $("#conclusionesArea").val(),
         id_agenda: $("#id_agenda").val()
     };
-    print(data);
+    //print(data);
     crearPeticion("api/SupervisionAPI.php", {case: "guardar_supervision", data: $.param(data)});
 }
 

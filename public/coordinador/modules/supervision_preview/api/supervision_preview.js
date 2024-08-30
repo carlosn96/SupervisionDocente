@@ -17,7 +17,7 @@ function ready() {
                 if ((Array.isArray(res) && res.length === 0) || res.info_agenda.length === 0) {
                     redirigir();
                 } else {
-                    //print(res);
+                    print(res);
                     const supervision = res.supervision.info_supervision;
                     const criteriosSupervision = res.supervision.detalles_criterios;
                     const criteriosContables = criteriosSupervision.contables;
@@ -33,6 +33,35 @@ function ready() {
         } else {
             redirigir();
         }
+        $('#editModal').on('show.bs.modal', function (event) {
+            const button = $(event.relatedTarget); // Botón que abrió el modal
+            const id = button.data('id'); // ID del elemento a editar
+            const type = button.data('type'); // Tipo de contenido a editar
+            const column = button.data('column'); // Nombre de la columna de la base de datos
+
+            const element = $('#' + id);
+            const currentText = element.text().trim(); // Obtener el texto actual
+
+            const modal = $(this);
+            modal.find('.modal-title').text(`Editar ${type === 'tema' ? 'Tema' : 'Conclusiones'}`);
+            modal.find('#editInput').val(currentText);
+
+            modal.data('id', id);
+            modal.data('column', column); // Guardar el nombre de la columna en los datos del modal
+        });
+
+        $('#saveChanges').on('click', function () {
+            const modal = $('#editModal');
+            const id = modal.data('id');
+            const column = modal.data('column'); // Obtener el nombre de la columna del modal
+            const newText = $('#editInput').val();
+            $('#' + id).text(newText);
+            modal.modal('hide');
+
+            crearPeticion(urlAPI, {case: "actualizar_supervision", data: `columna=${column}&valor=${newText}`}, function (res) {
+                print(res);
+            });
+        });
     });
 }
 
@@ -44,14 +73,9 @@ function construirCardInfoSupervision(supervision, agenda) {
     const horario = materia.horarios[0];
     const cardContent = `
                 <div class="mb-3 p-3">
-                    <div class="text-white p-2 rounded">
-                        <h6 class="text-muted">${supervision.nombre_carrera}</h6>                    
-                        <h6 class="text-muted">Plantel ${supervision.nombre_plantel}</h6>   
-                    </div>
                     <h6 class="mt-3">Docente:</h6>
                     <div class="text-white p-2 rounded">
                         <h5 class="mb-0">${nombreProfesor}</h5>
-                        <h6 class="text-muted">(${profesor.perfil_profesional})</h6>
                         <p> <strong> <a href="https://mail.google.com/mail/?view=cm&fs=1&to=${profesor.correo_electronico}" target="_blank">${profesor.correo_electronico}</a> </strong> </p>
                     </div>
                     <h6 class="mt-3">Materia:</h6>
@@ -69,6 +93,10 @@ function construirCardInfoSupervision(supervision, agenda) {
     $("#fechaHoraSupervision").val(supervision.fecha_supervision);
     $("#temaSupervision").append(supervision.tema);
     $("#conclusionGeneral").html(supervision.conclusion_general);
+    let enviarMail = "https://mail.google.com/mail/?view=cm&fs=1&to=" + profesor.correo_electronico
+            + "&su=" + encodeURIComponent("Retroalimentación de Supervisión Docente " + profesor.fecha_agenda)
+            + "&body=" + encodeURIComponent("Estimado " + nombreProfesor + "\n ...");
+    $("#urlResultadosGmail").attr("href", enviarMail);
 }
 
 
@@ -177,6 +205,7 @@ function construirSeccionCompatirResultados(supervision) {
             $('#qr').attr('src', img);
         }
     }, 500);
+    $("#contrasenia").text(supervision.contrasenia);
 }
 
 
@@ -206,3 +235,4 @@ function copiarURL() {
                 alert('Error al copiar el contenido.');
             });
 }
+

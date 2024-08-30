@@ -94,7 +94,8 @@
                                 <div id="qrcode"></div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-outline-success" id="btnSupervisarDocente">Supervisar Docente</button>
+                                <button type="button" class="btn btn-outline-primary" id="btnSupervisarDocente">Supervisar Docente</button>
+                                <button onclick="eliminarSupervision()" type="button" class="btn btn-outline-danger" id="btnEliminarSupervision">Eliminar supervisión</button>
                             </div>
                         </div>
                     </div>

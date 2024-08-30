@@ -29,6 +29,10 @@
                                             <label for="expediente" class="form-label">Número de expediente</label>
                                             <input required="" class="form-control" id="expediente" name="expediente" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
                                         </div>
+                                        <div class="mb-3">
+                                            <label for="contrasenia" class="form-label">Contraseña</label>
+                                            <input required="" class="form-control" id="contrasenia" name="contrasenia" type="password">
+                                        </div>
                                         <button class="btn btn-primary w-100 fs-4 mb-4 rounded-2">
                                             <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
                                             Ingresar

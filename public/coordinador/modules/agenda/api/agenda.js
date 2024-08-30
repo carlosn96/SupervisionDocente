@@ -153,6 +153,7 @@ function iniciarCalendario(eventos) {
             $('#modalEnd').html(end);
             $('#modalMateria').html(nombreMateria);
             $('#modalEstatus').html(status);
+            $('#modalEstatus').removeClass();
             $('#modalEstatus').addClass("text-" + (sup_hecha ? "success" : "warning"));
             $('#div-num-expediente').attr("hidden", !sup_hecha);
             $('#expediente').val(idSupervision);
@@ -160,6 +161,8 @@ function iniciarCalendario(eventos) {
             $("#btnSupervisarDocente").click(function () {
                 redireccionar("../supervision?id_agenda=" + idAgenda);
             });
+            $("#btnEliminarSupervision").prop("hidden", !sup_hecha);
+            $("#btnEliminarSupervision").data("id-agenda", idAgenda);
             var url = 'https://calendar.google.com/calendar/u/0/r/eventedit?' +
                     '&text=Supervisión a ' + encodeURIComponent(nombreDocente) +
                     '&dates=' + parsearFecha(info.event.start) + '/' + parsearFecha(info.event.end) +
@@ -415,4 +418,9 @@ function agendarMateria(nombreProfesor, horarioClase) {
 function agendarSupervision(e) {
     e.preventDefault();
     crearPeticion(urlAPI, {case: "agendar_supervision", data: $(this).serialize()});
+}
+
+
+function eliminarSupervision() {
+    console.log($("#btnEliminarSupervision").data("id-agenda"));
 }

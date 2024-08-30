@@ -8,7 +8,7 @@ class SupervisionDAO extends DAO {
     private const ACTUALIZAR_DESCRIPCION_RUBRO = "UPDATE `supervision_rubro` SET `descripcion` = ? WHERE (`id_rubro` = ?)";
     private const ACTUALIZAR_DESCRIPCION_CRITERIO = "UPDATE `supervision_criterio` SET `descripcion` = ? WHERE (`id_criterio` = ?)";
     private const TIPO_RUBROS = ["contable" => "", "no_contable" => "_no_contable"];
-    private const GUARDAR_SUPERVISION = "CALL insertar_supervision(?, ?, ?, ?, ?, ?)";
+    private const GUARDAR_SUPERVISION = "CALL insertar_supervision(?, ?, ?, ?, ?, ?, ?)";
     private const RECUPERAR_SUPERVISION_REALIZADA_CRITERIOS = "SELECT * FROM consultar_detalles_supervision_realizada WHERE id_agenda = ?";
     private const RECUPERAR_SUPERVISION = "SELECT * FROM consultar_supervision WHERE id_agenda = ?";
     private const RECUPERAR_AGENDA_GENERAL_POR_COORDINADOR = "SELECT * FROM listar_agenda_supervision WHERE id_coordinador = ? [WHERE] ORDER BY fecha, hora_inicio";
@@ -115,6 +115,7 @@ class SupervisionDAO extends DAO {
         $prep->add("s", $supervision->get_conclusion_general() ?? "");
         $prep->add("s", json_encode($supervision->get_criterios_contables()));
         $prep->add("s", json_encode($supervision->get_criterios_no_contables()));
+        $prep->add("s", $supervision->get_contrasenia());
         return $this->ejecutar_instruccion_preparada(self::GUARDAR_SUPERVISION, $prep);
     }
 
@@ -124,7 +125,7 @@ class SupervisionDAO extends DAO {
         $rs = $this->ejecutar_instruccion_prep_result("SELECT id_agenda FROM consultar_supervision WHERE id_supervision = ?", $prep);
         return $rs[0]["id_agenda"] ?? -1;
     }
-    
+
     public function obtener_detalles_supervision($id_agenda) {
         $prep = new PreparedStatmentArgs();
         $prep->add("i", $id_agenda);
@@ -148,5 +149,10 @@ class SupervisionDAO extends DAO {
             $prep->add("s", $fecha);
         }
         return $this->ejecutar_instruccion_prep_result(str_replace("[WHERE]", $fechaInstruccion, self::RECUPERAR_AGENDA_GENERAL_POR_COORDINADOR), $prep);
+    }
+
+    public function actualizar_supervision($campo, $valor) {
+        return $this->ejecutar_instruccion("UPDATE supervision_realizada SET $campo = '$valor'");
+        
     }
 }

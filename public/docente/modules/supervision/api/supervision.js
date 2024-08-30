@@ -37,15 +37,9 @@ function construirCardInfoSupervision(supervision, agenda) {
     const horario = materia.horarios[0];
     const cardContent = `
                 <div class="mb-3 p-3">
-                    <div class="text-white p-2 rounded">
-                        <h6 class="text-muted">${supervision.nombre_carrera}</h6>                    
-                        <h6 class="text-muted">Plantel ${supervision.nombre_plantel}</h6>   
-                    </div>
                     <h6 class="mt-3">Docente:</h6>
                     <div class="text-white p-2 rounded">
                         <h5 class="mb-0">${nombreProfesor}</h5>
-                        <h6 class="text-muted">(${profesor.perfil_profesional})</h6>
-                        <p> <strong> <a href="https://mail.google.com/mail/?view=cm&fs=1&to=${profesor.correo_electronico}" target="_blank">${profesor.correo_electronico}</a> </strong> </p>
                     </div>
                     <h6 class="mt-3">Materia:</h6>
         <ul class="list-group mb-3">
@@ -67,19 +61,33 @@ function construirCardInfoSupervision(supervision, agenda) {
 
 function construirTablaValoracionGlobal(criteriosContables) {
     let rubros = {};
+    let totalValoracion = 0;
+    let count = 0;
+
     criteriosContables.forEach(rubro => {
         const totalCriterios = rubro.criterios.length;
         const criteriosCumplidos = rubro.criterios.filter(criterio => criterio.cumplido).length;
-        const valoracion = (criteriosCumplidos / totalCriterios * 100).toFixed(2);
+        const valoracion = (criteriosCumplidos / totalCriterios * 100).toFixed(1);
         const descripcion = rubro.descripcion;
-        $('#rubro-table tbody').append(`
-                <tr>
-                    <td>${descripcion}</td>
-                    <td>${valoracion} %</td>
-                </tr>
-            `);
         rubros[descripcion] = valoracion;
+        $('#rubro-table tbody').append(`
+        <tr>
+            <td>${descripcion}</td>
+            <td>${valoracion} %</td>
+        </tr>
+    `);
+        totalValoracion += parseFloat(valoracion);
+        count++;
     });
+
+// Agrega el footer con el promedio
+    $('#rubro-table tbody').append(`
+    <tr class="table-footer">
+        <td class='text-right'><strong>Puntuación promedio</strong></td>
+        <td><strong>${(totalValoracion / count).toFixed(1)} %</strong></td>
+    </tr>
+`);
+
     const ctx = document.getElementById('valoracionChart').getContext('2d');
     new Chart(ctx, {
         type: 'bar',

@@ -5,16 +5,14 @@ include_once '../../../../../loader.php';
 class IndexAPI extends API {
 
     public function consultar_supervision() {
-        
-        
         $id_agenda = (new AdminSupervision())->recuperar_id_agenda_por_id_supervision($this->data["expediente"]);
-       // var_dump($id_agenda);
-        
         $adminSupervision = new AdminSupervision();
-        $expediente = [
+        $supervision = $adminSupervision->recuperar_supervision($id_agenda);
+        $expediente = !empty($supervision["info_supervision"]) && $supervision["info_supervision"]["contrasenia"] === $this->data["contrasenia"] ?
+                [
             "info_agenda" => $this->resumir_info_agenda((new AdminDocente())->obtener_info_agenda($id_agenda)),
-            "supervision" => $adminSupervision->recuperar_supervision($id_agenda)
-        ];
+            "supervision" => $supervision
+                ] : [];
         Sesion::setInfoTemporal("supervision", $expediente);
         $this->enviar_respuesta($expediente);
     }

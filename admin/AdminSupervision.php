@@ -11,6 +11,10 @@ class AdminSupervision {
         $this->dao = new SupervisionDAO();
     }
 
+    public function actualizar_supervision($campo, $valor) {
+        return $this->dao->actualizar_supervision($campo, $valor);
+    }
+
     public function guardar_rubro_criterios(array $formulario) {
         $rubros = array();
         foreach ($formulario['rubro'] as $rubro_data) {
@@ -60,11 +64,11 @@ class AdminSupervision {
     public function agendar_supervision($id_horario, $fecha) {
         return $this->dao->agendar_supervision($id_horario, $fecha);
     }
-    
+
     public function obtener_agenda_general($id_coordinador, $fecha) {
         return $this->dao->obtener_agenda_general($id_coordinador, $fecha);
     }
-    
+
     public function recuperar_agenda_por_fecha($fecha, $id_coordinador, $id_plantel, $id_carrera) {
         return $this->dao->recuperar_agenda_por_fecha($fecha, $id_coordinador, $id_plantel, $id_carrera);
     }
@@ -74,10 +78,15 @@ class AdminSupervision {
     }
 
     public function guardar_supervision($data) {
-        $supervision = new Supervision($data['fecha'], $data['id_agenda'],
-                $data["tema"], $data["conclusion_general"],
+        $supervision = new Supervision(
+                $data['fecha'],
+                $data['id_agenda'],
+                $data["tema"],
+                $data["conclusion_general"],
                 $this->construir_criterios($data["rubros"]["contable"]),
-                $this->construir_criterios($data["rubros"]["no_contable"]));
+                $this->construir_criterios($data["rubros"]["no_contable"]),
+                Util::generarCadenaAleatoria()
+        );
         return $this->dao->guardar_supervision($supervision);
     }
 
@@ -94,11 +103,11 @@ class AdminSupervision {
         }
         return $rubros;
     }
-    
+
     public function recuperar_supervision($id_agenda) {
         return [
             "detalles_criterios" => $this->obtener_detalles_supervision($id_agenda),
-            "info_supervision"=> $this->dao->recuperar_supervision($id_agenda)
+            "info_supervision" => $this->dao->recuperar_supervision($id_agenda)
         ];
     }
 
@@ -140,7 +149,7 @@ class AdminSupervision {
             'no_contables' => $this->construir_criterios($rubros_no_contables)
         ];
     }
-    
+
     function recuperar_id_agenda_por_id_supervision($id_supervision) {
         return $this->dao->recuperar_id_agenda_por_id_supervision($id_supervision);
     }
