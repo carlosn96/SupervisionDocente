@@ -19,10 +19,20 @@ class DocenteDAO extends DAO {
         return $stmt->execute();
     }
 
+    public function obtener_horario($tipo, $id, $carrera, $plantel) {
+        $campo = ($tipo === "Grupo") ? 'grupo' : 'id_docente';
+        $instruccion = "SELECT * FROM consultar_horario WHERE $campo = ? AND id_carrera = ? AND id_plantel = ?";
+        $args = new PreparedStatmentArgs;
+        $args->add('s', $id);
+        $args->add('i', $carrera);
+        $args->add('i', $plantel);
+        return $this->ejecutar_instruccion_prep_result($instruccion, $args);
+    }
+
     public function obtener_docentes_materias($id_carrera, $id_plantel) {
         return $this->listar_docente_materias_horarios(" id_carrera = $id_carrera AND id_plantel = $id_plantel");
     }
-    
+
     public function obtener_materias($id_docente) {
         return $this->listar_docente_materias_horarios(" id_docente = $id_docente");
     }
@@ -36,7 +46,7 @@ class DocenteDAO extends DAO {
         $docentes = array();
         foreach ($rs->fetch_all(MYSQLI_ASSOC) as $row) {
             $docenteKey = $row['nombre_docente'] . ' ' . $row['apellido_docente'];
-            $materiaKey = $row['nombre_materia'] ;
+            $materiaKey = $row['nombre_materia'];
             if (!isset($docentes[$docenteKey])) {
                 $docentes[$docenteKey] = [
                     'id_docente' => $row['id_docente'],

@@ -33,7 +33,7 @@ class MateriaDAO extends DAO {
         $args->add("i", $form["id_horario"]);
         return $this->ejecutar_instruccion_preparada(self::ACTUALIZAR_HORARIO, $args);
     }
-    
+
     public function agregar_horario($form) {
         $args = new PreparedStatmentArgs();
         $args->add("i", $form["id_materia"]);
@@ -41,5 +41,13 @@ class MateriaDAO extends DAO {
         $args->add("s", $form["hora_inicio"]);
         $args->add("s", $form["hora_fin"]);
         return $this->ejecutar_instruccion_preparada(self::AGREGAR_HORARIO, $args);
+    }
+
+    function listar_grupos($carrera, $plantel) {
+        $instruccion = "SELECT * FROM listar_grupos WHERE carrera=? AND plantel=?";
+        $args = new PreparedStatmentArgs();
+        $args->add("i", $carrera);
+        $args->add("i", $plantel);
+        return $this->ejecutar_instruccion_prep_result($instruccion, $args);
     }
 }

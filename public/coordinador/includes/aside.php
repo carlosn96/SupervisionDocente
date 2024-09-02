@@ -42,6 +42,18 @@
                 </li>
                 <li class="sidebar-item">
                     <a
+                        class="sidebar-link sidebar-link success-hover-bg"
+                        href="../horario/"
+                        aria-expanded="false"
+                        >
+                        <span class="aside-icon p-2 bg-light-success rounded-3">
+                            <i class="ti ti-calendar-time fs-7 text-success"></i>
+                        </span>
+                        <span class="hide-menu ms-2 ps-1">Horario</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a
                         class="sidebar-link sidebar-link primary-hover-bg"
                         href="../agenda/"
                         aria-expanded="false"
