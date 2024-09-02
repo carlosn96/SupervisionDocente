@@ -12,11 +12,12 @@ class VerSupervisionAPI extends API {
             "supervision" => $adminSupervision->recuperar_supervision($id_agenda)
         ]);
     }
-    
+
     public function actualizar_supervision() {
         $campo = $this->data["columna"];
         $valor = $this->data["valor"];
-        $this->enviar_resultado_operacion((new AdminSupervision)->actualizar_supervision($campo, $valor));
+        $id_agenda = $this->data["id_agenda"];
+        $this->enviar_resultado_operacion((new AdminSupervision)->actualizar_supervision($campo, $valor, $id_agenda));
     }
 
     private function resumir_info_agenda($data) {
@@ -35,6 +36,22 @@ class VerSupervisionAPI extends API {
             }
         }
         return $data;
+    }
+
+    public function actualizar_cumplimiento_criterio_contable() {
+        $id_supervision = $this->data["id_supervision"];
+        $id_criterio = $this->data["id_criterio"];
+        $es_criterio_cumplido = intval(filter_var($this->data["criterio_cumplido"], FILTER_VALIDATE_BOOLEAN));
+        $this->enviar_resultado_operacion((new AdminSupervision)->actualizar_cumplimiento_criterio_contable($id_supervision,
+                        $id_criterio, $es_criterio_cumplido));
+    }
+
+    public function actualizar_comentario_criterio_contable() {
+        $id_supervision = $this->data["id_supervision"];
+        $id_criterio = $this->data["id_criterio"];
+        $comentario = $this->data["comentario"];
+        $this->enviar_resultado_operacion((new AdminSupervision)->actualizar_comentario_criterio_contable($id_supervision,
+                        $id_criterio, $comentario));
     }
 }
 

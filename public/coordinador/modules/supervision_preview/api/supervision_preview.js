@@ -1,4 +1,4 @@
-
+const urlAPI = "api/VerSupervisionAPI.php";
 
 let chart;
 let rubroContablesContainer;
@@ -12,7 +12,7 @@ function ready() {
             redireccionar("../agenda");
         };
         if (idAgenda) {
-            crearPeticion("api/VerSupervisionAPI.php", {case: "recuperar_supervision", data: "id_agenda=" + idAgenda}, function (res) {
+            crearPeticion(urlAPI, {case: "recuperar_supervision", data: "id_agenda=" + idAgenda}, function (res) {
                 //print(res);
                 if ((Array.isArray(res) && res.length === 0) || res.info_agenda.length === 0) {
                     redirigir();
@@ -28,6 +28,7 @@ function ready() {
                     construirSeccionCriterios(criteriosContables, $('#tarjetas-rubros-contables'), "contable");
                     construirSeccionCriterios(criteriosNoContables, $('#tarjetas-rubros-no-contables'), "no_contable");
                     construirSeccionCompatirResultados(supervision);
+                    $("#id_supervision").val(supervision.id_supervision);
                 }
             }, "json");
         } else {
@@ -58,7 +59,7 @@ function ready() {
             $('#' + id).text(newText);
             modal.modal('hide');
 
-            crearPeticion(urlAPI, {case: "actualizar_supervision", data: `columna=${column}&valor=${newText}`}, function (res) {
+            crearPeticion(urlAPI, {case: "actualizar_supervision", data: `columna=${column}&valor=${newText}&id_agenda=${$("#id_agenda").val()}`}, function (res) {
                 print(res);
             });
         });
@@ -144,18 +145,17 @@ function construirSeccionCriterios(rubros, contenedor, tipo) {
         const totalCriterios = rubro.criterios.length;
         const criteriosCumplidos = rubro.criterios.filter(criterio => criterio.cumplido).length;
         const porcentajeCumplimiento = (criteriosCumplidos / totalCriterios * 100).toFixed(2);
-
         let criteriosHTML = '';
         rubro.criterios.forEach(criterio => {
             criteriosHTML += `
                 <tr>
                     <td>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" ${criterio.cumplido ? 'checked' : ''} disabled>
+                            <input onclick="actualizarCumplimientoCriterioContable(this)" class="form-check-input" type="checkbox" ${criterio.cumplido ? 'checked' : ''} data-id-criterio="${criterio.id_criterio}">
                         </div>
                     </td>
                     <td>${criterio.descripcion}</td>
-                    <td>${criterio.comentario}</td>
+                    <td data-id-criterio=${criterio.id_criterio} contenteditable="true" onblur="actualizarComentarioCriterioContable(this)">${criterio.comentario}</td>
                 </tr>
             `;
         });
@@ -181,6 +181,24 @@ function construirSeccionCriterios(rubros, contenedor, tipo) {
         `;
         contenedor.append(tarjetaHTML);
     });
+}
+
+function actualizarCumplimientoCriterioContable(check) {
+    let data = {
+        id_criterio: check.getAttribute('data-id-criterio'),
+        criterio_cumplido: check.checked,
+        id_supervision: $("#id_supervision").val()
+    };
+    crearPeticion(urlAPI, {case: "actualizar_cumplimiento_criterio_contable", data: $.param(data)}, print);
+}
+
+function actualizarComentarioCriterioContable(celda) {
+    let data = {
+        id_criterio: celda.getAttribute('data-id-criterio'),
+        comentario: celda.textContent,
+        id_supervision: $("#id_supervision").val()
+    };
+    crearPeticion(urlAPI, {case:"actualizar_comentario_criterio_contable", data:$.param(data)}, print);
 }
 
 function calcularValoracion(selector) {

@@ -11,8 +11,16 @@ class AdminSupervision {
         $this->dao = new SupervisionDAO();
     }
 
-    public function actualizar_supervision($campo, $valor) {
-        return $this->dao->actualizar_supervision($campo, $valor);
+    public function actualizar_supervision($campo, $valor, $id_agenda) {
+        return $this->dao->actualizar_supervision($campo, $valor, $id_agenda);
+    }
+    
+    public function actualizar_cumplimiento_criterio_contable($id_supervision, $id_criterio, $es_criterio_cumplido) {
+        return $this->dao->actualizar_cumplimiento_criterio_contable($id_supervision, $id_criterio, $es_criterio_cumplido);
+    }
+    
+    public function actualizar_comentario_criterio_contable($id_supervision, $id_criterio, $comentario) {
+        return $this->dao->actualizar_comentario_criterio_contable($id_supervision, $id_criterio, $comentario);
     }
 
     public function guardar_rubro_criterios(array $formulario) {

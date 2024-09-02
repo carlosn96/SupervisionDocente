@@ -57,6 +57,7 @@
                 <div class="container-fluid" id="content">
                     <div class="card">
                         <input hidden="" id="id_agenda" value="<?= $_GET["id_agenda"] ?? "0" ?>">
+                        <input hidden="" id="id_supervision">
                         <div class="card-body">
                             <h5 class="card-title fw-semibold mb-4">Reporte de Supervision docente</h5>
                             <div class="input-group">
@@ -76,7 +77,7 @@
                         <div class="card-body">
                             <h5 class="card-title">Conclusiones y comentarios sobre la clase</h5>
                             <p class="card-text" id="conclusionGeneral">Conclusiones actuales</p>
-                            <button data-column="conclusion_generales" class="btn btn-outline-primary btn-sm edit-button-footer" data-bs-toggle="modal" data-bs-target="#editModal" data-id="conclusionGeneral" data-type="conclusion" title="Editar Conclusiones">
+                            <button data-column="conclusion_general" class="btn btn-outline-primary btn-sm edit-button-footer" data-bs-toggle="modal" data-bs-target="#editModal" data-id="conclusionGeneral" data-type="conclusion" title="Editar Conclusiones">
                                 <i class="ti ti-pencil text-primary"></i>
                             </button>
                         </div>
