@@ -42,6 +42,7 @@
                                     <thead>
                                         <tr>
                                             <th>Nombre</th>
+                                            <th>Director</th>
                                             <th class="text-center">Acciones</th>
                                         </tr>
                                     </thead>
@@ -66,6 +67,10 @@
                                     <div class="mb-3">
                                         <label for="nombrePlantel" class="form-label">Nuevo nombre del plantel</label>
                                         <input type="text" class="form-control" id="nombrePlantel" name="nombrePlantel" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="directorPlantel" class="form-label">Nuevo Director</label>
+                                        <input type="text" class="form-control" id="directorPlantel" name="directorPlantel" required>
                                     </div>
                                 </div>
                                 <div class="modal-footer">

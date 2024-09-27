@@ -30,24 +30,24 @@
                 </li>
                 <li class="sidebar-item">
                     <a
-                        class="sidebar-link sidebar-link danger-hover-bg"
+                        class="sidebar-link sidebar-link primary-hover-bg"
                         href="../docentes/"
                         aria-expanded="false"
                         >
-                        <span class="aside-icon p-2 bg-light-danger rounded-3">
-                            <i class="ti ti-users fs-7 text-danger"></i>
+                        <span class="aside-icon p-2 bg-light-primary rounded-3">
+                            <i class="ti ti-users fs-7 text-primary"></i>
                         </span>
                         <span class="hide-menu ms-2 ps-1">Docentes</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
                     <a
-                        class="sidebar-link sidebar-link success-hover-bg"
+                        class="sidebar-link sidebar-link primary-hover-bg"
                         href="../horario/"
                         aria-expanded="false"
                         >
-                        <span class="aside-icon p-2 bg-light-success rounded-3">
-                            <i class="ti ti-calendar-time fs-7 text-success"></i>
+                        <span class="aside-icon p-2 bg-light-primary rounded-3">
+                            <i class="ti ti-calendar-time fs-7 text-primary"></i>
                         </span>
                         <span class="hide-menu ms-2 ps-1">Horario</span>
                     </a>

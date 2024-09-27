@@ -47,4 +47,8 @@ abstract class API {
     function set_data($data): void {
         $this->data = $data;
     }
+
+    function get_data($key) {
+        return $this->data[$key] ?? "";
+    }
 }

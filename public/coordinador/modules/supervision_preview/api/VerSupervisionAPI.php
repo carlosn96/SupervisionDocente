@@ -53,6 +53,12 @@ class VerSupervisionAPI extends API {
         $this->enviar_resultado_operacion((new AdminSupervision)->actualizar_comentario_criterio_contable($id_supervision,
                         $id_criterio, $comentario));
     }
+
+    public function actualizar_fecha_hora() {
+        $id_agenda = $this->get_data("id_agenda");
+        $fecha = $this->get_data("fecha");
+        $this->enviar_resultado_operacion((new AdminSupervision)->actualizar_fecha_hora($fecha, $id_agenda));
+    }
 }
 
 Util::iniciar_api("VerSupervisionAPI");

@@ -45,7 +45,7 @@ class AdminPlantel {
     }
 
     private function construir_plantel($tupla): Plantel {
-        return new Plantel($tupla["nombre"], $tupla["id_plantel"]);
+        return new Plantel($tupla["nombre"], $tupla["director"], $tupla["id_plantel"]);
     }
 
     public function guardar_configuracion_carrera_plantel($id_coord, $id_carrera, $id_plantel) {

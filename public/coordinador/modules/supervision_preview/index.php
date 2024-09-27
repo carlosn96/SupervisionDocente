@@ -62,7 +62,7 @@
                             <h5 class="card-title fw-semibold mb-4">Reporte de Supervision docente</h5>
                             <div class="input-group">
                                 <span class="input-group-text" id="inputGroup-sizing-lg">Fecha y hora</span>
-                                <input id="fechaHoraSupervision" readonly type="datetime-local" class="form-control" aria-label="Fecha y hora" aria-describedby="inputGroup-sizing-lg">
+                                <input onchange="actualizarFecha()" id="fechaHoraSupervision" type="datetime-local" class="form-control" aria-label="Fecha y hora" aria-describedby="inputGroup-sizing-lg">
                             </div>
                         </div>
                     </div>
@@ -76,7 +76,7 @@
                         </div>
                         <div class="card-body">
                             <h5 class="card-title">Conclusiones y comentarios sobre la clase</h5>
-                            <p class="card-text" id="conclusionGeneral">Conclusiones actuales</p>
+                            <p class="card-text" id="conclusionGeneral"></p>
                             <button data-column="conclusion_general" class="btn btn-outline-primary btn-sm edit-button-footer" data-bs-toggle="modal" data-bs-target="#editModal" data-id="conclusionGeneral" data-type="conclusion" title="Editar Conclusiones">
                                 <i class="ti ti-pencil text-primary"></i>
                             </button>
@@ -162,7 +162,7 @@
                                                     <p class="card-text">
                                                         <?php
                                                         $server = ($server = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https://" : "http://") .
-                                                                ($_SERVER["SERVER_NAME"] == "localhost" ? $_SERVER["SERVER_NAME"] . "/supervision_docente" :
+                                                                ($_SERVER["SERVER_NAME"] == "localhost" ? $_SERVER["SERVER_NAME"] . "/SupervisionDocente" :
                                                                 $_SERVER["SERVER_NAME"])) . "/public/docente";
                                                         ?>
                                                         <strong>Sitio</strong> <a href="<?= $server ?>" id="url-supervision" target="_blank" class="text-decoration-none"><?= $server ?></a>

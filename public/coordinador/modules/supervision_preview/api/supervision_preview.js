@@ -70,8 +70,9 @@ function construirCardInfoSupervision(supervision, agenda) {
     const nombreProfesor = Object.keys(agenda)[0];
     const profesor = agenda[nombreProfesor];
     const nombreMateria = Object.keys(profesor.materias)[0];
-    const materia = profesor.materias[nombreMateria];
-    const horario = materia.horarios[0];
+    const horario_dia_semana = supervision.dia_semana;
+    const horario_hora_inicio = supervision.hora_inicio;
+    const horario_hora_fin = supervision.hora_fin;
     const cardContent = `
                 <div class="mb-3 p-3">
                     <h6 class="mt-3">Docente:</h6>
@@ -81,11 +82,11 @@ function construirCardInfoSupervision(supervision, agenda) {
                     </div>
                     <h6 class="mt-3">Materia:</h6>
         <ul class="list-group mb-3">
-            <li class="list-group-item"><strong>${nombreMateria}</strong></li>
+            <li class="list-group-item"><strong>${supervision.nombre_materia}</strong></li>
             <li class="list-group-item">
                 <div class="d-flex justify-content-between">
-                    <span class="badge bg-info">${horario.dia_semana}</span>
-                    <span>${horario.hora_inicio} - ${horario.hora_fin}</span>
+                    <span class="badge bg-info">${horario_dia_semana}</span>
+                    <span>${horario_hora_inicio} - ${horario_hora_fin}</span>
                 </div>
             </li>
         </ul>
@@ -93,7 +94,7 @@ function construirCardInfoSupervision(supervision, agenda) {
     $("#infoDocente").html(cardContent);
     $("#fechaHoraSupervision").val(supervision.fecha_supervision);
     $("#temaSupervision").append(supervision.tema);
-    $("#conclusionGeneral").html(supervision.conclusion_general);
+    $("#conclusionGeneral").append(supervision.conclusion_general);
     let enviarMail = "https://mail.google.com/mail/?view=cm&fs=1&to=" + profesor.correo_electronico
             + "&su=" + encodeURIComponent("Retroalimentación de Supervisión Docente " + profesor.fecha_agenda)
             + "&body=" + encodeURIComponent("Estimado " + nombreProfesor + "\n ...");
@@ -198,7 +199,7 @@ function actualizarComentarioCriterioContable(celda) {
         comentario: celda.textContent,
         id_supervision: $("#id_supervision").val()
     };
-    crearPeticion(urlAPI, {case:"actualizar_comentario_criterio_contable", data:$.param(data)}, print);
+    crearPeticion(urlAPI, {case: "actualizar_comentario_criterio_contable", data: $.param(data)}, print);
 }
 
 function calcularValoracion(selector) {
@@ -209,7 +210,7 @@ function calcularValoracion(selector) {
 }
 
 function construirSeccionCompatirResultados(supervision) {
-    let url = `${window.location.protocol}//${window.location.hostname}${window.location.hostname === "localhost" ? "/supervision_docente" : ""}/public/docente/modules/get/?exp=${supervision.id_agenda}`;
+    let url = `${window.location.protocol}//${window.location.hostname}${window.location.hostname === "localhost" ? "/SupervisionDocente" : ""}/public/docente/modules/get/?exp=${supervision.id_agenda}`;
     $("#id-expediente").text(supervision.id_supervision);
     var qr = new QRCode(document.getElementById("qrContainer"), {
         text: url,
@@ -254,3 +255,12 @@ function copiarURL() {
             });
 }
 
+function actualizarFecha() {
+    let fecha = $("#fechaHoraSupervision").val(); // input type="datetime-local"
+    if (fecha) {
+        crearPeticion(urlAPI, {case: "actualizar_fecha_hora", data: $.param({
+                fecha: fecha,
+                id_agenda: $("#id_agenda").val()
+            })}, print);
+    }
+}

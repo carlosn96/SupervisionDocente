@@ -6,14 +6,14 @@ class PlantelDAO extends DAO {
     private const LISTAR = "SELECT * FROM " . self::NOMBRE_TABLA;
     private const INSERTAR = "INSERT INTO " . self::NOMBRE_TABLA . " (nombre) VALUES (?)";
     private const INSERTAR_CARRERA = "INSERT INTO " . "carrera_" . self::NOMBRE_TABLA . " VALUES (?, ?)";
-    private const EDITAR_PLANTEL = "UPDATE " . self::NOMBRE_TABLA . " SET `nombre` = ? WHERE (`id_plantel` = ?)";
+    private const EDITAR_PLANTEL = "UPDATE " . self::NOMBRE_TABLA . " SET `nombre` = ?,  `director` = ? WHERE (`id_plantel` = ?)";
 
     public function recuperar_listado($where) {
         return $this->ejecutar_instruccion(self::LISTAR . "  " . $where)->fetch_all(MYSQLI_ASSOC);
     }
 
     public function recuperar_listado_por_carrera($id_carrera) {
-        return $this->ejecutar_instruccion("SELECT plantel.id_plantel, plantel.nombre
+        return $this->ejecutar_instruccion("SELECT plantel.director, plantel.id_plantel, plantel.nombre
 FROM plantel
 JOIN carrera_plantel ON plantel.id_plantel = carrera_plantel.id_plantel
 WHERE carrera_plantel.id_carrera = $id_carrera")->fetch_all(MYSQLI_ASSOC);
@@ -51,6 +51,7 @@ WHERE carrera_plantel.id_carrera = $id_carrera")->fetch_all(MYSQLI_ASSOC);
     public function editar(Plantel $plantel) {
         $prep = new PreparedStatmentArgs();
         $prep->add("s", $plantel->getNombre());
+        $prep->add("s", $plantel->getDirector());
         $prep->add("i", $plantel->getIdPlantel());
         return $this->ejecutar_instruccion_preparada(self::EDITAR_PLANTEL, $prep);
     }

@@ -43,6 +43,12 @@ class AgendaAPI extends API {
     public function eliminar() {
         $this->enviar_resultado_operacion((new AdminSupervision)->eliminar_horario_agendado($this->data["id_horario"]));
     }
+    
+    public function actualizar_dia() {
+        $id_agenda = $this->data["horario"]["detalles"]["id_agenda"];
+        $fecha = $this->data["fecha_actualizar"];
+        $this->enviar_resultado_operacion((new AdminSupervision())->actualizar_fecha_agenda($fecha, $id_agenda));
+    }
 }
 
 Util::iniciar_api("AgendaAPI");

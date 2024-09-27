@@ -151,8 +151,8 @@ class SupervisionDAO extends DAO {
         return $this->ejecutar_instruccion_prep_result(str_replace("[WHERE]", $fechaInstruccion, self::RECUPERAR_AGENDA_GENERAL_POR_COORDINADOR), $prep);
     }
 
-    public function actualizar_supervision($campo, $valor, $id_agenda) {
-        return $this->ejecutar_instruccion("UPDATE supervision_realizada SET $campo = '$valor' WHERE id_agenda = $id_agenda");
+    public function actualizar_supervision($campo, $valor, $id_agenda, $tabla = "supervision_realizada") {
+        return $this->ejecutar_instruccion("UPDATE $tabla SET $campo = '$valor' WHERE id_agenda = $id_agenda");
     }
 
     public function actualizar_cumplimiento_criterio_contable($id_supervision, $id_criterio, $es_criterio_cumplido) {

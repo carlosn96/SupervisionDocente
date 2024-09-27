@@ -144,7 +144,7 @@ function iniciarCalendario(eventos) {
             var sup_hecha = info.event.extendedProps.sup_hecha;
             var idAgenda = info.event.extendedProps.idAgenda;
             var idSupervision = info.event.extendedProps.detalles;
-            
+
             print(info.event.extendedProps);
 
             // Llenar el modal con la información extraída
@@ -174,7 +174,13 @@ function iniciarCalendario(eventos) {
             $("#eventModal").modal("show");
         },
         eventDrop: function (e) {
-            actualizarAgenda(e.event.start, e.event.extendedProps.detalles, e.revert);
+            var detalles = e.event.extendedProps.detalles;
+            if (detalles.detalles.supervision_hecha) {
+                e.revert();
+            } else {
+                actualizarAgenda(e.event.start, detalles, e.revert);
+            }
+
         }
     });
     calendar.render();
@@ -184,20 +190,34 @@ function actualizarAgenda(diaActual, detallesEvento, revertir) {
     const dias = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
     const diaSemanaActual = dias[diaActual.getDay()];
     const horarios = detallesEvento.detalles.materias[Object.keys(detallesEvento.detalles.materias)[0]].horarios;
+
     const horarioEncontrado = horarios.some((horario) => {
-        if (diaSemanaActual === horario.dia_semana) {
-            console.log("Se puede actualizar de día:", horario);
-            return true;
-        }
-        return false;
+        return diaSemanaActual === horario.dia_semana;
     });
 
     if (!horarioEncontrado) {
-        let dias = horarios.map((item) => {
+        let dia = horarios.map((item) => {
             return "\n" + item.dia_semana;
         });
-        mostrarMensajeAdvertencia("No se puede elegir otro día que no sea " + dias, false);
+        mostrarMensajeAdvertencia("No se puede elegir otro día que no sea " + dia, false);
         revertir();
+    } else {
+        let fechaActualizar = formatDate(diaActual);
+        if (diaActual > (new Date())) {
+            crearPeticion(urlAPI, {
+                case: "actualizar_dia",
+                data: $.param({
+                    horario: detallesEvento,
+                    fecha_actualizar: fechaActualizar
+                })
+            }, function (res) {
+                print(res);
+                mostrarMensajeOk("Dia actualizado ", false);
+            });
+        } else {
+            mostrarMensajeAdvertencia("No se puede esta fecha " + fechaActualizar, false);
+            revertir();
+        }
     }
 }
 

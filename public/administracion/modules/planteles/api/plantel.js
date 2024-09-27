@@ -11,8 +11,6 @@ function ready() {
 }
 
 function listarPlanteles() {
-
-
     crearPeticion(urlAPI, {case: "listar"}, function (res) {
         print(res);
         let html = "";
@@ -25,6 +23,7 @@ function listarPlanteles() {
 
             html += "<tr>";
             html += crearColumnaTabla(plantel.nombre);
+            html += crearColumnaTabla(plantel.director);
             html += crearColumnaTablaCentrada(crearBotonMenuDesplegable("Acciones", btnsMenuPlantel, "primary"));
             html += "</tr>";
         });
@@ -38,7 +37,9 @@ function editarPlantel(plantel) {
     $('#modalEditarPlantelLabel').text('Editar "' + plantel.nombre + '"');
     $('#nombrePlantel').val(plantel.nombre);
     $('#idPlantel').val(plantel.id_plantel);
+    $('#directorPlantel').val(plantel.director);
     $('#modalEditarPlantel').modal('show');
+    print(plantel);
     enviarFormulario('#formEditarPlantel', urlAPI, "editar_plantel");
 }
 

@@ -17,7 +17,9 @@ class PlantelAPI extends API {
     }
 
     function editar_plantel() {
-        $plantel = new Plantel($this->data["nombrePlantel"], $this->data["idPlantel"]);
+        $plantel = new Plantel($this->data["nombrePlantel"], 
+                $this->data["directorPlantel"], 
+                $this->data["idPlantel"]);
         $this->enviar_resultado_operacion($this->get_admin()->editar($plantel));
     }
 
