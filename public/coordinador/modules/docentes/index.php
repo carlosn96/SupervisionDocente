@@ -27,35 +27,28 @@
                             <?php
                             include_once '../../includes/selectorCarrera.php';
                             ?>
-                            <div class="card">
-                                <div class="card-header">
+                            <div class="card shadow-sm">
+                                <div class="card-header bg-white">
                                     <div class="row">
                                         <div class="col-12 text-center text-md-end">
-                                            <a href="../docentes/agregarDocente.php" class="btn btn-outline-primary mb-3 mb-md-0">Agregar nuevo docente</a>
+                                            <a href="../docentes/agregarDocente.php" class="btn btn-outline-primary mb-3 mb-md-0">
+                                                <i class="ti ti-plus"></i> Agregar nuevo docente
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <div class="row">
-                                        <div class="col">
-                                            <h2 class="card-title text-center mb-2">Lista de profesores por carrera</h2>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col">
-                                            <h3 class="card-subtitle mb-4 text-muted text-center" id="carreraPlantel"></h3>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-4">
-                                        <div class="col">
-                                            <input type="text" class="form-control" id="searchInput" placeholder="Buscar profesor, materia, perfil...">
-                                        </div>
+                                    <h2 class="card-title text-center mb-2">Lista de profesores por carrera</h2>
+                                    <h3 class="card-subtitle mb-4 text-muted text-center" id="carreraPlantel"></h3>
+                                    <div class="mb-4">
+                                        <input type="text" class="form-control form-control-lg" id="searchInput" placeholder="Buscar profesor, materia, perfil..." onkeyup="filtrarProfesores()">
                                     </div>
                                     <div id="profesor-list" class="row">
                                         <!-- Tarjetas para profesor -->
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
