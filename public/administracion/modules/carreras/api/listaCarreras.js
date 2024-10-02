@@ -13,7 +13,7 @@ function ready() {
                     <div class="card-body">
                         <h5 class="card-title">${carrera.nombre}</h5>
                         <h6 class="card-subtitle mb-2 text-muted">${carrera.tipo}</h6>
-                        <p class="card-text"><strong>Coordinador:</strong> ${typeof carrera.coordinador !== "undefined" ? carrera.coordinador : "Sin coordinador asignado" }</p>
+                        <p class="card-text"><strong>Coordinador:</strong> ${carrera.coordinador !== "No asignado" ? (carrera.coordinador.nombre+" "+carrera.coordinador.apellidos) : "Sin coordinador asignado" }</p>
                         <p class="card-text"><strong>Planteles en donde se oferta:</strong> ${carrera.planteles}</p>
                         <div class="d-flex justify-content-between">
                             <button class="btn btn-primary btn-sm" onclick="editarCarrera(${carrera.id_carrera}, '${carrera.nombre}', '${carrera.tipo}', '${carrera.coordinador}', '${carrera.planteles}')">Editar</button>

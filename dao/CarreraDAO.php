@@ -49,16 +49,15 @@ class CarreraDAO extends DAO {
         $args->add("s", $carrera->get_nombre());
         $args->add("s", $carrera->get_tipo());
         $args->add("i", $carrera->get_id_carrera());
-        var_dump($carrera);
-        return $this->actualizar_multiple(self::NOMBRE_TABLA, "nombre=?, tipo=?", "id_carrera", $args) && $this->actualizar_coordinador_carrera($carrera) && $this->actualizar_planteles_carrera($carrera);
+        return $this->actualizar_multiple(self::NOMBRE_TABLA, "nombre=?, tipo=?", "id_carrera", $args) &&
+                $this->actualizar_coordinador_carrera($carrera) && $this->actualizar_planteles_carrera($carrera);
     }
 
     private function actualizar_coordinador_carrera(Carrera $carrera) {
         $prep = new PreparedStatmentArgs();
         $prep->add("i", $carrera->get_coordinador());
         $prep->add("i", $carrera->get_id_carrera());
-        $stat = $this->actualizar_por_id(self::NOMBRE_TABLA . "_coordinador", "id_coordinador", "id_carrera", $prep, true);
-        var_dump($stat->affected_rows);
+        return $this->ejecutar_instruccion_preparada("CALL actualizar_coordinador_carrera(?, ?)", $prep); 
     }
 
     private function actualizar_planteles_carrera(Carrera $carrera) {
@@ -75,5 +74,4 @@ class CarreraDAO extends DAO {
     public function recuperar_id($id) {
         return $this->recuperar_listado_detallado(" WHERE id_carrera = $id");
     }
-
 }
