@@ -56,7 +56,7 @@ function construirCardInfoSupervision(supervision, agenda) {
     $("#infoDocente").html(cardContent);
     $("#fechaHoraSupervision").val(supervision.fecha_supervision);
     $("#temaSupervision").append(supervision.tema);
-    $("#conclusionGeneral").html(supervision.conclusion_general);
+    $("#conclusionGeneral").html(supervision.conclusion_general.replace(/\n/g, "<br>"));
 }
 
 

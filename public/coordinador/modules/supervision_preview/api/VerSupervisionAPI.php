@@ -38,6 +38,15 @@ class VerSupervisionAPI extends API {
         return $data;
     }
 
+    public function actualizar_cumplimiento_criterio() {
+        $id_supervision = $this->data["id_supervision"];
+        $id_criterio = $this->data["id_criterio"];
+        $tipo = $this->data["tipo"];
+        $es_criterio_cumplido = intval(filter_var($this->data["criterio_cumplido"], FILTER_VALIDATE_BOOLEAN));
+        $this->enviar_resultado_operacion((new AdminSupervision)->actualizar_cumplimiento_criterio_contable($id_supervision,
+                        $id_criterio, $es_criterio_cumplido, $tipo));
+    }
+
     public function actualizar_cumplimiento_criterio_contable() {
         $id_supervision = $this->data["id_supervision"];
         $id_criterio = $this->data["id_criterio"];
@@ -46,12 +55,13 @@ class VerSupervisionAPI extends API {
                         $id_criterio, $es_criterio_cumplido));
     }
 
-    public function actualizar_comentario_criterio_contable() {
+    public function actualizar_comentario_criterio() {
         $id_supervision = $this->data["id_supervision"];
         $id_criterio = $this->data["id_criterio"];
         $comentario = $this->data["comentario"];
+        $tipo = $this->data["tipo"];
         $this->enviar_resultado_operacion((new AdminSupervision)->actualizar_comentario_criterio_contable($id_supervision,
-                        $id_criterio, $comentario));
+                        $id_criterio, $comentario, $tipo));
     }
 
     public function actualizar_fecha_hora() {

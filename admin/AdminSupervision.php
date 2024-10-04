@@ -23,12 +23,12 @@ class AdminSupervision {
         return $this->dao->actualizar_supervision("fecha", $fecha, $id_agenda, "supervision_agenda");
     }
     
-    public function actualizar_cumplimiento_criterio_contable($id_supervision, $id_criterio, $es_criterio_cumplido) {
-        return $this->dao->actualizar_cumplimiento_criterio_contable($id_supervision, $id_criterio, $es_criterio_cumplido);
+    public function actualizar_cumplimiento_criterio_contable($id_supervision, $id_criterio, $es_criterio_cumplido, $tipo) {
+        return $this->dao->actualizar_cumplimiento_criterio_contable($id_supervision, $id_criterio, $es_criterio_cumplido, $tipo);
     }
     
-    public function actualizar_comentario_criterio_contable($id_supervision, $id_criterio, $comentario) {
-        return $this->dao->actualizar_comentario_criterio_contable($id_supervision, $id_criterio, $comentario);
+    public function actualizar_comentario_criterio_contable($id_supervision, $id_criterio, $comentario, $tipo) {
+        return $this->dao->actualizar_comentario_criterio_contable($id_supervision, $id_criterio, $comentario, $tipo);
     }
 
     public function guardar_rubro_criterios(array $formulario) {

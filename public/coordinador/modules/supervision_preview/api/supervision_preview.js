@@ -94,7 +94,7 @@ function construirCardInfoSupervision(supervision, agenda) {
     $("#infoDocente").html(cardContent);
     $("#fechaHoraSupervision").val(supervision.fecha_supervision);
     $("#temaSupervision").append(supervision.tema);
-    $("#conclusionGeneral").append(supervision.conclusion_general);
+    $("#conclusionGeneral").html(supervision.conclusion_general.replace(/\n/g, "<br>"));
     let enviarMail = "https://mail.google.com/mail/?view=cm&fs=1&to=" + profesor.correo_electronico
             + "&su=" + encodeURIComponent("Retroalimentación de Supervisión Docente " + profesor.fecha_agenda)
             + "&body=" + encodeURIComponent("Estimado " + nombreProfesor + "\n ...");
@@ -152,11 +152,11 @@ function construirSeccionCriterios(rubros, contenedor, tipo) {
                 <tr>
                     <td>
                         <div class="form-check">
-                            <input onclick="actualizarCumplimientoCriterioContable(this)" class="form-check-input" type="checkbox" ${criterio.cumplido ? 'checked' : ''} data-id-criterio="${criterio.id_criterio}">
+                            <input onclick="actualizarCumplimientoCriterioContable(this)" class="form-check-input" type="checkbox" ${criterio.cumplido ? 'checked' : ''} data-id-criterio="${criterio.id_criterio}" data-tipo-criterio="${tipo}">
                         </div>
                     </td>
                     <td>${criterio.descripcion}</td>
-                    <td data-id-criterio=${criterio.id_criterio} contenteditable="true" onblur="actualizarComentarioCriterioContable(this)">${criterio.comentario}</td>
+                    <td  data-id-criterio=${criterio.id_criterio} data-tipo-criterio=${tipo} contenteditable="true" onblur="actualizarComentarioCriterio(this)">${criterio.comentario}</td>
                 </tr>
             `;
         });
@@ -187,19 +187,21 @@ function construirSeccionCriterios(rubros, contenedor, tipo) {
 function actualizarCumplimientoCriterioContable(check) {
     let data = {
         id_criterio: check.getAttribute('data-id-criterio'),
+        tipo: check.getAttribute('data-tipo-criterio'),
         criterio_cumplido: check.checked,
         id_supervision: $("#id_supervision").val()
     };
-    crearPeticion(urlAPI, {case: "actualizar_cumplimiento_criterio_contable", data: $.param(data)}, print);
+    crearPeticion(urlAPI, {case: "actualizar_cumplimiento_criterio", data: $.param(data)}, print);
 }
 
-function actualizarComentarioCriterioContable(celda) {
+function actualizarComentarioCriterio(celda) {
     let data = {
         id_criterio: celda.getAttribute('data-id-criterio'),
+        tipo: celda.getAttribute('data-tipo-criterio'),
         comentario: celda.textContent,
         id_supervision: $("#id_supervision").val()
     };
-    crearPeticion(urlAPI, {case: "actualizar_comentario_criterio_contable", data: $.param(data)}, print);
+    crearPeticion(urlAPI, {case: "actualizar_comentario_criterio", data: $.param(data)}, print);
 }
 
 function calcularValoracion(selector) {

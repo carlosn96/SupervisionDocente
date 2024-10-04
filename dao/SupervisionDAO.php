@@ -155,12 +155,14 @@ class SupervisionDAO extends DAO {
         return $this->ejecutar_instruccion("UPDATE $tabla SET $campo = '$valor' WHERE id_agenda = $id_agenda");
     }
 
-    public function actualizar_cumplimiento_criterio_contable($id_supervision, $id_criterio, $es_criterio_cumplido) {
-        $instruccion = "UPDATE supervision_realizada_contable_detalles SET criterio_cumplido = $es_criterio_cumplido WHERE id_supervision = $id_supervision AND id_criterio = $id_criterio";
+    public function actualizar_cumplimiento_criterio_contable($id_supervision, $id_criterio, $es_criterio_cumplido, $tipo) {
+        $tabla = "supervision_realizada_".$tipo."_detalles";
+        $instruccion = "UPDATE $tabla SET criterio_cumplido = $es_criterio_cumplido WHERE id_supervision = $id_supervision AND id_criterio = $id_criterio";
         return $this->ejecutar_instruccion($instruccion);
     }
-    public function actualizar_comentario_criterio_contable($id_supervision, $id_criterio, $comentario) {
-        $instruccion = "UPDATE supervision_realizada_contable_detalles SET comentario = '$comentario' WHERE id_supervision = $id_supervision AND id_criterio = $id_criterio";
+    public function actualizar_comentario_criterio_contable($id_supervision, $id_criterio, $comentario, $tipo) {
+        $tabla = "supervision_realizada_".$tipo."_detalles";
+        $instruccion = "UPDATE $tabla SET comentario = '$comentario' WHERE id_supervision = $id_supervision AND id_criterio = $id_criterio";
         return $this->ejecutar_instruccion($instruccion);
     }
 }
