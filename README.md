@@ -2,7 +2,9 @@
 
 ## Descripción del Proyecto
 
-La **Aplicación para la Supervisión Docente** es una plataforma en línea diseñada para facilitar la gestión y supervisión del personal docente en instituciones educativas. Esta aplicación permite a los coordinadores de carrera registrar y gestionar usuarios, asignar materias a profesores, configurar horarios de clases, y supervisar el desempeño docente mediante criterios predefinidos. El sistema está diseñado para optimizar los procesos administrativos y generar informes de desempeño que ayuden en la toma de decisiones.
+La **Aplicación para la Supervisión Docente** es una plataforma en línea diseñada para facilitar la gestión y supervisión del personal docente en instituciones educativas. Esta aplicación permite, a los coordinadores de carrera, registrar y gestionar usuarios, asignar materias a profesores, configurar horarios de clases, y supervisar el desempeño docente mediante criterios predefinidos.
+
+El sistema está diseñado para optimizar los procesos administrativos y generar informes de desempeño que ayuden en la toma de decisiones.
 
 ## Características Principales
 
@@ -11,7 +13,7 @@ La **Aplicación para la Supervisión Docente** es una plataforma en línea dise
    - Permite a los coordinadores de carrera registrarse y gestionar su perfil.
 
 2. **Gestión de Usuarios y Roles**
-   - Administración de usuarios con diferentes roles: Administrador, Coordinador de Carrera y Profesor.
+   - Administración de usuarios con diferentes roles: Administrador, Coordinador de Carrera, Profesor y Docente.
    - Los coordinadores de carrera pueden dar de alta a los profesores y asignarles materias.
 
 3. **Alta de Profesores y Asignación de Materias**
