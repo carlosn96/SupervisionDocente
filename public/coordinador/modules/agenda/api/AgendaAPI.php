@@ -16,7 +16,8 @@ class AgendaAPI extends API {
 
     public function recuperar_agenda() {
         $this->enviar_respuesta([
-            "docentes" => $this->recuperar_docentes()
+            "supervisiones" => $this->recuperar_docentes(),
+            "eventos" => (new AdminAgenda)->listar_eventos(Sesion::obtener_usuario_actual()->get_id_coordinador())
         ]);
     }
 
@@ -43,11 +44,29 @@ class AgendaAPI extends API {
     public function eliminar() {
         $this->enviar_resultado_operacion((new AdminSupervision)->eliminar_horario_agendado($this->data["id_horario"]));
     }
-    
+
     public function actualizar_dia() {
         $id_agenda = $this->data["horario"]["detalles"]["id_agenda"];
         $fecha = $this->data["fecha_actualizar"];
         $this->enviar_resultado_operacion((new AdminSupervision())->actualizar_fecha_agenda($fecha, $id_agenda));
+    }
+
+    public function guardar_evento() {
+        $this->data["id_coordinador"] = Sesion::obtener_usuario_actual()->get_id_coordinador();
+        $this->enviar_resultado_operacion((new AdminAgenda())->guardar($this->data));
+    }
+
+    public function eliminar_evento() {
+        $this->enviar_resultado_operacion((new AdminAgenda)->eliminar($this->data["id_evento"]));
+    }
+
+    public function actualizar_evento() {
+        $id = $this->data["id_evento"];
+        $campo = $this->data["campo"];
+        $valor = ($campo === "fecha_hora_inicio" || $campo === "fecha_hora_fin") ?
+                Util::convertToMySQLDateTime($this->data["val"]) :
+                $this->data["val"];
+        $this->enviar_resultado_operacion((new AdminAgenda)->actualizar($id, $campo, $valor));
     }
 }
 

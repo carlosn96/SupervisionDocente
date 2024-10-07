@@ -1,6 +1,11 @@
 let urlAPI = "api/AgendaAPI.php";
 var calendar;
 
+const tiposEventos = {
+    EVENTO: "evento",
+    SUPERVISION: "supervision"
+};
+
 function ready() {
     $(document).ready(function () {
         recuperarCarreras(function () {
@@ -11,24 +16,35 @@ function ready() {
                 case: "recuperar_agenda",
                 data: "id_carrera=" + carrera.val() + "&id_plantel=" + plantel.val()
             };
-            crearPeticion(urlAPI, data, function (res) {
-                //print(res);
-                let rs = JSON.parse(res);
+            crearPeticion(urlAPI, data, function (rs) {
+                print(rs);
                 let calendario = $('#calendar');
-                calendario.empty(); // Vaciar contenido
-                calendario.removeClass(); // Quitar clases
+                calendario.empty();
+                calendario.removeClass();
                 limipiarContenedoresDocentes();
-                if (Object.values(rs.docentes).length > 0) {
-                    iniciarCalendario(crearListaProfesores(rs.docentes));
+                if (Object.values(rs.supervisiones).length > 0) {
+                    iniciarCalendario(crearListaProfesores(rs.supervisiones), rs.eventos);
                 } else {
                     let carreraPlantel = carrera.text() + " del Plantel " + plantel.text();
                     let url = "<a href = '../docentes/agregarDocente.php'> esta ventana </a>";
                     let msg = "<p>No existen profesores en <strong>" + carreraPlantel + "</strong>. Dirigirse a " + url + " para agregar docente</p>";
                     insertarAlerta(calendario, msg, "warning");
                 }
-            });
+            }, "json");
         });
         $("#agendaSupervisionForm").submit(agendarSupervision);
+        $("#agregarEventoForm").submit(guardarEvento);
+        $('#eventoUnDia').change(function () {
+            $('#fechaHoraFinEvento').prop('disabled', $(this).is(':checked'));
+        });
+        $('#eventoUnDiaEdit').change(function () {
+            const isChecked = $(this).is(':checked');
+            $('#fechaHoraFinEdit').prop('disabled', isChecked);
+            if (isChecked) {
+                enviarPeticionActualizarEvento("fecha_hora_fin", null);
+            }
+        });
+        $("#btnEliminarEvento").click(eliminarEvento);
     });
 }
 
@@ -49,17 +65,16 @@ function verCronograma(url) {
         } else {
             mostrarMensajeAdvertencia("No hay supervisiones para este mes");
         }
-
     });
 }
 
-function iniciarCalendario(eventos) {
+function iniciarCalendario(supervisiones, eventos) {
     calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
         themeSystem: 'bootstrap5',
         headerToolbar: {
             left: 'prev,next,today',
             center: 'title',
-            right: 'vistaCronograma'
+            right: 'vistaCronograma,agregarEvento'
         },
         customButtons: {
             exportarCalendar: {
@@ -112,6 +127,12 @@ function iniciarCalendario(eventos) {
                         }
                     }, "json");
                 }
+            },
+            agregarEvento: {
+                text: "Agregar evento",
+                click: function () {
+                    $("#agregarEventoModal").modal("show");
+                }
             }
         },
         locale: 'es',
@@ -120,58 +141,14 @@ function iniciarCalendario(eventos) {
         editable: true,
         selectable: true,
         selectMirror: true,
-        events: construirEventosSupervision(eventos),
+        events: construirEventosSupervision(supervisiones, eventos),
         dateClick: function (event) {
             print(event);
         },
         eventClick: function (info) {
-            let parsearFecha = function (fecha) {
-                var año = fecha.getUTCFullYear();
-                var mes = (fecha.getUTCMonth() + 1).toString().padStart(2, '0'); // getUTCMonth devuelve de 0 a 11
-                var dia = (fecha.getUTCDate()).toString().padStart(2, '0');
-                var horas = (fecha.getUTCHours()).toString().padStart(2, '0');
-                var minutos = (fecha.getUTCMinutes()).toString().padStart(2, '0');
-                var segundos = (fecha.getUTCSeconds()).toString().padStart(2, '0');
-                return `${año}${mes}${dia}T${horas}${minutos}${segundos}`;
-            };
-
-            // Extraer información para el modal
-            var nombreDocente = info.event.title;
-            var start = info.event.start ? info.event.start.toISOString().slice(0, 16).replace('T', ' ') : 'No especificada';
-            var end = info.event.end ? info.event.end.toISOString().slice(0, 16).replace('T', ' ') : 'No especificada';
-            var nombreMateria = info.event.extendedProps.nombreMateria;
-            var status = info.event.extendedProps.status;
-            var sup_hecha = info.event.extendedProps.sup_hecha;
-            var idAgenda = info.event.extendedProps.idAgenda;
-            var idSupervision = info.event.extendedProps.detalles;
-
-            print(info.event.extendedProps);
-
-            // Llenar el modal con la información extraída
-            $('#modalDocente').html(nombreDocente);
-            $('#modalStart').html(start);
-            $('#modalEnd').html(end);
-            $('#modalMateria').html(nombreMateria);
-            $('#modalEstatus').html(status);
-            $('#modalEstatus').removeClass();
-            $('#modalEstatus').addClass("text-" + (sup_hecha ? "success" : "warning"));
-            $('#div-num-expediente').attr("hidden", !sup_hecha);
-            $('#expediente').val(idSupervision);
-            $("#btnSupervisarDocente").html(sup_hecha ? "Ver resumen" : "Supervisar docente");
-            $("#btnSupervisarDocente").click(function () {
-                redireccionar("../supervision?id_agenda=" + idAgenda);
-            });
-            $("#btnEliminarSupervision").prop("hidden", !sup_hecha);
-            $("#btnEliminarSupervision").data("id-agenda", idAgenda);
-            var url = 'https://calendar.google.com/calendar/u/0/r/eventedit?' +
-                    '&text=Supervisión a ' + encodeURIComponent(nombreDocente) +
-                    '&dates=' + parsearFecha(info.event.start) + '/' + parsearFecha(info.event.end) +
-                    '&details=' + encodeURIComponent("Supervision de " + nombreDocente + " en la materia '" + nombreMateria) + "'" +
-                    '&location=' + encodeURIComponent("Plantel UNE " + $("#selectorPlantel").find('option:selected').text()) +
-                    '&ctz=America/Mexico_City';
-            $('#btnAddToCalendar').attr('href', url);
-            $("#agregarGCalendar").attr("hidden", sup_hecha);
-            $("#eventModal").modal("show");
+            (info.event.extendedProps.tipo === tiposEventos.SUPERVISION
+                    ? abrirModalSupervision
+                    : abrirModalDescripcionEvento)(info);
         },
         eventDrop: function (e) {
             var detalles = e.event.extendedProps.detalles;
@@ -184,6 +161,98 @@ function iniciarCalendario(eventos) {
         }
     });
     calendar.render();
+}
+
+function abrirModalDescripcionEvento(info) {
+    const detallesEvento = info.event.extendedProps.detalles;
+    const eventoUnDia = detallesEvento.fecha_hora_fin === null;
+    $('#idEvento').val(detallesEvento.id);
+    $('#nombreEventoEdit').val(detallesEvento.nombre);
+    $('#eventoUnDiaEdit').prop('checked', eventoUnDia);
+    $('#fechaHoraInicioEdit').val(detallesEvento.fecha_hora_inicio);
+    $('#fechaHoraFinEdit').val(detallesEvento.fecha_hora_fin || '');
+    $('#fechaHoraFinEdit').prop("disabled", eventoUnDia);
+    $('#lugarEdit').val(detallesEvento.lugar);
+    $('#detallesEdit').val(detallesEvento.detalles);
+    $('#visualizarEventoModal').modal('show');
+}
+
+function eliminarEvento() {
+    alertaEliminar({
+        mensajeAlerta: "El evento ya no estará disponible",
+        url: urlAPI,
+        data: {
+            case: "eliminar_evento",
+            data: "id_evento=" + $('#idEvento').val()
+        }
+    });
+}
+
+function actualizarEvento(e) {
+    const campo = $(e.target).data("nombre-campo");
+    const val = $(e.target).val();
+    enviarPeticionActualizarEvento(campo, val);
+}
+
+function enviarPeticionActualizarEvento(campo, val) {
+    const id_evento = $('#idEvento').val();
+    crearPeticion(urlAPI, {
+        case: "actualizar_evento",
+        data: $.param({
+            id_evento: id_evento,
+            campo: campo,
+            val: val
+        })
+    });
+}
+
+function abrirModalSupervision(info) {
+    let parsearFecha = function (fecha) {
+        var año = fecha.getUTCFullYear();
+        var mes = (fecha.getUTCMonth() + 1).toString().padStart(2, '0');
+        var dia = (fecha.getUTCDate()).toString().padStart(2, '0');
+        var horas = (fecha.getUTCHours()).toString().padStart(2, '0');
+        var minutos = (fecha.getUTCMinutes()).toString().padStart(2, '0');
+        var segundos = (fecha.getUTCSeconds()).toString().padStart(2, '0');
+        return `${año}${mes}${dia}T${horas}${minutos}${segundos}`;
+    };
+
+    var nombreDocente = info.event.title;
+    var start = info.event.start ? info.event.start.toISOString().slice(0, 16).replace('T', ' ') : 'No especificada';
+    var end = info.event.end ? info.event.end.toISOString().slice(0, 16).replace('T', ' ') : 'No especificada';
+    var nombreMateria = info.event.extendedProps.nombreMateria;
+    var status = info.event.extendedProps.status;
+    var sup_hecha = info.event.extendedProps.sup_hecha;
+    var idAgenda = info.event.extendedProps.idAgenda;
+    var idSupervision = info.event.extendedProps.detalles;
+
+    print(info.event.extendedProps);
+
+    // Llenar el modal con la información extraída
+    $('#modalDocente').html(nombreDocente);
+    $('#modalStart').html(start);
+    $('#modalEnd').html(end);
+    $('#modalMateria').html(nombreMateria);
+    $('#modalEstatus').html(status);
+    $('#modalEstatus').removeClass();
+    $('#modalEstatus').addClass("text-" + (sup_hecha ? "success" : "warning"));
+    $('#div-num-expediente').attr("hidden", !sup_hecha);
+    $('#expediente').val(idSupervision);
+    $("#btnSupervisarDocente").html(sup_hecha ? "Ver resumen" : "Supervisar docente");
+    $("#btnSupervisarDocente").click(function () {
+        redireccionar("../supervision?id_agenda=" + idAgenda);
+    });
+    $("#btnEliminarSupervision").prop("hidden", !sup_hecha);
+    $("#btnEliminarSupervision").data("id-agenda", idAgenda);
+    var url = 'https://calendar.google.com/calendar/u/0/r/eventedit?' +
+            '&text=Supervisión a ' + encodeURIComponent(nombreDocente) +
+            '&dates=' + parsearFecha(info.event.start) + '/' + parsearFecha(info.event.end) +
+            '&details=' + encodeURIComponent("Supervision de " + nombreDocente + " en la materia '" + nombreMateria) + "'" +
+            '&location=' + encodeURIComponent("Plantel UNE " + $("#selectorPlantel").find('option:selected').text()) +
+            '&ctz=America/Mexico_City';
+    $('#btnAddToCalendar').attr('href', url);
+    $("#agregarGCalendar").attr("hidden", sup_hecha);
+    $("#eventModal").modal("show");
 }
 
 function actualizarAgenda(diaActual, detallesEvento, revertir) {
@@ -221,40 +290,71 @@ function actualizarAgenda(diaActual, detallesEvento, revertir) {
     }
 }
 
-function construirEventosSupervision(eventos) {
+function construirEventosSupervision(supervisiones, eventos) {
     function obtenerHorarioAgendado(detalles) {
-        const materias = detalles.materias;
+        const materias = detalles.materias || {}; // Asegurarse de que materias existe
         for (const materia in materias) {
             if (materias.hasOwnProperty(materia)) {
-                const horarios = materias[materia].horarios;
+                const horarios = materias[materia].horarios || [];
                 const horarioAgendado = horarios.find(horario => horario.es_horario_agendado);
                 if (horarioAgendado) {
                     return {"horario": horarioAgendado, "materia": materia};
                 }
             }
         }
-        return null; // Si no se encuentra ningún horario agendado
+        return null;
     }
 
     var listaEventos = [];
-    eventos.forEach(function (e) {
+
+    // Procesar las supervisiones
+    supervisiones.forEach(function (e) {
         const horarioAgendado = obtenerHorarioAgendado(e.detalles);
+        if (!horarioAgendado)
+            return;
         const fechaAgenda = new Date(e.detalles.fecha_agenda);
         const supervisionHecha = e.detalles.supervision_hecha;
-        //print(e);
+
+        const color = supervisionHecha ? 'green' : 'red';
+        const borderColor = supervisionHecha ? 'darkgreen' : 'darkred';
+        const textColor = 'white';
+
         listaEventos.push({
             title: e.nombre,
             start: `${fechaAgenda.toISOString().split('T')[0]}T${horarioAgendado.horario.hora_inicio}:00`,
-            end: `${fechaAgenda.toISOString().split('T')[0]}T${horarioAgendado.horario.hora_fin}:00`,
+            end: horarioAgendado.horario.hora_fin ? `${fechaAgenda.toISOString().split('T')[0]}T${horarioAgendado.horario.hora_fin}:00` : null,
             extendedProps: {
                 status: supervisionHecha ? "Supervisión realizada" : "Supervisión no realizada",
                 sup_hecha: supervisionHecha,
                 nombreMateria: horarioAgendado.materia,
                 idAgenda: e.detalles.id_agenda,
-                detalles: e
-            }
+                detalles: e,
+                tipo: tiposEventos.SUPERVISION
+            },
+            backgroundColor: color,
+            borderColor: borderColor,
+            textColor: textColor
         });
     });
+
+    eventos.forEach(function (e) {
+        const fechaInicio = getFechaHoraActual(new Date(e.fecha_hora_inicio));
+        const fechaFin = e.fecha_hora_fin ? getFechaHoraActual(new Date(e.fecha_hora_fin)) : null;
+        listaEventos.push({
+            title: e.nombre,
+            start: fechaInicio,
+            end: fechaFin,
+            extendedProps: {
+                lugar: e.lugar,
+                detalles: e,
+                tipo: tiposEventos.EVENTO
+            },
+            backgroundColor: 'blue',
+            borderColor: 'darkblue',
+            textColor: 'black'
+        });
+    });
+
     return listaEventos;
 }
 
@@ -443,4 +543,9 @@ function agendarSupervision(e) {
 
 function eliminarSupervision() {
     console.log($("#btnEliminarSupervision").data("id-agenda"));
+}
+
+function guardarEvento(e) {
+    e.preventDefault();
+    crearPeticion(urlAPI, {case: "guardar_evento", data: $(this).serialize()});
 }

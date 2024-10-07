@@ -57,6 +57,97 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="modal fade" id="agregarEventoModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form id="agregarEventoForm">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="eventModalLabel">Agregar Evento</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label for="nombreEvento" class="form-label">Nombre del Evento</label>
+                                        <input type="text" class="form-control" id="nombreEvento" name="nombreEvento" placeholder="Ingrese el nombre del evento" required>
+                                    </div>
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="checkbox" id="eventoUnDia" name="eventoUnDia" checked="">
+                                        <label class="form-check-label" for="eventoUnDia">Evento de un solo día</label>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="fechaHoraInicioEvento" class="form-label">Fecha y Hora de Inicio</label>
+                                        <input type="datetime-local" class="form-control" id="fechaHoraInicioEvento" name="fechaHoraInicioEvento" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="fechaHoraFinEvento" class="form-label">Fecha y Hora de Fin</label>
+                                        <input type="datetime-local" class="form-control" id="fechaHoraFinEvento" name="fechaHoraFinEvento" disabled="">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="lugar" class="form-label">Lugar</label>
+                                        <input type="text" class="form-control" id="lugar" name="lugar" placeholder="Ingrese el lugar del evento" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="detalles" class="form-label">Detalles</label>
+                                        <textarea class="form-control" id="detalles" name="detalles" rows="3" placeholder="Ingrese detalles del evento"></textarea>
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                    <button type="submit" class="btn btn-primary">Agregar Evento</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Modal para visualizar y editar la información del evento -->
+                <div class="modal fade" id="visualizarEventoModal" tabindex="-1" aria-labelledby="visualizarModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="visualizarModalLabel">Detalles del Evento</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <input type="hidden" id="idEvento">
+                                <div class="mb-3">
+                                    <label for="nombreEventoEdit" class="form-label">Nombre del Evento</label>
+                                    <input type="text" class="form-control" id="nombreEventoEdit" onChange="actualizarEvento(event)" placeholder="Ingrese el nombre del evento" data-nombre-campo="nombre">
+                                </div>
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="eventoUnDiaEdit" >
+                                    <label class="form-check-label" for="eventoUnDiaEdit">Evento de un solo día</label>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="fechaHoraInicioEdit" class="form-label">Fecha y Hora de Inicio</label>
+                                    <input type="datetime-local" class="form-control" id="fechaHoraInicioEdit" onChange="actualizarEvento(event)" data-nombre-campo="fecha_hora_inicio">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="fechaHoraFinEdit" class="form-label">Fecha y Hora de Fin</label>
+                                    <input type="datetime-local" class="form-control" id="fechaHoraFinEdit" onChange="actualizarEvento(event)" data-nombre-campo="fecha_hora_fin">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="lugarEdit" class="form-label">Lugar</label>
+                                    <input type="text" class="form-control" id="lugarEdit" onChange="actualizarEvento(event)" placeholder="Ingrese el lugar del evento" data-nombre-campo="lugar">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="detallesEdit" class="form-label">Detalles</label>
+                                    <textarea class="form-control" id="detallesEdit" rows="3" onChange="actualizarEvento(event)" placeholder="Ingrese detalles del evento" data-nombre-campo="detalles"></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                <button type="button" class="btn btn-outline-danger" id="btnEliminarEvento"><i class="ti ti-trash"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
                 <!-- Modal detalles de supervision-->
                 <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -130,6 +221,8 @@
                         </div>
                     </div>
                 </div>
+
+
 
             </div>
         </div>

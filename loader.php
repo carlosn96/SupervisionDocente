@@ -93,6 +93,10 @@ class Util {
     public static function iniciar_api($nombre) {
         (new $nombre($_POST["case"], isset($_POST["data"]) ? $_POST["data"] : ""));
     }
+
+    public static function convertToMySQLDateTime($dateString) {
+        return empty($dateString) ? null : (new DateTime($dateString))->format('Y-m-d H:i:s');
+    }
 }
 
 define("NO_API_KEY", Util::enum("No se ha establecido el API KEY", true));
