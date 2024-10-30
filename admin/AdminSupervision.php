@@ -14,19 +14,19 @@ class AdminSupervision {
     public function actualizar_supervision($campo, $valor, $id_agenda) {
         return $this->dao->actualizar_supervision($campo, $valor, $id_agenda);
     }
-    
+
     public function actualizar_fecha_hora($fecha, $id_agenda) {
         return $this->dao->actualizar_supervision("fecha", $fecha, $id_agenda);
     }
-    
+
     public function actualizar_fecha_agenda($fecha, $id_agenda) {
         return $this->dao->actualizar_supervision("fecha", $fecha, $id_agenda, "supervision_agenda");
     }
-    
+
     public function actualizar_cumplimiento_criterio_contable($id_supervision, $id_criterio, $es_criterio_cumplido, $tipo) {
         return $this->dao->actualizar_cumplimiento_criterio_contable($id_supervision, $id_criterio, $es_criterio_cumplido, $tipo);
     }
-    
+
     public function actualizar_comentario_criterio_contable($id_supervision, $id_criterio, $comentario, $tipo) {
         return $this->dao->actualizar_comentario_criterio_contable($id_supervision, $id_criterio, $comentario, $tipo);
     }
@@ -168,5 +168,9 @@ class AdminSupervision {
 
     function recuperar_id_agenda_por_id_supervision($id_supervision) {
         return $this->dao->recuperar_id_agenda_por_id_supervision($id_supervision);
+    }
+
+    function recuperar_supervisiones($plantel, $carrera) {
+        return $this->dao->recuperar_supervisiones($plantel, $carrera);
     }
 }

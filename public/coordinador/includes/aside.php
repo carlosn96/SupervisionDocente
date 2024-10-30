@@ -66,6 +66,18 @@
                 </li>
                 <li class="sidebar-item">
                     <a
+                        class="sidebar-link sidebar-link primary-hover-bg"
+                        href="../informe/"
+                        aria-expanded="false"
+                        >
+                        <span class="aside-icon p-2 bg-light-primary rounded-3">
+                            <i class="ti ti-chart-bar fs-7 text-primary"></i>
+                        </span>
+                        <span class="hide-menu ms-2 ps-1">Informe</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a
                         class="sidebar-link sidebar-link danger-hover-bg"
                         href="#"
                         onclick="cerrarSesion()"

@@ -421,8 +421,6 @@ function removerAccentos(str) {
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
-
-
 function getRootUrl() {
     return `${window.location.protocol}//${window.location.host}/SupervisionDocente/`;
 }

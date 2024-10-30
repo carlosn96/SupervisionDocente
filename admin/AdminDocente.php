@@ -74,4 +74,8 @@ class AdminDocente {
     public function obtener_horario($tipo, $id, $carrera, $plantel) {
         return $this->dao->obtener_horario($tipo, $id, $carrera, $plantel);
     }
+    
+    public function consultar_disponibilidad($dia, $hora, $carrera, $plantel) {
+        return $this->dao->consultar_disponibilidad($dia, $hora, $carrera, $plantel);
+    }
 }

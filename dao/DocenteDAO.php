@@ -29,6 +29,14 @@ class DocenteDAO extends DAO {
         return $this->ejecutar_instruccion_prep_result($instruccion, $args);
     }
 
+    public function consultar_disponibilidad($dia, $hora, $carrera, $plantel) {
+        $where_hora = empty($hora) ? "" : "AND hora_inicio = '$hora'";
+        $instruccion = "SELECT * FROM consultar_horario WHERE dia_semana = '$dia' "
+                . " $where_hora AND id_carrera = $carrera AND id_plantel = $plantel";
+        
+        return ($rs = $this->ejecutar_instruccion($instruccion)->fetch_all(MYSQLI_ASSOC)) ? $rs : [];
+    }
+
     public function obtener_docentes_materias($id_carrera, $id_plantel) {
         return $this->listar_docente_materias_horarios(" id_carrera = $id_carrera AND id_plantel = $id_plantel");
     }

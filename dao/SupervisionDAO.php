@@ -156,13 +156,22 @@ class SupervisionDAO extends DAO {
     }
 
     public function actualizar_cumplimiento_criterio_contable($id_supervision, $id_criterio, $es_criterio_cumplido, $tipo) {
-        $tabla = "supervision_realizada_".$tipo."_detalles";
+        $tabla = "supervision_realizada_" . $tipo . "_detalles";
         $instruccion = "UPDATE $tabla SET criterio_cumplido = $es_criterio_cumplido WHERE id_supervision = $id_supervision AND id_criterio = $id_criterio";
         return $this->ejecutar_instruccion($instruccion);
     }
+
     public function actualizar_comentario_criterio_contable($id_supervision, $id_criterio, $comentario, $tipo) {
-        $tabla = "supervision_realizada_".$tipo."_detalles";
+        $tabla = "supervision_realizada_" . $tipo . "_detalles";
         $instruccion = "UPDATE $tabla SET comentario = '$comentario' WHERE id_supervision = $id_supervision AND id_criterio = $id_criterio";
         return $this->ejecutar_instruccion($instruccion);
+    }
+
+    public function recuperar_supervisiones($plantel, $carrera) {
+        $sql = "SELECT * FROM consultar_informe WHERE id_plantel = ? AND id_carrera = ?";
+        $args = new PreparedStatmentArgs;
+        $args->add("i", $plantel);
+        $args->add("i", $carrera);
+        return $this->ejecutar_instruccion_prep_result($sql, $args);
     }
 }
