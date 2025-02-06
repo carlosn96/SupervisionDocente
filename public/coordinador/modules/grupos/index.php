@@ -38,11 +38,22 @@
                                         </label>
                                     </div>
 
+                                    <!--                                    <div class="form-floating mb-3">
+                                                                            <input type="text" class="form-control border border-primary" id="seudonimo" name="seudonimo" placeholder="Seudónimo">
+                                                                            <label for="seudonimo">
+                                                                                <i class="ti ti-user-bolt me-2 fs-4 text-primary"></i>
+                                                                                Seudónimo (Opcional)
+                                                                            </label>
+                                                                        </div>-->
+
+                                    <!-- Selector para el grado -->
                                     <div class="form-floating mb-3">
-                                        <input type="text" class="form-control border border-primary" id="seudonimo" name="seudonimo" placeholder="Seudónimo">
-                                        <label for="seudonimo">
-                                            <i class="ti ti-user-bolt me-2 fs-4 text-primary"></i>
-                                            Seudónimo (Opcional)
+                                        <select class="form-select border border-primary" id="grado_actual" name="grado_actual" required>
+                                            <option value="" selected disabled>Selecciona un grado</option>
+                                        </select>
+                                        <label for="grado_actual">
+                                            <i class="ti ti-graph me-2 fs-4 text-primary"></i>
+                                            Grado actual
                                         </label>
                                     </div>
 
