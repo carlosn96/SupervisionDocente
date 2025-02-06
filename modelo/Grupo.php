@@ -9,15 +9,25 @@ class Grupo {
     private $plantel;
     private $seudonimo;
     private $turno;
+    private $grado;
     private $id;
 
-    public function __construct($clave, $carrera, $plantel, $seudonimo, $turno, $id = "") {
+    public function __construct($clave, $carrera, $plantel, $seudonimo, $turno, $grado, $id = "") {
         $this->clave = $clave;
         $this->carrera = $carrera;
         $this->plantel = $plantel;
         $this->seudonimo = $seudonimo;
         $this->turno = $turno;
+        $this->grado = $grado;
         $this->id = $id;
+    }
+
+    public function getGrado() {
+        return $this->grado;
+    }
+
+    public function setGrado($grado): void {
+        $this->grado = $grado;
     }
 
     public function getPlantel() {
@@ -27,7 +37,7 @@ class Grupo {
     public function setPlantel($plantel): void {
         $this->plantel = $plantel;
     }
-    
+
     public function getTurno() {
         return $this->turno;
     }
