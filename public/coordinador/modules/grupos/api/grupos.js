@@ -59,10 +59,15 @@ function ready() {
         });
     });
 
-    crearPeticion(urlAPI, {case: "recuperar_turnos_grupos"}, (turnos) => {
-        turnos.forEach((turno) => {
+    crearPeticion(urlAPI, {case: "recuperar_turnos_grupos"}, (rs) => {
+        rs.turnos.forEach((turno) => {
             crearOpcionSelector($("#turno"), turno, turno);
             crearOpcionSelector($("#turno-modal"), turno, turno);
+        });
+        //print(rs.grados);
+        rs.grados.forEach((grado) => {
+            crearOpcionSelector($("#grado_actual"), grado.id_grado, grado.grado);
+            //crearOpcionSelector($("#turno-modal"), turno, turno);
         });
     }, "json");
 }
