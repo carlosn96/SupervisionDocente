@@ -2,18 +2,6 @@
 const urlAPI = "api/DocenteAPI.php";
 
 function ready() {
-    crearPeticion(urlAPI, {case: "recuperar_detalles_docente"}, (rs) => {
-        print(rs);
-        const key = Object.keys(rs);
-        const docente = rs[key];
-        $("#perfil").text(docente.perfil_profesional);
-        $("#nombre").text(key);
-        $("#correo").text(docente.correo_electronico);
-        print(docente.id_docente);
-        $("#id_docente").val(docente.id_docente);
-        crearTablaMaterias(docente.materias);
-    }, "json");
-
     recuperarCarreras(() => {
         const data = $.param({
             carrera: $("#selectorCarrera").val(),
@@ -22,6 +10,7 @@ function ready() {
         crearPeticion(urlAPI, {case: "recuperar_grupos", data: data}, (grupos) => {
             const selector = $("#grupoMateria");
             selector.empty();
+            crearOpcionSelector(selector, "", "Elige un grupo");
             if (grupos.length) {
                 grupos.forEach((grupo) => {
                     const text = grupo.clave + " (" + grupo.seudonimo + ")";
@@ -34,7 +23,37 @@ function ready() {
         }, "json");
     });
 
-    // Agregar nueva línea de horario
+    crearPeticion(urlAPI, {case: "recuperar_detalles_docente"}, (rs) => {
+//        print(rs);
+        const key = Object.keys(rs);
+        const docente = rs[key];
+        $("#perfil").text(docente.perfil_profesional);
+        $("#nombre").text(key);
+        $("#correo").text(docente.correo_electronico);
+        $("#id_docente").val(docente.id_docente);
+        crearTablaMaterias(docente.materias);
+    }, "json");
+
+    ajustarEventosAsignacionMaterias();
+}
+
+
+function ajustarEventosAsignacionMaterias() {
+    $("#grupoMateria").change(function () {
+        const value = $(this).val();
+        if (value.length) {
+            const data = $.param({
+                carrera: $("#selectorCarrera").val(),
+                plantel: $("#selectorPlantel").val(),
+                grupo: value
+            });
+            crearPeticion(urlAPI, {case: "obtener_horarios", data: data}, (res) => {
+                print(res);
+            });
+        }
+    });
+
+
     $('#agregarHorarioBtn').click(function () {
         // Create a new horario-item and append it to #horarioContainer
         var newHorarioItem = `
@@ -64,12 +83,11 @@ function ready() {
         $('#horarioContainer').append(newHorarioItem);
     });
 
-    // Eliminar una línea de horario
+
     $(document).on('click', '.remove-horario', function () {
         $(this).closest('.horario-item').remove();
     });
 
-    // Validar hora de término y colisiones
     $(document).on('change', 'input[name="horaFin[]"], input[name="horaInicio[]"], select[name="diaSemana[]"]', function () {
         const $horarioItem = $(this).closest('.horario-item');
         const horaInicio = $horarioItem.find('input[name="horaInicio[]"]').val();

@@ -21,7 +21,7 @@ $(document).ready(function () {
         }
 
         // Si la matrícula tiene un valor válido (sin espacios), realizar la llamada a la API
-        crearPeticion(urlAPI, { case: "verificar_matricula_existe", data: "matricula=" + value }, (res) => {
+        crearPeticion(urlAPI, {case: "verificar_matricula_existe", data: "matricula=" + value}, (res) => {
             print(res); // Asegúrate de que 'print' sea una función válida para mostrar resultados
 
             // Si hay un error con la matrícula (ya existe o cualquier otro error)
@@ -37,10 +37,10 @@ $(document).ready(function () {
         }, "JSON");
     });
 
-    $.validator.addMethod("noSpaces", function(value, element) {
+    $.validator.addMethod("noSpaces", function (value, element) {
         return this.optional(element) || !/\s/.test(value); // Verifica que no haya espacios
     }, "No se permiten espacios.");
-    
+
     $("#registroForm").validate({
         rules: {
             contrasenia: {
@@ -70,22 +70,26 @@ $(document).ready(function () {
             }
         }
     });
-    
-    $("#btnSubmit").click(function(e) {
-        // Prevenir el envío si la validación falla
-        if (!$("#registroForm").valid()) {
-            e.preventDefault(); // Prevenir el envío del formulario si no es válido
-            return false; // Asegurarse de que no se haga nada más
+
+    $("#registroForm").submit(function (e) {
+        e.preventDefault();
+        const $spinner = $("#spinner");
+        const $btnSubmit = $("#btnSubmit");
+        const $form = $(this);
+        e.preventDefault();
+        $spinner.removeAttr("hidden");
+        $btnSubmit.prop("disabled", true);
+        if ($form.valid()) {
+            crearPeticion(urlAPI, {case: "pre_registro", data: $form.serialize()}, function (res) {
+                $spinner.attr("hidden", true);
+                $btnSubmit.prop("disabled", false);
+                if (res.status === true) {
+                    redireccionar("../registroVerificarCorreo");
+                } else {
+                    mostrarMensajeError(res.info, false);
+                }
+            }, "json");
         }
-        enviarFormulario("#registroForm", urlAPI, "registro_temporal", function(res) {
-            if (res.es_valor_error) {
-                mostrarMensajeError(res.mensaje, false);
-            } else {
-                redireccionar("../registroVerificarCorreo");
-            }
-        });
     });
-
-
 });
 

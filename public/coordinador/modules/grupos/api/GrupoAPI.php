@@ -3,9 +3,17 @@
 include_once '../../../../../loader.php';
 
 class GrupoAPI extends API {
-
+    
+    public function recuperar_turnos_grupos() {
+        $this->enviar_respuesta((new AdminGrupo())->recuperar_turnos());
+    }
+    
     public function crear_grupo() {
         $this->enviar_resultado_operacion((new AdminGrupo)->crear_grupo($this->data));
+    }
+    
+    public function actualizar_grupo() {
+        $this->enviar_resultado_operacion((new AdminGrupo)->actualizar_grupo($this->data));
     }
     
     public function recuperar_grupos() {

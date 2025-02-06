@@ -120,7 +120,8 @@ function refresh() {
     location.reload();
 }
 
-function crearBotonMenuDesplegable(title, enlaces, color) {
+function crearBotonMenuDesplegable(title, enlaces, color, clase = "") {
+    let classbtn = (clase.length === 0 ? "btn btn-round btn-sm btn-outline-" + color + " dropdown-toggle" : clase);
     var links = "";
     enlaces.forEach(function (link) {
         if (link.button) {
@@ -130,7 +131,7 @@ function crearBotonMenuDesplegable(title, enlaces, color) {
         }
     });
     return "<div class='btn-group'>" +
-            "<button id='group' type='button' class='btn btn-round btn-sm btn-outline-" + color + " dropdown-toggle' data-bs-toggle='dropdown' aria-expanded='false'>" +
+            "<button id='group' type='button' class='" + classbtn + "' data-bs-toggle='dropdown' aria-expanded='false'>" +
             title +
             "</button>" +
             "<ul class='dropdown-menu'>" +

@@ -30,6 +30,10 @@
                                     <label for="nombre" class="form-label">Nombre</label>
                                     <input type="text" class="form-control" id="nombre" name="nombre" required="">
                                 </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Turnos</label>
+                                    <div id="turnosContainer"></div>
+                                </div>
                                 <button type="submit" class="btn btn-outline-primary">Guardar</button>
                             </form>
                         </div>

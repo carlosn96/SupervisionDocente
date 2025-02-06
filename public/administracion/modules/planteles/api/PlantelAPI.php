@@ -12,13 +12,13 @@ class PlantelAPI extends API {
         $this->enviar_resultado_operacion($this->get_admin()->agregar($this->data["nombre"]));
     }
 
-    function listar() {
-        $this->enviar_respuesta($this->get_admin()->recuperar_listado());
+    function recuperar_campos() {
+        $this->enviar_respuesta(["planteles" => $this->get_admin()->recuperar_listado(), "horarios" => (new AdminHorario)->get_bloques_horarios()]);
     }
 
     function editar_plantel() {
-        $plantel = new Plantel($this->data["nombrePlantel"], 
-                $this->data["directorPlantel"], 
+        $plantel = new Plantel($this->data["nombrePlantel"],
+                $this->data["directorPlantel"],
                 $this->data["idPlantel"]);
         $this->enviar_resultado_operacion($this->get_admin()->editar($plantel));
     }
@@ -26,7 +26,6 @@ class PlantelAPI extends API {
     function eliminar() {
         $this->enviar_resultado_operacion($this->get_admin()->eliminar($this->data["id"]));
     }
-
 }
 
 Util::iniciar_api("PlantelAPI");

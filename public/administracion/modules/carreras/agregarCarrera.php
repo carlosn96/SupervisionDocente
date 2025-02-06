@@ -25,30 +25,30 @@
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title fw-semibold mb-4">Nueva carrera</h5>
-                                <div class="card" id="cardCarrera">
-                                    <div class="card-body">
-                                        <form id="carreraForm">
-                                            <div class="mb-3 has-validation">
-                                                <label for="nombre" class="form-label">Nombre</label>
-                                                <input type="text" class="form-control" id="nombre" name="nombre" required="">
-                                                <div class="invalid-feedback">
-                                                    Esta carrera ya ha sido agregada.
-                                                </div>
+                                <div id="cardCarrera">
 
+                                    <form id="carreraForm">
+                                        <div class="mb-3 has-validation">
+                                            <label for="nombre" class="form-label">Nombre</label>
+                                            <input type="text" class="form-control" id="nombre" name="nombre" required="">
+                                            <div class="invalid-feedback">
+                                                Esta carrera ya ha sido agregada.
                                             </div>
-                                            <div class="mb-3">
-                                                <label for="nombre" class="form-label">Tipo de carrera</label>
-                                                <select name="tipo" class="form-select" id="grupoTipos" required=""></select>
-                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="nombre" class="form-label">Tipo de carrera</label>
+                                            <select name="tipo" class="form-select" id="grupoTipos" required=""></select>
+                                        </div>
 
-                                            <div class="mb-3">
-                                                <label class="form-label">Planteles en donde se oferta:</label>
-                                                <div id="grupoPlanteles">
-                                                </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Planteles en donde se oferta:</label>
+                                            <div id="grupoPlanteles">
                                             </div>
-                                            <button type="submit" class="btn btn-outline-primary">Guardar</button>
-                                        </form>
-                                    </div>
+                                        </div>
+                                        
+                                        <button type="submit" class="btn btn-outline-primary">Guardar</button>
+                                    </form>
+
                                 </div>
                             </div>
                         </div>

@@ -8,14 +8,18 @@ class Grupo {
     private $carrera;
     private $plantel;
     private $seudonimo;
+    private $turno;
+    private $id;
 
-    public function __construct($clave, $carrera, $plantel, $seudonimo = "") {
+    public function __construct($clave, $carrera, $plantel, $seudonimo, $turno, $id = "") {
         $this->clave = $clave;
         $this->carrera = $carrera;
         $this->plantel = $plantel;
         $this->seudonimo = $seudonimo;
+        $this->turno = $turno;
+        $this->id = $id;
     }
-    
+
     public function getPlantel() {
         return $this->plantel;
     }
@@ -23,8 +27,15 @@ class Grupo {
     public function setPlantel($plantel): void {
         $this->plantel = $plantel;
     }
-
     
+    public function getTurno() {
+        return $this->turno;
+    }
+
+    public function setTurno($turno): void {
+        $this->turno = $turno;
+    }
+
     public function getClave() {
         return $this->clave;
     }

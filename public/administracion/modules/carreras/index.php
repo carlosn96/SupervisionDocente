@@ -48,18 +48,23 @@
                     <div class="modal-body">
                         <form id="formEditarCarrera">
                             <input type="hidden" id="id_carrera" name="id_carrera">
+
                             <div class="mb-3">
                                 <label for="nombre" class="form-label">Nombre</label>
                                 <input name="nombre" type="text" class="form-control" id="nombre" required>
                             </div>
+
                             <div class="mb-3">
                                 <label for="grupoTipos" class="form-label">Tipo</label>
-                                <select name="tipo" class="form-select" id="grupoTipos" required=""></select>
+                                <select name="tipo" class="form-select" id="grupoTipos" required="">
+                                </select>
                             </div>
+
                             <div class="mb-3">
                                 <label for="coordinadorCarrera" class="form-label">Coordinador</label>
                                 <select name="id_coordinador" class="form-select" id="grupoCoordinadoresCarrera" required=""></select>
                             </div>
+
                             <div class="mb-3">
                                 <label class="form-label">Planteles en donde se oferta:</label>
                                 <div id="grupoPlanteles">

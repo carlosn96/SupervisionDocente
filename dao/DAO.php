@@ -59,7 +59,7 @@ class DAO {
 
     protected function extraer_id_tupla($nombreID, $campoBusqueda, $valorCampoBusqueda, $tabla) {
         $rset = $this->ejecutar_instruccion("SELECT $nombreID FROM $tabla WHERE $campoBusqueda = $valorCampoBusqueda")
-                        ->fetch_row();
+                ->fetch_row();
         return $rset ? $rset[0] : 0;
     }
 
@@ -143,5 +143,24 @@ class DAO {
         //var_dump($instruccion);
         return $this->ejecutar_instruccion_preparada($instruccion, $args);
         // return $$this->ejecutarInstruccion($instruccion);
+    }
+
+    protected function get_anum_values($table, $column): array {
+        $enums = [];
+        $sql = "SELECT COLUMN_TYPE 
+            FROM INFORMATION_SCHEMA.COLUMNS 
+            WHERE TABLE_NAME = ? AND COLUMN_NAME = ? AND TABLE_SCHEMA = DATABASE()";
+        $stmt = $this->preparar_instruccion($sql);
+        $stmt->bind_param("ss", $table, $column);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $enum_values = $row['COLUMN_TYPE'];
+            preg_match_all("/'([^']+)'/", $enum_values, $matches);
+            $enums = $matches[1];
+            $stmt->close();
+        }
+        return $enums;
     }
 }

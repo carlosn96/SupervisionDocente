@@ -73,7 +73,7 @@
                                             Iniciar sesión
                                         </button>
                                         <div class="text-center mt-3">
-                                            <p class="mb-0">¿No tienes cuenta? <a class="text-primary fw-bold" href="../registro">Crear cuenta nueva</a></p>
+                                            <p class="mb-0">¿No tienes cuenta? <a class="text-primary fw-bold" href="../alumno/modules/registro">Crear cuenta nueva</a></p>
                                         </div>
                                     </form>
                                 </div>

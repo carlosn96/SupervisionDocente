@@ -4,16 +4,22 @@ include_once '../../../../../loader.php';
 
 class CarreraAPI extends API {
 
-    function recuperar_campos_formulario() {
-        $this->enviar_respuesta([
+    private function get_campos_comunes_carrera($campos_adicionales = []) {
+        $this->enviar_respuesta(array_merge([
             "grupoPlanteles" => (new AdminPlantel())->recuperar_listado(),
             "grupoTipos" => (new AdminCarrera())->recuperar_tipos_carrera(),
-            "grupoCoordinadoresCarrera" => (new AdminCoordinador())->listar()
-        ]);
+                        ], $campos_adicionales));
     }
 
-    function recuperar_listado() {
-        $this->enviar_respuesta((new AdminCarrera())->recuperar_listado_detallado());
+    function recuperar_campos_formulario_nueva_carrera() {
+        $this->get_campos_comunes_carrera();
+    }
+
+    function recuperar_campos_formulario_listado() {
+        $this->get_campos_comunes_carrera([
+            "grupoCoordinadoresCarrera" => $this->listar_coordinadores(),
+            "listado_detallado" => $this->listar_carreras()
+        ]);
     }
 
     function guardar() {
@@ -39,6 +45,26 @@ class CarreraAPI extends API {
         return $this->enviar_resultado_operacion((new AdminCarrera)->actualizar($this->data));
     }
 
+    private function listar_coordinadores() {
+        $coordinadores = [];
+        foreach ((new AdminCoordinador())->listar() as $coordinador) {
+            $coordinadores[] = [
+                "id" => $coordinador["id_coordinador"],
+                "nombre" => $coordinador["nombre"] . " " . $coordinador["apellidos"]
+            ];
+        }
+        return $coordinadores;
+    }
+
+    private function listar_carreras() {
+        $carreras = (new AdminCarrera())->recuperar_listado_detallado();
+        foreach ($carreras as &$carrera) {
+            if ($carrera["coordinador"] !== "No asignado") {
+                unset($carrera["coordinador"]["avatar"]);
+            }
+        }
+        return $carreras;
+    }
 }
 
 Util::iniciar_api("CarreraAPI");

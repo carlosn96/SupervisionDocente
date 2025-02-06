@@ -1,6 +1,6 @@
 let apiURL = "api/CarreraAPI.php";
 
-$(document).ready(function () {
+function ready() {
     recuperarCampos();
     $("#carreraForm").submit(function (e) {
         e.preventDefault();
@@ -20,10 +20,10 @@ $(document).ready(function () {
             }
         });
     });
-});
+}
 
 function recuperarCampos() {
-    crearPeticion(apiURL, {case: "recuperar_campos_formulario"}, function (res) {
+    crearPeticion(apiURL, {case: "recuperar_campos_formulario_nueva_carrera"}, function (res) {
         let rs = JSON.parse(res);
         if (rs.grupoPlanteles.length > 0) {
             crearCheckboxes("grupoPlanteles", rs.grupoPlanteles, "planteles", "int");
@@ -36,5 +36,3 @@ function recuperarCampos() {
         }
     });
 }
-
-

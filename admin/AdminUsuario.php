@@ -8,13 +8,21 @@ class AdminUsuario {
         $this->dao = new UsuarioDAO();
     }
 
-    public function existe_correo($correo) {
-        return $this->buscar_por_correo($correo) !== null;
+    private function buscar_usuario($clave, $tipo_busqueda) {
+        $usuario = $this->dao->recuperar_usuario($clave, $tipo_busqueda);
+        return $usuario !== null ? $this->construir_usuario($usuario) : null;
+    }
+
+    public function buscar_por_matricula($matricula): ?Usuario {
+        return $this->buscar_usuario($matricula, UsuarioDAO::TIPO_BUSQUEDA_MATRICULA);
     }
 
     public function buscar_por_correo($correo): ?Usuario {
-        $usuario = $this->dao->recuperar_por_correo($correo);
-        return $usuario !== null ? $this->construir_usuario($usuario) : null;
+        return $this->buscar_usuario($correo, UsuarioDAO::TIPO_BUSQUEDA_CORREO);
+    }
+
+    public function existe_matricula($matricula) {
+        return $this->buscar_por_matricula($matricula) !== null;
     }
 
     private function construir_administrador(array $tupla) {
@@ -91,5 +99,4 @@ class AdminUsuario {
     public function actualizar_info_personal($data, $id_usuario) {
         return $this->dao->actualizar_info_personal($data, $id_usuario);
     }
-
 }

@@ -5,6 +5,14 @@ class UsuarioDAO extends DAO {
     private const NOMBRE_TABLA = "usuario";
     private const INSERTA_NUEVO = "INSERT INTO " . self::NOMBRE_TABLA . " (tipo_usuario, nombre, apellidos, correo_electronico, contrasenia, avatar) values (?, ?, ?, ?, ?, ?)";
     private const BUSCAR_POR_CORREO = "SELECT * FROM " . self::NOMBRE_TABLA . " WHERE correo_electronico = ?";
+    private const BUSCAR_POR_MATRICULA = "SELECT * FROM alumno WHERE matricula = ?";
+    public const TIPO_BUSQUEDA_MATRICULA = "matricula";
+    public const TIPO_BUSQUEDA_CORREO = "correo";
+    private const TIPO_BUSQUEDA_ID = "id";
+    private const CONSULTAS_BUSQUEDA = [
+        self::TIPO_BUSQUEDA_CORREO => self::BUSCAR_POR_CORREO,
+        self::TIPO_BUSQUEDA_MATRICULA => self::BUSCAR_POR_MATRICULA
+    ];
     private const ACTUALIZAR_CORREO = "UPDATE " . self::NOMBRE_TABLA . " SET correo_electronico = ? WHERE id_usuario = ?";
     private const ACTUALIZAR_CONTRASENIA = "UPDATE " . self::NOMBRE_TABLA . " SET contrasenia = ? WHERE id_usuario = ?";
     private const ACTUALIZAR_FOTO_PERFIL = "UPDATE " . self::NOMBRE_TABLA . " SET avatar = ? WHERE id_usuario = ?";
@@ -24,11 +32,15 @@ class UsuarioDAO extends DAO {
         return false;
     }
 
-    public function recuperar_por_correo(string $correo) {
+    private function recuperar_por_identificador(string $identificador, string $tipo) {
         $args = new PreparedStatmentArgs();
-        $args->add("s", $correo);
-        $res = $this->ejecutar_instruccion_prep_result(self::BUSCAR_POR_CORREO, $args);
+        $args->add("s", $identificador);
+        $res = $this->ejecutar_instruccion_prep_result(self::CONSULTAS_BUSQUEDA[$tipo], $args);
         return count($res) ? $res[0] : null;
+    }
+    
+    public function recuperar_usuario($identificador, string $tipo_busqueda) {
+        return $this->recuperar_por_identificador($identificador, $tipo_busqueda);
     }
 
     public function actualizar_correo(Usuario $usuario, $correo) {
@@ -62,5 +74,4 @@ class UsuarioDAO extends DAO {
         $sql .= " WHERE id_usuario = $id_usuario";
         return $this->ejecutar_instruccion($sql);
     }
-
 }

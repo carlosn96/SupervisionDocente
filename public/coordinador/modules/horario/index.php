@@ -47,8 +47,8 @@
                                                         <label class="btn btn-outline-primary" for="profesor">Horario por grupo</label>
                                                         <input value="profesor" type="radio" class="btn-check" name="tipoHorario" id="grupo" autocomplete="off">
                                                         <label class="btn btn-outline-primary button" for="grupo">Horario por profesor</label>
-                                                        <input value="materia" type="radio" class="btn-check" name="tipoHorario" id="materia" autocomplete="off">
-                                                        <label class="btn btn-outline-primary button" for="materia">Horario por materia</label>
+<!--                                                        <input value="materia" type="radio" class="btn-check" name="tipoHorario" id="materia" autocomplete="off">
+                                                        <label class="btn btn-outline-primary button" for="materia">Horario por materia</label>-->
                                                     </div>
                                                 </div>
                                                 <div id="tabla" class="row">

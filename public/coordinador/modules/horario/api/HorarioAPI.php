@@ -7,6 +7,24 @@ class HorarioAPI extends API {
     private const GRUPO = "Grupo";
     private const DOCENTE = "Docente";
     private const MATERIA = "Materia";
+    private const DURACION_BLOQUE_VESPERTINO = 40 * 60; //40 minutos
+    private const DURACION_BLOQUE_MATUTINO = 60 * 60; //60 minutos, 1 h
+    private const DURACION_DESCANSO_BLOQUE_MATUTINO = 30 * 60; //30 minutos
+    
+    const TURNOS_CONFIG = [
+        "Matutino" => [
+            'inicio' => '07:00',
+            'fin' => '14:30',
+            'duracion_bloque' => self::DURACION_BLOQUE_MATUTINO,
+            'descanso_inicio' => '10:00',
+            'descanso_duracion' => self::DURACION_DESCANSO_BLOQUE_MATUTINO
+        ],
+        "Vespertino" => [
+            'inicio' => '17:55',
+            'fin' => '21:55',
+            'duracion_bloque' => self::DURACION_BLOQUE_VESPERTINO
+        ]
+    ];
 
     function obtener_lista_elementos() {
         $tipo = $this->data["tipoHorario"];
@@ -59,17 +77,18 @@ class HorarioAPI extends API {
             $carrera = $this->data["carrera"];
             $plantel = $this->data["plantel"];
             $ciclo = $this->data["ciclo"];
-            //$id = $this->data["idGrupo"];
             $id = $this->data["id"];
             $tipo = $this->data["tipo"];
             $rs = (new AdminDocente())->obtener_horario($tipo, $id, $carrera, $plantel, $ciclo);
             $horario = [
+                "bloques" => $tipo === self::GRUPO ? $this->get_bloques_grupo($id) : $this->get_bloques_docente(),
                 "tipo" => $tipo,
                 "id" => $id,
                 "horario" => $rs,
                 $tipo => $rs[0][strtolower($tipo)]
             ];
             Sesion::setInfoTemporal("horario", $horario);
+            Sesion::setInfoTemporal("plantel", (new AdminPlantel())->recuperar_plantel_id($plantel));
             $this->enviar_respuesta(OPERACION_COMPLETA);
         } catch (Exception $e) {
             $this->enviar_respuesta(Util::enum($e->getMessage(), true));
@@ -85,6 +104,37 @@ class HorarioAPI extends API {
         $this->enviar_respuesta(
                 (new AdminDocente())->consultar_disponibilidad($dia, $hora, $carrera, $plantel, $ciclo)
         );
+    }
+
+    private function get_bloques_grupo($id) {
+        $turno = (new AdminGrupo())->recuperar_turno_grupo($id);
+        if (isset(self::TURNOS_CONFIG[$turno])) {
+            $config = self::TURNOS_CONFIG[$turno];
+            return $this->generar_bloques(
+                            $config['inicio'],
+                            $config['fin'],
+                            $config['duracion_bloque'],
+                            $config['descanso_inicio'] ?? null,
+                            $config['descanso_duracion'] ?? 0
+            );
+        }
+        return [];
+    }
+
+    function generar_bloques($inicio, $fin, $duracion, $descanso_inicio = null, $descanso_duracion = 0) {
+        $bloques = [];
+        $hora_inicio = strtotime($inicio);
+        $hora_fin = strtotime($fin);
+        while ($hora_inicio + $duracion <= $hora_fin) {
+            if ($descanso_inicio && $hora_inicio == strtotime($descanso_inicio)) {
+                $hora_inicio = strtotime($descanso_inicio) + $descanso_duracion;
+                continue;
+            }
+            $hora_final = $hora_inicio + $duracion;
+            $bloques[] = date('H:i', $hora_inicio) . ' - ' . date('H:i', $hora_final);
+            $hora_inicio = $hora_final;
+        }
+        return $bloques;
     }
 }
 

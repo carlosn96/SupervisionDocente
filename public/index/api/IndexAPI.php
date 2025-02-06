@@ -25,13 +25,13 @@ class IndexAPI extends API {
         $this->enviar_respuesta($rsp);
     }
 
-    public function comprobar_existe_telefono() {
-        $this->enviar_respuesta_existe_telefono($this->admin_usuario->existe_correo($this->data["telefono"]));
-    }
+//    public function comprobar_existe_telefono() {
+//        $this->enviar_respuesta_existe_telefono($this->admin_usuario->existe_correo($this->data["telefono"]));
+//    }
 
-    private function enviar_respuesta_existe_telefono(bool $existe_telefono) {
-        $this->enviar_respuesta($existe_telefono ? USUARIO_YA_EXISTE : NO_ERROR);
-    }
+//    private function enviar_respuesta_existe_telefono(bool $existe_telefono) {
+//        $this->enviar_respuesta($existe_telefono ? USUARIO_YA_EXISTE : NO_ERROR);
+//    }
 
 }
 

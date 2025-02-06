@@ -8,19 +8,9 @@
     
     $horario = $info["horario"];
      
-    //Horario matutino escolarizado
-    $bloques_horarios = [ //Esto no funciona con modalidades semiescolarizadas, nocturno, ni sabatinas
-        '07:00 - 08:00',
-        '08:00 - 09:00',
-        '09:00 - 10:00',
-        '10:30 - 11:30',
-        '11:30 - 12:30',
-        '12:30 - 13:30',
-        '13:30 - 14:30'
-    ];
+    $bloques_horarios = $info["bloques"];
 
     $horario_materias = [];
-
     foreach ($horario as $materia) {
         $inicio = strtotime($materia['hora_inicio']);
         $fin = strtotime($materia['hora_fin']);
@@ -57,6 +47,7 @@
                         <div class="col-12">
                             <h2 class="mb-1 text-center text-primary">Horario de <?= htmlspecialchars($info["tipo"]) ?></h2>
                             <h4 class="mb-4 text-center text-danger"><?= isset($info["docente"]) ? htmlspecialchars($info["docente"]) : htmlspecialchars($info[$info["tipo"]]) ?></h4>
+                            <h5 class="mb-2 text-center text-primary">Plantel <?= Sesion::getInfoTemporal("plantel")["nombre"] ?></h5>
                         </div>
                     </div>
                     <div class="row justify-content-center">
@@ -82,7 +73,6 @@
                                                             <small class="text-muted">
                                                                 <?= htmlspecialchars($info["tipo"] === 'Docente' ? $materia['grupo'] : $materia['docente']); ?>
                                                             </small><br>
-                                                            
                                                         <?php endforeach; ?>
                                                     <?php else: ?>
                                                         <div class="text-muted"></div>
@@ -92,7 +82,6 @@
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>
-
                             </table>
                         </div>
                     </div>
@@ -105,9 +94,7 @@
     include_once '../../includes/script.php';
     ?>
     <script>
-        function ready() {
-
-        }
+        function ready() {}
     </script>
 </body>
 

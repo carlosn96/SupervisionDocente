@@ -136,7 +136,6 @@
                                                     <div class="mb-3">
                                                         <label for="grupoMateria" class="form-label">Grupo</label>
                                                         <select required class="form-control" id="grupoMateria">
-                                                            <!-- Opciones del grupo -->
                                                         </select>
                                                     </div>
 
@@ -177,7 +176,7 @@
                                                                     </select>
                                                                 </div>
                                                                 <div class="col-12 col-md-3 mb-2 mb-md-0">
-                                                                    <input type="time" class="form-control" name="horaInicio[]" required>
+                                                                    <input type="time" class="form-control" id="horaInicio" name="horaInicio[]" required>
                                                                 </div>
                                                                 <div class="col-12 col-md-3 mb-2 mb-md-0">
                                                                     <input type="time" class="form-control" name="horaFin[]" required>
