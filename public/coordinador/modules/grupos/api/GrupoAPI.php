@@ -5,7 +5,10 @@ include_once '../../../../../loader.php';
 class GrupoAPI extends API {
     
     public function recuperar_turnos_grupos() {
-        $this->enviar_respuesta((new AdminGrupo())->recuperar_turnos());
+        $this->enviar_respuesta([
+            "turnos" => ($admin = new AdminGrupo())->recuperar_turnos(),
+            "grados" => $admin->recuperar_grados()
+        ]);
     }
     
     public function crear_grupo() {
@@ -24,6 +27,10 @@ class GrupoAPI extends API {
     
     public function eliminar() {
         $this->enviar_resultado_operacion((new AdminGrupo())->eliminar($this->data["id"]));
+    }
+    
+    public function recuperar_grados() {
+        $this->enviar_respuesta((new AdminGrupo())->recuperar_grados());
     }
 }
 
