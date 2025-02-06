@@ -22,8 +22,7 @@ class AdminGrupo {
         $turno = $form["turno"];
         $carrera = $form["carrera"] ?? $form["id_carrera"];
         $plantel = $form["plantel"] ?? $form["id_plantel"];
-        $id = $form["id"] ?? $form["id_grupo"];
-
+        $id = $form["id"] ?? $form["id_grupo"] ?? 0;
         return new Grupo($clave, $carrera, $plantel, $seudonimo, $turno, $id);
     }
 
