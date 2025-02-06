@@ -18,12 +18,13 @@ class AdminGrupo {
 
     public function construir_grupo($form) {
         $clave = $form["clave"];
-        $seudonimo = $form["seudonimo"];
+        $seudonimo = $form["seudonimo"] ?? "";
+        $grado = $form["grado_actual"] ?? "";
         $turno = $form["turno"];
         $carrera = $form["carrera"] ?? $form["id_carrera"];
         $plantel = $form["plantel"] ?? $form["id_plantel"];
         $id = $form["id"] ?? $form["id_grupo"] ?? 0;
-        return new Grupo($clave, $carrera, $plantel, $seudonimo, $turno, $id);
+        return new Grupo($clave, $carrera, $plantel, $seudonimo, $turno, $grado, $id);
     }
 
     function listar_grupos($carrera, $plantel) {
@@ -44,5 +45,9 @@ class AdminGrupo {
 
     function recuperar_turno_grupo($id) {
         return $this->recuperar_grupo_id($id)->getTurno();
+    }
+
+    public function recuperar_grados() {
+        return $this->dao->recuperar_grados();
     }
 }
