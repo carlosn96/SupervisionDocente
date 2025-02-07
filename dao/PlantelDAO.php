@@ -7,6 +7,7 @@ class PlantelDAO extends DAO {
     private const INSERTAR = "INSERT INTO " . self::NOMBRE_TABLA . " (nombre) VALUES (?)";
     private const INSERTAR_CARRERA = "INSERT INTO " . "carrera_" . self::NOMBRE_TABLA . " VALUES (?, ?)";
     private const EDITAR_PLANTEL = "UPDATE " . self::NOMBRE_TABLA . " SET `nombre` = ?,  `director` = ? WHERE (`id_plantel` = ?)";
+    private const CONSULTAR_HORARIO_TURNO = "SELECT hora_entrada inicio, hora_salida fin, duracion_bloque_minutos duracion_bloque, hora_descanso descanso_inicio, duracion_descanso_minutos descanso_duracion FROM plantel_turno turno WHERE id_plantel = ? AND turno = ?";
 
     public function recuperar_listado($where) {
         return $this->ejecutar_instruccion(self::LISTAR . "  " . $where)->fetch_all(MYSQLI_ASSOC);
@@ -60,4 +61,10 @@ WHERE carrera_plantel.id_carrera = $id_carrera")->fetch_all(MYSQLI_ASSOC);
         return $this->eliminar_por_id(self::NOMBRE_TABLA, "id_plantel", $id);
     }
 
+    public function consultar_turno_plantel($id_plantel, $turno) {
+        $args = new PreparedStatmentArgs;
+        $args->add("i", $id_plantel);
+        $args->add("s", $turno);
+        ($rs = $this->ejecutar_instruccion_prep_result(self::CONSULTAR_HORARIO_TURNO, $args)) ? $rs[0] : [];
+    }
 }

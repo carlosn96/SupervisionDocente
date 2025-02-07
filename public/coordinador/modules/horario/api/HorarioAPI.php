@@ -10,7 +10,6 @@ class HorarioAPI extends API {
     private const DURACION_BLOQUE_VESPERTINO = 40 * 60; //40 minutos
     private const DURACION_BLOQUE_MATUTINO = 60 * 60; //60 minutos, 1 h
     private const DURACION_DESCANSO_BLOQUE_MATUTINO = 30 * 60; //30 minutos
-    
     const TURNOS_CONFIG = [
         "Matutino" => [
             'inicio' => '07:00',
@@ -107,18 +106,18 @@ class HorarioAPI extends API {
     }
 
     private function get_bloques_grupo($id) {
-        $turno = (new AdminGrupo())->recuperar_turno_grupo($id);
-        if (isset(self::TURNOS_CONFIG[$turno])) {
-            $config = self::TURNOS_CONFIG[$turno];
-            return $this->generar_bloques(
-                            $config['inicio'],
-                            $config['fin'],
-                            $config['duracion_bloque'],
-                            $config['descanso_inicio'] ?? null,
-                            $config['descanso_duracion'] ?? 0
-            );
-        }
-        return [];
+        $grupo = (new AdminGrupo())->recuperar_grupo_id($id);
+        return (new AdminPlantel())->consultar_turno_plantel($grupo->getPlantel(), $grupo->getTurno());
+        /* if (isset(self::TURNOS_CONFIG[$turno])) {
+          $config = self::TURNOS_CONFIG[$turno];
+          return $this->generar_bloques(
+          $config['inicio'],
+          $config['fin'],
+          $config['duracion_bloque'],
+          $config['descanso_inicio'] ?? null,
+          $config['descanso_duracion'] ?? 0
+          );
+          } */
     }
 
     function generar_bloques($inicio, $fin, $duracion, $descanso_inicio = null, $descanso_duracion = 0) {

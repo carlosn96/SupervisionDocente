@@ -63,5 +63,17 @@ class AdminPlantel {
     public function eliminar($plantel) {
         return $this->dao->eliminar($plantel);
     }
+    
+    public function consultar_turno_plantel($id_plantel, $turno) {
+        /*list($entrada, $salida, $duracionBloque, $descansoHora,
+                $duracionDescanso) =*/ return $this->dao->consultar_turno_plantel($id_plantel, $turno);
+        /*return [
+            "inicio" => $entrada,
+            "fin" => $salida,
+            "duracion_bloque" => $duracionBloque,
+            "descanso_inicio" => $descansoHora,
+            "descanso_duracion" => $duracionDescanso
+        ];*/
+    }
 
 }
