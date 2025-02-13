@@ -423,5 +423,5 @@ function removerAccentos(str) {
 }
 
 function getRootUrl() {
-    return `${window.location.protocol}//${window.location.host}/SupervisionDocente/`;
+    return `${window.location.protocol}//${window.location.host}/`;
 }
