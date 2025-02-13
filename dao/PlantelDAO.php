@@ -65,6 +65,6 @@ WHERE carrera_plantel.id_carrera = $id_carrera")->fetch_all(MYSQLI_ASSOC);
         $args = new PreparedStatmentArgs;
         $args->add("i", $id_plantel);
         $args->add("s", $turno);
-        ($rs = $this->ejecutar_instruccion_prep_result(self::CONSULTAR_HORARIO_TURNO, $args)) ? $rs[0] : [];
+        return ($rs = $this->ejecutar_instruccion_prep_result(self::CONSULTAR_HORARIO_TURNO, $args)) ? $rs[0] : [];
     }
 }

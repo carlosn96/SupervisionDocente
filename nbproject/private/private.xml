@@ -3,12 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Workspace/web/SupervisionDocente/public/coordinador/modules/grupos/index.php</file>
-            <file>file:/C:/Workspace/web/SupervisionDocente/dao/GrupoDAO.php</file>
-            <file>file:/C:/Workspace/web/SupervisionDocente/public/coordinador/modules/grupos/api/grupos.js</file>
-            <file>file:/C:/Workspace/web/SupervisionDocente/admin/AdminGrupo.php</file>
-            <file>file:/C:/Workspace/web/SupervisionDocente/public/assets/js/util.js</file>
-            <file>file:/C:/Workspace/web/SupervisionDocente/public/coordinador/modules/grupos/api/GrupoAPI.php</file>
+            <file>file:/C:/Workspace/web/SupervisionDocente/public/coordinador/modules/horario/api/horario.js</file>
+            <file>file:/C:/Workspace/web/SupervisionDocente/admin/AdminPlantel.php</file>
+            <file>file:/C:/Workspace/web/SupervisionDocente/dao/PlantelDAO.php</file>
+            <file>file:/C:/Workspace/web/SupervisionDocente/public/coordinador/modules/horario/api/HorarioAPI.php</file>
         </group>
     </open-files>
 </project-private>
