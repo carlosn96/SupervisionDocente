@@ -43,4 +43,8 @@ class AdminAgenda {
         return new Evento($id_evento, $id_coordinador, $nombre, $fecha_hora_inicio,
                 $fecha_hora_fin, $lugar, $detalles);
     }
+    
+    public function recuperar_agenda_por_coordinador($id_coordinador) {
+        return $this->dao->listar_agenda_supervision($id_coordinador);
+    }
 }

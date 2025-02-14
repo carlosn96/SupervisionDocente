@@ -81,10 +81,9 @@ function verCronograma(url) {
 }
 
 function iniciarCalendario(supervisiones, eventos) {
-    calendar = new FullCalendar.Calendar(document.getElementById('calendarContent'), {
-        validRange: {
-            start: new Date()
-        },
+    const calendarContainer = document.getElementById('calendarContent');
+
+    calendar = new FullCalendar.Calendar(calendarContainer, {
         themeSystem: 'bootstrap5',
         headerToolbar: {
             left: 'prev,next,today',
@@ -127,7 +126,7 @@ function iniciarCalendario(supervisiones, eventos) {
         locale: 'es',
         timeZone: 'UTC',
         initialView: 'dayGridMonth',
-        editable: true,
+        editable: false,
         selectable: true,
         selectMirror: true,
         events: construirEventosSupervision(supervisiones, eventos),
@@ -148,7 +147,26 @@ function iniciarCalendario(supervisiones, eventos) {
             }
         }
     });
+
+    // Renderizar el calendario
     calendar.render();
+
+    // Detectar visibilidad del contenedor y ajustar tamaño cuando se vuelva visible
+    $(window).on('focus', function () {
+        if (calendarContainer.offsetParent !== null) {  // Solo ajusta si el contenedor es visible
+            calendar.updateSize();
+        }
+    });
+
+    // Si el contenedor cambia de visibilidad, también actualiza el tamaño
+    const observer = new MutationObserver(() => {
+        if (calendarContainer.offsetParent !== null) {  // Si el contenedor está visible
+            calendar.updateSize();
+        }
+    });
+
+    // Observar cambios en el contenedor de calendario
+    observer.observe(calendarContainer, {attributes: true, childList: true, subtree: true});
 }
 
 function abrirModalDescripcionEvento(info) {

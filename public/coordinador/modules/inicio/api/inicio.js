@@ -63,7 +63,6 @@ function construirSelectorCiclos(lista, actual) {
             }
         }, "json");
     });
-
 }
 
 function updateDate(days) {

@@ -12,6 +12,7 @@
         <!-- Sidebar navigation-->
         <nav class="sidebar-nav">
             <ul id="sidebarnav" class="mb-4 pb-2">
+                <!-- Menú principal -->
                 <li class="nav-small-cap">
                     <i class="ti ti-dots nav-small-cap-icon fs-5"></i>
                     <span class="hide-menu">Menú</span>
@@ -24,16 +25,16 @@
                         <span class="hide-menu ms-2 ps-1">Inicio</span>
                     </a>
                 </li>
+
+                <!-- Módulos -->
                 <li class="nav-small-cap">
                     <i class="ti ti-dots nav-small-cap-icon fs-5"></i>
                     <span class="hide-menu">Módulos</span>
                 </li>
+
+                <!-- Grupo -->
                 <li class="sidebar-item">
-                    <a
-                        class="sidebar-link sidebar-link primary-hover-bg"
-                        href="../grupos/"
-                        aria-expanded="false"
-                        >
+                    <a class="sidebar-link sidebar-link primary-hover-bg" href="../grupos/" aria-expanded="false">
                         <span class="aside-icon p-2 bg-light-primary rounded-3">
                             <i class="ti ti-user-cog fs-7 text-primary"></i>
                         </span>
@@ -41,16 +42,15 @@
                     </a>
                 </li>
 
-
+                <!-- Docentes con submenú colapsable -->
                 <li class="sidebar-item">
-                    <a class="sidebar-link sidebar-link primary-hover-bg" 
-                       href="javascript:void(0)" aria-expanded="false">
+                    <a class="sidebar-link sidebar-link primary-hover-bg" href="javascript:void(0)" aria-expanded="false" data-bs-toggle="collapse" data-bs-target="#docentes-submenu">
                         <span class="aside-icon p-2 bg-light-primary rounded-3">
                             <i class="ti ti-users fs-7 text-primary"></i>
                         </span>
                         <span class="hide-menu ms-2 ps-1">Docentes</span>
                     </a>
-                    <ul aria-expanded="false" class="collapse first-level">
+                    <ul id="docentes-submenu" class="collapse first-level">
                         <li class="sidebar-item">
                             <a href="../docentes/" class="sidebar-link">
                                 <span class="sidebar-icon"></span>
@@ -60,55 +60,59 @@
                         <li class="sidebar-item">
                             <a href="../docentes/agregarDocente.php" class="sidebar-link">
                                 <span class="sidebar-icon"></span>
-                                <span class="hide-menu"> Listado general </span>
+                                <span class="hide-menu">Listado general</span>
                             </a>
                         </li>
                     </ul>
                 </li>
 
+                <!-- Horario -->
                 <li class="sidebar-item">
-                    <a
-                        class="sidebar-link sidebar-link primary-hover-bg"
-                        href="../horario/"
-                        aria-expanded="false"
-                        >
+                    <a class="sidebar-link sidebar-link primary-hover-bg" href="../horario/" aria-expanded="false">
                         <span class="aside-icon p-2 bg-light-primary rounded-3">
                             <i class="ti ti-calendar-time fs-7 text-primary"></i>
                         </span>
                         <span class="hide-menu ms-2 ps-1">Horario</span>
                     </a>
                 </li>
+
+                <!-- Agenda -->
                 <li class="sidebar-item">
-                    <a
-                        class="sidebar-link sidebar-link primary-hover-bg"
-                        href="../agenda/"
-                        aria-expanded="false"
-                        >
+                    <a class="sidebar-link sidebar-link primary-hover-bg" href="javascript:void(0)" aria-expanded="false" data-bs-toggle="collapse" data-bs-target="#agenda-submenu">
                         <span class="aside-icon p-2 bg-light-primary rounded-3">
                             <i class="ti ti-calendar-time fs-7 text-primary"></i>
                         </span>
                         <span class="hide-menu ms-2 ps-1">Agenda</span>
                     </a>
+                    <ul id="agenda-submenu" class="collapse first-level">
+                        <li class="sidebar-item">
+                            <a href="../agenda/" class="sidebar-link">
+                                <span class="sidebar-icon"></span>
+                                <span class="hide-menu">Por carrera</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="../agendaGeneral/" class="sidebar-link">
+                                <span class="sidebar-icon"></span>
+                                <span class="hide-menu">General</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
+
+                <!-- Informe -->
                 <li class="sidebar-item">
-                    <a
-                        class="sidebar-link sidebar-link primary-hover-bg"
-                        href="../informe/"
-                        aria-expanded="false"
-                        >
+                    <a class="sidebar-link sidebar-link primary-hover-bg" href="../informe/" aria-expanded="false">
                         <span class="aside-icon p-2 bg-light-primary rounded-3">
                             <i class="ti ti-chart-bar fs-7 text-primary"></i>
                         </span>
                         <span class="hide-menu ms-2 ps-1">Informe</span>
                     </a>
                 </li>
+
+                <!-- Salir -->
                 <li class="sidebar-item">
-                    <a
-                        class="sidebar-link sidebar-link danger-hover-bg"
-                        href="#"
-                        onclick="cerrarSesion()"
-                        aria-expanded="false"
-                        >
+                    <a class="sidebar-link sidebar-link danger-hover-bg" href="#" onclick="cerrarSesion()" aria-expanded="false">
                         <span class="aside-icon p-2 bg-light-danger rounded-3">
                             <i class="ti ti-login fs-7 text-danger"></i>
                         </span>
@@ -117,6 +121,7 @@
                 </li>
             </ul>
         </nav>
+
         <!-- End Sidebar navigation -->
     </div>
     <!-- End Sidebar scroll-->

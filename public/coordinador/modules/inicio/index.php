@@ -28,7 +28,8 @@
                                 <div class="card-body">
                                     <h5 class="card-title mb-3 fw-semibold">Accesos rápidos</h5>
                                     <div class="d-flex flex-wrap">
-                                        <a href="../agenda/" class="btn btn-outline-primary m-1 flex-grow-1"><i class="ti ti-calendar-event"></i> Agenda</a>
+                                        <a href="../agendaGeneral/" class="btn btn-outline-primary m-1 flex-grow-1"><i class="ti ti-calendar-event"></i> Agenda general</a>
+                                        <a href="../agenda/" class="btn btn-outline-primary m-1 flex-grow-1"><i class="ti ti-calendar"></i> Agenda por carrera</a>
                                         <a href="../docentes/agregarDocente.php" class="btn btn-outline-primary m-1 flex-grow-1"><i class="ti ti-plus"></i> Nuevo docente</a>
                                         <a href="../docentes" class="btn btn-outline-primary m-1 flex-grow-1"><i class="ti ti-list-search"></i> Ver docentes</a>
                                         <a href="../horario/" class="btn btn-outline-primary m-1 flex-grow-1"><i class="ti ti-clock"></i> Horarios</a>

@@ -5,6 +5,13 @@ class AgendaDAO extends DAO {
     private const NOMBRE_TABLA = "evento_agenda";
     private const INSERTAR = "CALL insertar_evento(?, ?, ?, ?, ?, ?)";
     private const LISTAR = "SELECT * FROM listar_eventos";
+    private const CONSULTAR_AGENDA_COORDINADOR = "CALL consultar_agenda_coordinador (?)";
+    
+    public function listar_agenda_supervision($id_coordinador) {
+        $args = new PreparedStatmentArgs;
+        $args->add("i", $id_coordinador);
+        return $this->ejecutar_instruccion_prep_result(self::CONSULTAR_AGENDA_COORDINADOR, $args);
+    }
 
     public function recuperar_listado($where = "") {
         return $this->ejecutar_instruccion(self::LISTAR . " " . $where)->fetch_all(MYSQLI_ASSOC);
