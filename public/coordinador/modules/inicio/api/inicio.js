@@ -12,7 +12,6 @@ function ready() {
 
         $("#fechaTimeLine").change(function () {
             let fecha = $(this).val();
-            //print(fecha);
             if (fecha.length > 0) {
                 crearPeticion(urlAPI,
                         {case: "recuperar_agenda_fecha", data: "fecha=" + $(this).val()},
@@ -74,6 +73,7 @@ function updateDate(days) {
 }
 
 function crearTimeLineSupervisiones(listaSupervisiones) {
+    print(listaSupervisiones);
     let timeLine = $("#timeLineSupervision");
     timeLine.empty();
     timeLine.removeClass("alert alert-danger");
