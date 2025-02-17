@@ -95,7 +95,7 @@
                                                 <div class="accordion-body">
                                                     <div class="mb-3">
                                                         <label for="temaClase" class="form-label">Tema de la clase</label>
-                                                        <input value="No indicado" class="form-control" id="temaClase" placeholder="Tema de la clase">
+                                                        <input value="No indicado" class="form-control input-temp" id="temaClase" placeholder="Tema de la clase">
                                                     </div>
                                                     <div class="mb-3">
                                                         <div class="d-flex justify-content-between align-items-center">
@@ -111,7 +111,7 @@
                                                                 </ul>
                                                             </div>
                                                         </div>
-                                                        <textarea class="form-control" id="conclusionesArea" rows="3"></textarea>
+                                                        <textarea class="form-control input-temp" id="conclusionesArea" rows="3"></textarea>
                                                     </div>
                                                 </div>
                                             </div>

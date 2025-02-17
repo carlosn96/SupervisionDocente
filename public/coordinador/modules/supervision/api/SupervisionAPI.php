@@ -6,8 +6,9 @@ class SupervisionAPI extends API {
 
     public function obtener_info_agenda() {
         $this->enviar_respuesta([
-            "agenda" => (new AdminDocente())->obtener_info_agenda($this->data["id_agenda"]),
-            "criterios" => (new AdminSupervision)->recuperar_criterios_por_rubro()
+            "agenda" => (new AdminDocente())->obtener_info_agenda(($id_agenda = $this->data["id_agenda"])),
+            "criterios" => (new AdminSupervision)->recuperar_criterios_por_rubro(),
+            "info_agenda_temp" => Sesion::getInfoTemporal("supervisionTemp")[$id_agenda] ?? []
         ]);
     }
 
@@ -21,6 +22,16 @@ class SupervisionAPI extends API {
     public function guardar_supervision() {
         $this->enviar_resultado_operacion((new AdminSupervision())->guardar_supervision($this->data));
     }
+
+    public function guardar_info_temp() {
+        $keyInfoSupTemp = "supervisionTemp";
+        $supervisionTemp = Sesion::getInfoTemporal($keyInfoSupTemp);
+        $supervisionTemp[$this->data["id_agenda"]][$this->data["input_id"]] = $this->data;
+        Sesion::setInfoTemporal($keyInfoSupTemp, $supervisionTemp);
+        //Sesion::deleteInfoTemporal($keyInfoSupTemp);
+        $this->enviar_respuesta($supervisionTemp);
+    }
+    
 }
 
 Util::iniciar_api("SupervisionAPI");

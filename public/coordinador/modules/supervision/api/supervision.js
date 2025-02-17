@@ -1,6 +1,7 @@
 let chart;
 let rubroContablesContainer;
 let rubroNoContablesContainer;
+const urlAPI = "api/SupervisionAPI.php";
 
 function ready() {
     recuperarInfoAgenda();
@@ -8,7 +9,7 @@ function ready() {
 
 function generarComentarios(model) {
     let data = "model=" + model;
-    crearPeticion("api/SupervisionAPI.php", {case: "generar_comentarios_supervision", data: data}, (res) => {
+    crearPeticion(urlAPI, {case: "generar_comentarios_supervision", data: data}, (res) => {
         print(res);
         $("#conclusionesArea").val(res.retroalimentacion);
     }, "json");
@@ -86,6 +87,18 @@ function recuperarInfoAgenda() {
                     redireccionar("../supervision_preview?id_agenda=" + idAgenda);
                 } else {
                     recuperarCriteriosSupervision(res.criterios);
+                    completarInputsTemp(res.info_agenda_temp);
+                    $(".input-temp").change(function () {
+                        const $this = $(this);
+                        const inputType = $this.prop("tagName").toLowerCase() === 'textarea' ? 'textarea' : $this.prop("type");
+                        const data = $.param({
+                            id_agenda: idAgenda,
+                            input_id: $this.prop("id"),
+                            type: inputType,
+                            value: inputType === 'checkbox' ? $this.prop("checked") : $this.val()
+                        });
+                        crearPeticion(urlAPI, {case: "guardar_info_temp", data: data}, print, "json");
+                    });
                 }
             }
         }, "json");
@@ -312,7 +325,7 @@ class RubrosContainer {
         if (this.totalSteps > 0) {
             this.#crearBotones($btnContainer);
             this.#renderRubros();
-        }
+    }
     }
 
     #crearBotones($btnContainer) {
@@ -384,7 +397,7 @@ class RubrosContainer {
             rubro.criterios.forEach(criterio => {
                 const $row = $('<tr>');
                 const $formCheck = $('<div>', {class: 'form-check form-switch'});
-                const $checkBox = $('<input>', {type: 'checkbox', class: 'form-check-input', id: "criterio" + criterio.id_criterio});
+                const $checkBox = $('<input>', {type: 'checkbox', class: 'form-check-input input-temp', id: "criterio" + criterio.id_criterio});
                 $checkBox.on('change', () => {
                     this.#actualizarPorcentaje($card);
                     this.fnChange();
@@ -392,7 +405,7 @@ class RubrosContainer {
                 $formCheck.append($checkBox);
                 const $tdCheckBox = $('<td>').append($formCheck);
                 const $tdEnunciado = $('<td>').append($('<label>', {class: 'form-check-label mb-0', text: criterio.descripcion.trim(), for : "criterio" + criterio.id_criterio}));
-                const $tdComentario = $('<td>').append($('<input>', {type: 'text', class: 'form-control', placeholder: 'Comentario'}));
+                const $tdComentario = $('<td>').append($('<input>', {id: "comentarioInput" + criterio.id_criterio, type: 'text', class: 'form-control input-temp', placeholder: 'Comentario'}));
                 $row.append($tdCheckBox).append($tdEnunciado).append($tdComentario);
                 $tbody.append($row);
             });
@@ -454,7 +467,7 @@ class RubrosContainer {
 
 function actualizarGrafica() {
     let valores = Object.values(rubroContablesContainer.getPuntuacionCategoria());
-    print(valores);
+    //print(valores);
     chart.updateOptions({
         series: [{
                 data: valores
@@ -462,5 +475,17 @@ function actualizarGrafica() {
         title: {
             text: 'Valoración Global (' + (valores.reduce((acc, currentValue) => acc + currentValue, 0) / valores.length).toFixed(2) + '%)'
         }
+    });
+}
+
+
+function completarInputsTemp(data) {
+    //print(data);
+    $.each(data, function(i, v) {
+        const input = $("#"+i);
+        if(v.type === "checkbox") {
+            input.prop("checked", JSON.parse(v.value));
+        }
+        input.val(v.value);
     });
 }
