@@ -73,7 +73,7 @@ function updateDate(days) {
 }
 
 function crearTimeLineSupervisiones(listaSupervisiones) {
-    print(listaSupervisiones);
+    //print(listaSupervisiones);
     let timeLine = $("#timeLineSupervision");
     timeLine.empty();
     timeLine.removeClass("alert alert-danger");
@@ -93,7 +93,7 @@ function crearTimeLineSupervisiones(listaSupervisiones) {
             $("<span>", {class: `timeline-badge border-2 border border-${getRandomColor()} flex-shrink-0 my-2`}).appendTo($badgeWrap);
             $("<span>", {class: "timeline-badge-border d-block flex-shrink-0"}).appendTo($badgeWrap);
             $("<div>", {class: "timeline-desc fs-3 text-dark mt-n1 fw-semibold"})
-                    .html(`${docente.nombre_materia} en ${docente.carrera} <a href="${urlSupervision.href}" class="text-${statusClass} d-block fw-normal">${urlSupervision.text}</a>`)
+                    .html(`${docente.nombre_materia} en ${docente.carrera} (plantel ${docente.plantel}) <a href="${urlSupervision.href}" class="text-${statusClass} d-block fw-normal">${urlSupervision.text}</a>`)
                     .appendTo($li);
             timeLine.append($li);
         });
