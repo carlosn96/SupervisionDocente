@@ -29,9 +29,10 @@ class AgendaAPI extends API {
         $fecha = $this->data["fecha"];
         $plantel = $this->data["plantel"];
         $carrera = $this->data["carrera"];
+        $coordinador = Sesion::info()["usuario"];
         $agenda = (new AdminSupervision)->recuperar_agenda_por_fecha(
                 $fecha,
-                Sesion::info()["usuario"]->get_id_coordinador(),
+                $coordinador->get_id_coordinador(),
                 $plantel["id"], $carrera["id"],
         );
         Sesion::setInfoTemporal("agenda", [
@@ -41,6 +42,7 @@ class AgendaAPI extends API {
             "carrera" => $carrera["val"],
             "mes" => $this->data["mes"],
             "año" => $this->data["año"],
+            "coordinador" => $coordinador->get_nombre() . " " . $coordinador->get_apellidos()
         ]);
         $this->enviar_respuesta(["agendaVacia" => empty($agenda)]);
     }

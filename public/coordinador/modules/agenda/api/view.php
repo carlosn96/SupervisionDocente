@@ -15,6 +15,7 @@ include_once '../../../../../loader.php';
         <?php
         $info  = Sesion::getInfoTemporal("agenda");
         $agenda = $info["listado"];
+        $coordinador = $info["coordinador"];
         $plantel = $info["plantel"];
         $mes = $info["mes"];
         $anio = $info["año"];
@@ -27,7 +28,7 @@ include_once '../../../../../loader.php';
             </div>
             <h5>Supervisiones de <strong> <?= isset($agenda[0]) ? htmlspecialchars($agenda[0]["carrera"]) : "" ?> </strong></h5>
             <h6><?= strtoupper(htmlspecialchars($mes) . ", " . htmlspecialchars($anio)) ?></h6>
-            <h5><?= isset($agenda[0]) ? "Coordinador: " . htmlspecialchars($agenda[0]["nombre_coordinador"]) : "" ?></h5>
+            <h5><?= isset($agenda[0]) ? "Coordinador: " . $coordinador  : "" ?></h5>
 
             <div class="table-responsive mt-4">
                 <table class="table table-bordered">
