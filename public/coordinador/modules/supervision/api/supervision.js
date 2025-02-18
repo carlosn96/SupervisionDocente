@@ -10,7 +10,7 @@ function ready() {
 function generarComentarios(model) {
     let data = "model=" + model;
     crearPeticion(urlAPI, {case: "generar_comentarios_supervision", data: data}, (res) => {
-        print(res);
+        //print(res);
         $("#conclusionesArea").val(res.retroalimentacion);
     }, "json");
 }

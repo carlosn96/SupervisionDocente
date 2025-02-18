@@ -5,8 +5,9 @@ include_once '../../../../../loader.php';
 class SupervisionAPI extends API {
 
     public function obtener_info_agenda() {
+        $id_agenda = $this->data["id_agenda"];
         $this->enviar_respuesta([
-            "agenda" => (new AdminDocente())->obtener_info_agenda(($id_agenda = $this->data["id_agenda"])),
+            "agenda" => (new AdminDocente())->obtener_info_agenda($id_agenda),
             "criterios" => (new AdminSupervision)->recuperar_criterios_por_rubro(),
             "info_agenda_temp" => Sesion::getInfoTemporal("supervisionTemp")[$id_agenda] ?? []
         ]);

@@ -56,7 +56,7 @@ class DocenteDAO extends DAO {
     }
 
     public function obtener_info_agenda($id_agenda) {
-        return $this->listar_docente_materias_horarios(" id_agenda = $id_agenda");
+        return $this->listar_docente_materias_horarios(" id_agenda = $id_agenda AND es_horario_agendado = 1");
     }
 
     private function listar_docente_materias_horarios($where) {
