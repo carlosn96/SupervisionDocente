@@ -83,16 +83,46 @@ function construirAgenda(agenda) {
 
 
 function mostrarDetallesEvento(evento) {
-    // Mostrar un modal o popup con detalles del evento
+    const horaInicio = new Date(evento.start);
+    const horaFin = new Date(evento.end);
+
+    const horaInicioFormateada = `${horaInicio.getUTCHours().toString().padStart(2, '0')}:${horaInicio.getUTCMinutes().toString().padStart(2, '0')}`;
+    const horaFinFormateada = `${horaFin.getUTCHours().toString().padStart(2, '0')}:${horaFin.getUTCMinutes().toString().padStart(2, '0')}`;
     const detalles = `
-        <strong>Carrera:</strong> ${evento.extendedProps.carrera} <br>
-        <strong>Materia:</strong> ${evento.extendedProps.nombre_materia} <br>
-        <strong>Docente:</strong> ${evento.title} <br>
-        <strong>Plantel:</strong> ${evento.extendedProps.plantel} <br>
-        <strong>Status:</strong> ${evento.extendedProps.status} <br>
-        <strong>Hora:</strong> ${evento.start.toLocaleTimeString()} - ${evento.end.toLocaleTimeString()} <br>
+    <div class="mb-3">
+        <h6><i class="ti ti-user"></i> <strong>Docente:</strong> ${evento.title}</h6>
+        <h6><i class="ti ti-book"></i> <strong>Materia:</strong> ${evento.extendedProps.nombre_materia}</h6>
+        <h6><i class="ti ti-clock"></i> <strong>Hora:</strong> ${horaInicioFormateada} - ${horaFinFormateada}</h6>
+        <h6><i class="ti ti-school"></i> <strong>Carrera:</strong> ${evento.extendedProps.carrera}</h6>
+        <h6><i class="ti ti-location"></i> <strong>Plantel:</strong> ${evento.extendedProps.plantel}</h6>
+    </div>
+`;
+    const modalHTML = `
+        <div class="modal fade" id="eventoModal" tabindex="-1" aria-labelledby="eventoModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="eventoModalLabel">Supervisión ${evento.extendedProps.status}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        ${detalles}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     `;
 
-    alert(detalles); // Este es un ejemplo simple con alert, pero se puede reemplazar con un modal bonito.
-}
+    $('body').append(modalHTML);
+    
+    const modal = new bootstrap.Modal($('#eventoModal')[0]);
+    modal.show();
 
+    // Eliminar el modal después de cerrarlo para evitar duplicados
+    $('#eventoModal').on('hidden.bs.modal', function () {
+        $(this).remove();
+    });
+}
