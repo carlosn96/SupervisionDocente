@@ -29,7 +29,10 @@ class CoordinadorAPI extends API {
     }
 
     function listar_coordinadores() {
-        $this->enviar_respuesta((new AdminCoordinador)->listar());
+        $this->enviar_respuesta([
+            "coordinadores" =>(new AdminCoordinador)->listar(),
+            "ciclos" => (new AdminCicloEscolar)->recuperar_listado()
+        ]);
     }
 
     private function leer_lista_avatares() {

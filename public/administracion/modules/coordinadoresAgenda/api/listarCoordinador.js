@@ -1,81 +1,92 @@
 var urlAPI = "api/CoordinadorAPI.php";
 function ready() {
-
-    crearPeticion(urlAPI, {case: "listar_coordinadores"}, function (res) {
-        let $table = $('<table>', {class: 'table'});
+    crearPeticion(urlAPI, { case: "listar_coordinadores" }, function (res) {
+        let $table = $('<table>', { class: 'table' });
 
         let $thead = $('<thead>').append(
-                $('<tr>').append(
+            $('<tr>').append(
                 $('<th>').text('Coordinador'),
-                $('<th>').text('Carreras y Planteles')
-                )
-                );
+                $('<th>').text('Carreras, Planteles y Ciclo Escolar')
+            )
+        );
 
         let $tbody = $('<tbody>');
+        const rs = JSON.parse(res);
+        const coordinadores = rs.coordinadores;
+        const ciclosEscolares = rs.ciclos;
 
-        $.each(JSON.parse(res), function (index, coordinador) {
+        $.each(coordinadores, function (index, coordinador) {
             const carrerasCoordina = coordinador.carreras_coordina
-                    ? coordinador.carreras_coordina.split(',').map(function (carrera) {
-                return carrera.trim();
-            })
-                    : [];
+                ? coordinador.carreras_coordina.split(',').map(function (carrera) {
+                    return carrera.trim();
+                })
+                : [];
             const idCarrerasCoordina = coordinador.id_carreras_coordina
-                    ? coordinador.id_carreras_coordina.split(',').map(function (id) {
-                return id.trim();
-            })
-                    : [];
+                ? coordinador.id_carreras_coordina.split(',').map(function (id) {
+                    return id.trim();
+                })
+                : [];
             let $selectCarreras = $('<select>', {
                 name: "carrera",
                 class: 'form-select',
-                css: {'margin-left': '10px'},
+                css: { 'margin-left': '10px' },
                 required: true,
                 change: function () {
                     consultarPlanteles($(this).val(), $(this).closest('form').find('.select-planteles'));
                 }
-            }).append(
-                    $('<option>', {value: '', text: 'Selecciona una carrera'})
-                    );
+            }).append($('<option>', { value: '', text: 'Selecciona una carrera' }));
 
             let $selectPlanteles = $('<select>', {
                 name: "plantel",
                 class: 'form-select select-planteles',
-                css: {'margin-left': '10px'},
+                css: { 'margin-left': '10px' },
                 required: true
-            }).append(
-                    $('<option>', {value: '', text: 'Selecciona un plantel'})
-                    );
+            }).append($('<option>', { value: '', text: 'Selecciona un plantel' }));
+
+            let $selectCicloEscolar = $('<select>', {
+                name: "ciclo_escolar",
+                class: 'form-select select-ciclo-escolar',
+                css: { 'margin-left': '10px' },
+                required: true
+            }).append($('<option>', { value: '', text: 'Selecciona un ciclo escolar' }));
+
+            ciclosEscolares.forEach(function (ciclo) {
+                $selectCicloEscolar.append($('<option>', { value: ciclo.id_ciclo_escolar, text: ciclo.ciclo_escolar }));
+            });
 
             carrerasCoordina.forEach(function (carrera, idx) {
-                $selectCarreras.append($('<option>', {value: idCarrerasCoordina[idx], text: carrera}));
+                $selectCarreras.append($('<option>', { value: idCarrerasCoordina[idx], text: carrera }));
             });
 
             let $tr = $('<tr>');
             let $coordinadorCell = $('<td>').append(
-                    $('<img>', {
-                        src: coordinador.avatar,
-                        alt: 'Avatar',
-                        css: {
-                            width: '50px',
-                            height: '50px',
-                            'border-radius': '50%',
-                            'margin-right': '10px'
-                        }
-                    }),
-                    `${coordinador.nombre} ${coordinador.apellidos}`
-                    );
+                $('<img>', {
+                    src: coordinador.avatar,
+                    alt: 'Avatar',
+                    css: {
+                        width: '50px',
+                        height: '50px',
+                        'border-radius': '50%',
+                        'margin-right': '10px'
+                    }
+                }),
+                `${coordinador.nombre} ${coordinador.apellidos}`
+            );
+
             let $form = $('<form>', {
                 class: 'row g-3 align-items-center'
             }).append(
-                    $('<input>', {hidden: true, value: coordinador.id_coordinador, name: "coordinador"}),
-                    $('<div>', {class: 'col-auto'}).append($selectCarreras),
-                    $('<div>', {class: 'col-auto'}).append($selectPlanteles),
-                    $('<div>', {class: 'col-auto'}).append(
+                $('<input>', { hidden: true, value: coordinador.id_coordinador, name: "coordinador" }),
+                $('<div>', { class: 'col-auto' }).append($selectCarreras),
+                $('<div>', { class: 'col-auto' }).append($selectPlanteles),
+                $('<div>', { class: 'col-auto' }).append($selectCicloEscolar),
+                $('<div>', { class: 'col-auto' }).append(
                     $('<button>', {
                         class: 'btn btn-sm btn-outline-primary',
                         type: 'submit'
                     }).text('Compartir agenda')
-                    )
-                    );
+                )
+            );
             $form.on('submit', consultarAgenda);
             $tr.append($coordinadorCell, $('<td>').append($form));
             $tbody.append($tr);
@@ -83,8 +94,8 @@ function ready() {
         $table.append($thead, $tbody);
         $('#coordinador-tab').html($table);
     });
-
 }
+
 
 function consultarPlanteles(carreraId, $selectPlanteles) {
     $selectPlanteles.empty().append($('<option>', {value: '', text: 'Selecciona un plantel'}));
@@ -100,8 +111,8 @@ function consultarPlanteles(carreraId, $selectPlanteles) {
 
 function consultarAgenda(e) {
     e.preventDefault();
-    let url = `${window.location.protocol}//${window.location.hostname}${window.location.hostname === "localhost" ? 
-    "/supervision_docente" : ""}/public/share/modules/getAgenda/?${$(this).serialize()}`;
+    let url = `${window.location.protocol}//${window.location.hostname}${window.location.hostname === "localhost" ?
+            "/SupervisionDocente" : ""}/public/share/modules/getAgenda/?${$(this).serialize()}`;
     $("#ligaCompartirAgenda").attr("href", url);
     var qr = new QRCode(document.getElementById("qrContainer"), {
         text: url,
