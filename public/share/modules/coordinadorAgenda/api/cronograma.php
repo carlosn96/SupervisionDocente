@@ -18,16 +18,17 @@ include_once '../../../../../loader.php';
         $plantel = $info["plantel"];
         $mes = $info["mes"];
         $anio = $info["año"];
+        $coordinador = $info["coordinador"];
         ?>
         <div class="container" id="content">
             <div class="header mb-4">
                 <img src="../../../../assets/images/logos/dark-logo.svg" alt="une" class="img-fluid" style="max-width: 100px;">
-                <h1 class="h3 mb-0">Universidad de Especialidades</h1>
+                <h1 class="h3 mb-0">Centro Universitario UNE</h1>
                 <h5 class="h5">Plantel <?= $plantel ?></h5>
             </div>
             <h5>Supervisiones de <strong> <?= isset($agenda[0]) ? htmlspecialchars($agenda[0]["carrera"]) : "" ?> </strong></h5>
             <h6><?= strtoupper(htmlspecialchars($mes) . ", " . htmlspecialchars($anio)) ?></h6>
-            <h5><?= isset($agenda[0]) ? "Coordinador: " . htmlspecialchars($agenda[0]["nombre_coordinador"]) : "" ?></h5>
+            <h5><?= "Coordinador: " . htmlspecialchars($coordinador) ?></h5>
 
             <div class="table-responsive mt-4">
                 <table class="table table-bordered">
@@ -36,7 +37,7 @@ include_once '../../../../../loader.php';
                             <th>Nombre del Docente</th>
                             <th>Materia</th>
                             <th>Fecha y hora</th>
-                            <th>Estado Actual</th>
+                            <th>Estado actual</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -61,10 +62,6 @@ include_once '../../../../../loader.php';
                         ?>
                     </tbody>
                 </table>
-            </div>
-
-            <div class="footer text-center mt-4">
-                &copy; 2024 Universidad de Especialidades. Todos los derechos reservados.
             </div>
         </div>
 

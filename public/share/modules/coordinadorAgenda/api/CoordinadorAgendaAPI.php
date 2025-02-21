@@ -27,13 +27,14 @@ class CoordinadorAgendaAPI extends API {
             "listado" => $agenda,
             "fecha" => $fecha,
             "plantel" => $plantel["nombre"],
-            "carrera" => $carrera["tipo"]." ".$carrera["nombre"],
+            "carrera" => $carrera["tipo"] . " " . $carrera["nombre"],
+            "coordinador" => $agendaSesion["nombreCoordinador"],
             "mes" => $this->data["mes"],
             "año" => $this->data["año"],
         ]);
         $this->enviar_respuesta(["agendaVacia" => empty($agenda)]);
     }
-    
+
     public function salir() {
         Sesion::deleteInfoTemporal("agenda");
     }

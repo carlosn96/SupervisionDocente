@@ -21,21 +21,23 @@
                 ?>
                 <!--  Header End -->
                 <div class="container-fluid">
-                    <div class="card">
+                    <div class="card shadow-sm">
                         <div class="card-body position-relative">
-                            <h2 class="text-center mb-5">Agenda de Supervisiones</h2>
-                            <h5 class="text-center mb-5" id="nombreCarrera"></h5>
+                            <h2 class="mb-4">Agenda de Supervisiones</h2>
+                            <h5 class="text-primary mb-3" id="nombreCarrera"></h5>
+                            <h4 class="text-secondary mb-3" id="nombreCoordinador"></h4>
                             
-                            <div class="row">
-                                <div class="col">
-                                    <div class="card" id="calendar">
+
+                            <div class="row mt-5">
+                                <div class="col-12">
+                                    <div class="card shadow-sm" id="calendar">
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
                 </div>
+
 
                 <!-- Modal detalles de supervision-->
                 <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">

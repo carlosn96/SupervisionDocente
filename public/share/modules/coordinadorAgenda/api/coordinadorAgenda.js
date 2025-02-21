@@ -5,9 +5,10 @@ $(document).ready(function () {
     crearPeticion(urlAPI, {case: "consultar_agenda"}, function (res) {
         print(res);
         let docentes = res.docentes;
-        
+        let carrera = res.carrera.carrera.tipo+" "+res.carrera.carrera.nombre+", Plantel "+res.carrera.plantel.nombre;
         if(docentes) {
-            $("#nombreCarrera").text(res.carrera.carrera.tipo+" "+res.carrera.carrera.nombre);
+            $("#nombreCarrera").text(carrera);
+            $("#nombreCoordinador").text("Coordinador: "+res.carrera.nombreCoordinador);
             if (Object.values(docentes).length > 0) {
                 iniciarCalendario(crearListaProfesores(docentes));
             } else {
