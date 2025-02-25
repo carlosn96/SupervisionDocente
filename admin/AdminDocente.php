@@ -117,4 +117,8 @@ class AdminDocente {
         }
         return -1;
     }
+    
+    public function get_turno_docente($plantel, $ciclo, $id_docente) {
+        return array_column($this->dao->get_turno_docente($plantel, $ciclo, $id_docente), 'turno');
+    }
 }
