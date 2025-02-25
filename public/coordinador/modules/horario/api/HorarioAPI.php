@@ -6,8 +6,7 @@ class HorarioAPI extends API {
 
     private const GRUPO = "Grupo";
     private const DOCENTE = "Docente";
-    private const MATERIA = "Materia";
-
+    
     function obtener_lista_elementos() {
         $tipo = $this->data["tipoHorario"];
         $carrera = $this->data["carrera"];
@@ -15,7 +14,7 @@ class HorarioAPI extends API {
         $cicloEscolar = $this->data["cicloEscolar"];
         $this->enviar_respuesta([
             "tabla_horario" => $this->recuperar_listado_grupo_docente($tipo, $carrera, $plantel, $cicloEscolar),
-            "docentes" => (new AdminDocente)->obtener_docentes_materias($carrera, $plantel, $cicloEscolar)
+                //"docentes" => (new AdminDocente)->obtener_docentes_materias($carrera, $plantel, $cicloEscolar)
         ]);
     }
 
@@ -33,25 +32,35 @@ class HorarioAPI extends API {
                     self::DOCENTE => array_map(function ($docente) {
                         return [
                     "text" => $docente["nombre"] . " " . $docente["apellidos"],
-                    "id" => $docente['id_docente']
+                    "id" => $docente['id_docente'],
+                    "turnos" => $docente["turnos"]
                         ];
-                    }, array_values((new AdminDocente())->obtener_docentes_materias($carrera, $plantel, $ciclo)))
+                    }, array_values($this->get_materias_docente($carrera, $plantel, $ciclo)))
                 ];
                 break;
-            case "materia":
-                $lista = [
-                    self::MATERIA => array_map(function ($materia) {
-                        return [
-                    "text" => $materia["nombre"],
-                    "id" => $materia['id_materia']
-                        ];
-                    }, [
-                        ["nombre" => "Materia", "id_materia" => 5]
-                    ])
-                ];
-                break;
+//            case "materia":
+//                $lista = [
+//                    self::MATERIA => array_map(function ($materia) {
+//                        return [
+//                    "text" => $materia["nombre"],
+//                    "id" => $materia['id_materia']
+//                        ];
+//                    }, [
+//                        ["nombre" => "Materia", "id_materia" => 5]
+//                    ])
+//                ];
+//                break;
         }
         return $lista;
+    }
+
+    private function get_materias_docente($carrera, $plantel, $ciclo) {
+        $adminDocente = new AdminDocente;
+        $docentes = $adminDocente->obtener_docentes_materias($carrera, $plantel, $ciclo);
+        foreach ($docentes as &$docente) {
+            $docente["turnos"] = $adminDocente->get_turno_docente($plantel, $ciclo, $docente["id_docente"]);
+        }
+        return $docentes;
     }
 
     function recuperar_horario() {
@@ -63,7 +72,7 @@ class HorarioAPI extends API {
             $tipo = $this->data["tipo"];
             $rs = (new AdminDocente())->obtener_horario($tipo, $id, $carrera, $plantel, $ciclo);
             $horario = [
-                "bloques" => $tipo === self::GRUPO ? $this->get_bloques_grupo($id) : $this->get_bloques_docente(),
+                "bloques" => $tipo === self::GRUPO ? $this->get_bloques_grupo($id) : $this->get_bloques_horarios($plantel, $this->data["turno"]),
                 "tipo" => $tipo,
                 "id" => $id,
                 "horario" => $rs,
@@ -90,7 +99,11 @@ class HorarioAPI extends API {
 
     private function get_bloques_grupo($id) {
         $grupo = (new AdminGrupo())->recuperar_grupo_id($id);
-        return (new AdminHorario())->get_bloques_horarios($grupo->getPlantel(), $grupo->getTurno());
+        return $this->get_bloques_horarios($grupo->getPlantel(), $grupo->getTurno());
+    }
+
+    private function get_bloques_horarios($plantel, $turno) {
+        return (new AdminHorario())->get_bloques_horarios($plantel, $turno);
     }
 }
 

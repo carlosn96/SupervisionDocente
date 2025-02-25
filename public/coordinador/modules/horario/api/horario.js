@@ -1,14 +1,10 @@
 var urlAPI = "api/HorarioAPI.php";
 
 function ready() {
-    recuperarCarreras(()=>{
+    recuperarCarreras(() => {
         $(".body").removeAttr("hidden");
         construirTabla();
     });
-    ajustarEventos();
-}
-
-function ajustarEventos() {
     $("input[name=tipoHorario]").change(construirTabla);
     $("#disponibilidadHoraDiaForm").submit(construirTablaDisponibilidad);
 }
@@ -55,36 +51,74 @@ function construirTabla() {
         tipoHorario: $("input[name=tipoHorario]:checked").val()
     };
     crearPeticion(urlAPI, {case: "obtener_lista_elementos", data: $.param(data)}, function (rs) {
-        print(rs);
         let lista = rs.tabla_horario;
         let tipoElemento = Object.keys(lista)[0];
+        //print(Object.keys(lista)[0]);
         const table = $('<table>', {id: "tablaHorario"}).addClass('table table-striped table-responsive');
         const thead = $('<thead>').append($('<tr>').append($('<th>').text(tipoElemento)));
-        const tbody = $('<tbody>');
-        //print(lista[tipoElemento]);
-        lista[tipoElemento].forEach(item => {
-            const row = $('<tr>').append(
-                    $('<td>').html($("<a>", {href: "javascript:void(0)", onclick: `verHorario("${tipoElemento}", ${item.id})`, text: item.text, class: "btn btn-link"}))
-                    );
-            tbody.append(row);
-        });
-        table.append(thead).append(tbody);
+        const elementos = lista[tipoElemento];
+        table.append(thead).append(tipoElemento === "Docente" ? crearBodyListaDocentes(elementos) : crearBodyListaGrupo(elementos));
         $('#tabla').html(table);
         crearDataTable("#tablaHorario");
     }, "json");
 }
 
-function verHorario(tipo, id) {
+function crearBodyListaDocentes(docentes) {
+    const tbody = $('<tbody>');
+    docentes.forEach(item => {
+        const dropdownToggle = $('<button>', {
+            class: 'btn btn-link dropdown-toggle',
+            type: 'button',
+            'data-bs-toggle': 'dropdown',
+            'aria-expanded': 'false',
+            text: item.text
+        });
+        const dropdownMenu = $('<ul>', { class: 'dropdown-menu' });
+        item.turnos.forEach(turno => {
+            dropdownMenu.append($('<li>').append($('<a>', {
+                class: 'dropdown-item',
+                href: 'javascript:void(0)',
+                text: turno,
+                onclick: `verHorario("Docente", ${item.id}, "${turno}")`
+            })));
+        });
+        const row = $('<tr>').append(
+            $('<td>').append(
+                $('<div>', { class: 'dropdown' }).append(dropdownToggle).append(dropdownMenu)
+            )
+        );
+        tbody.append(row);
+    });
+    return tbody;
+}
+
+function crearBodyListaGrupo(grupos) {
+    const tbody = $('<tbody>');
+    grupos.forEach(item => {
+        const row = $('<tr>').append(
+                $('<td>').html($("<a>", {href: "javascript:void(0)", onclick: `verHorario("Grupo", ${item.id})`, text: item.text, class: "btn btn-link"}))
+                );
+        tbody.append(row);
+    });
+    return tbody;
+}
+
+function verHorario(tipo, id, turno) {
     let data = {
         tipo: tipo,
         id: id,
         carrera: $("#selectorCarrera").find('option:selected').val(),
         plantel: $("#selectorPlantel").find('option:selected').val(),
-        ciclo: $("#selectorCicloEscolar").find('option:selected').val()
+        ciclo: $("#selectorCicloEscolar").find('option:selected').val(),
+        turno: turno ?? ""
     };
     print(data);
     crearPeticion(urlAPI, {case: "recuperar_horario", data: $.param(data)}, function (res) {
         //print(res);
-        redireccionar("../verHorario");
-    });
+        if(res.es_valor_error !== true) {
+           redireccionar("../verHorario"); 
+        } else {
+            mostrarMensajeError(res.mensaje, false);
+        }
+    }, "json");
 }
