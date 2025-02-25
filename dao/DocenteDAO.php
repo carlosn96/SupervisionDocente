@@ -176,4 +176,17 @@ class DocenteDAO extends DAO {
     public function recuperar_docente($id) {
         return $this->listar_docente_materias_horarios(" id_docente = $id");
     }
+    
+    public function get_turno_docente($plantel, $ciclo, $docente) {
+        $sql = "SELECT turno FROM materia_horarios horario
+                JOIN materia on materia.id_materia = horario.id_materia
+                JOIN grupo on materia.id_grupo = grupo.id_grupo
+                WHERE materia.id_docente = ? AND materia.id_ciclo_escolar = ? AND materia.id_plantel = ?
+                GROUP BY turno";
+        $prep = new PreparedStatmentArgs;
+        $prep->add("i", $docente);
+        $prep->add("i", $ciclo);
+        $prep->add("i", $plantel);
+        return $this->ejecutar_instruccion_prep_result($sql, $prep);
+    }
 }
