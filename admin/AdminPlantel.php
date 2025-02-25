@@ -66,7 +66,7 @@ class AdminPlantel {
     
     public function consultar_turno_plantel($id_plantel, $turno) {
         /*list($entrada, $salida, $duracionBloque, $descansoHora,
-                $duracionDescanso) =*/ return $this->dao->consultar_turno_plantel($id_plantel, $turno);
+                $duracionDescanso) =*/ return $this->dao->consultar_detalle_turno_plantel($id_plantel, $turno);
         /*return [
             "inicio" => $entrada,
             "fin" => $salida,
