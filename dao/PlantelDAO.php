@@ -61,7 +61,7 @@ WHERE carrera_plantel.id_carrera = $id_carrera")->fetch_all(MYSQLI_ASSOC);
         return $this->eliminar_por_id(self::NOMBRE_TABLA, "id_plantel", $id);
     }
 
-    public function consultar_turno_plantel($id_plantel, $turno) {
+    public function consultar_detalle_turno_plantel($id_plantel, $turno) {
         $args = new PreparedStatmentArgs;
         $args->add("i", $id_plantel);
         $args->add("s", $turno);
