@@ -44,7 +44,7 @@ function construirDasboard(agenda) {
                 ).appendTo($tr);
         $("#bodyAgendaSupervision").append($tr);
     });
-    crearDataTable("#tablaAgenda");
+    crearDataTable("#tablaAgenda", true);
     const today = getFechaActual();
     crearTimeLineSupervisiones(agenda.filter(docente => docente.fecha === today));
 }
@@ -104,6 +104,7 @@ function crearTimeLineSupervisiones(listaSupervisiones) {
 
 function construirGraficaAvance(listaSupervisiones) {
     let existenSupervisiones = Object.values(listaSupervisiones).length > 0;
+    $("#downloadBtn").attr("disabled", !existenSupervisiones);
     (existenSupervisiones ? $("#graficaAvanceSupervisiones") : $("#mensajeNoSupervision")).prop("hidden", false);
 
     if (existenSupervisiones) {
