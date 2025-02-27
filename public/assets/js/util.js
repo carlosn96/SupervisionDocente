@@ -198,19 +198,34 @@ function deshabilitarHabilitarInput(input) {
     }
 }
 
-function crearDataTable(idTabla) {
-    // Destroy the existing DataTable if it exists
+function crearDataTable(idTabla, addButtons = false) {
+    // Verificar si la tabla ya es un DataTable y destruirla si es necesario
     if ($.fn.DataTable.isDataTable(idTabla)) {
-        $(idTabla).DataTable().clear().destroy();
+        $(idTabla).DataTable().destroy();
     }
 
-    var tabla = $(idTabla).DataTable({
-        retrieve: true,
+    // Inicialización de la tabla
+    const tabla = $(idTabla).DataTable({
+        dom: 'Bfrtip', // Especifica dónde se deben colocar los botones
+        buttons: addButtons ? [
+            {
+                extend: 'copy',
+                text: 'Copiar al portapapeles',
+                className: 'btn-sm' // Outline para el botón de copiar
+            },
+            {
+                extend: 'excel',
+                text: 'Exportar a Excel',
+                className: 'btn-sm btn-primary' // Outline para el botón de Excel
+            }
+        ] : [],
+
+        retrieve: true, // Recuperar la tabla si ya existe
         responsive: true,
         rowReorder: {
-            selector: 'td:nth-child(2)'
+            selector: 'td:nth-child(2)'  // Permitir reordenar las filas
         },
-        order: [[0, "asc"]],
+        order: [[0, "asc"]], // Orden inicial
         lengthMenu: [
             [5, 10, 25, 50, -1],
             [5, 10, 25, 50, "Mostrar todo"]
@@ -223,9 +238,8 @@ function crearDataTable(idTabla) {
             sInfo: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
             sInfoEmpty: "Sin registros",
             sInfoFiltered: "(filtrado de un total de _MAX_ registros)",
-            sInfoPostFix: "",
             sSearch: "Filtrar:",
-            searchPlaceholder: "",
+            sSearchPlaceholder: "",
             sInfoThousands: ",",
             sLoadingRecords: "Cargando...",
             paginate: {
@@ -240,6 +254,8 @@ function crearDataTable(idTabla) {
 
     return tabla;
 }
+
+
 function calcuarEdad(fechaNacimiento) {
     return parseInt((new Date() - new Date(fechaNacimiento)) /
             (1000 * 60 * 60 * 24 * 365));
@@ -423,5 +439,5 @@ function removerAccentos(str) {
 }
 
 function getRootUrl() {
-    return `${window.location.protocol}//${window.location.host}/`;
+    return `${window.location.protocol}//${window.location.host}/SupervisionDocente/`;
 }
