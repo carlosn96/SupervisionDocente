@@ -227,14 +227,17 @@ function abrirModalSupervision(info) {
     var start = info.event.start ? info.event.start.toISOString().slice(0, 16).replace('T', ' ') : 'No especificada';
     var end = info.event.end ? info.event.end.toISOString().slice(0, 16).replace('T', ' ') : 'No especificada';
     var nombreMateria = info.event.extendedProps.nombreMateria;
+    var grupo = info.event.extendedProps.grupo;
     var status = info.event.extendedProps.status;
     var sup_hecha = info.event.extendedProps.sup_hecha;
     var idAgenda = info.event.extendedProps.idAgenda;
+    print(info.event.extendedProps.grupo);
     // Llenar el modal con la información extraída
     $('#modalDocente').html(nombreDocente);
     $('#modalStart').html(start);
     $('#modalEnd').html(end);
     $('#modalMateria').html(nombreMateria);
+    $('#modalGrupo').html(grupo);
     $('#modalEstatus').html(status);
     $('#modalEstatus').removeClass();
     $('#modalEstatus').addClass("text-" + (sup_hecha ? "success" : "warning"));
@@ -300,7 +303,7 @@ function construirEventosSupervision(supervisiones, eventos) {
                 const horarios = materias[materia].horarios || [];
                 const horarioAgendado = horarios.find(horario => horario.es_horario_agendado);
                 if (horarioAgendado) {
-                    return {"horario": horarioAgendado, "materia": materia};
+                    return {"horario": horarioAgendado, "materia": materia, "grupo": materias[materia].grupo};
                 }
             }
         }
@@ -324,6 +327,7 @@ function construirEventosSupervision(supervisiones, eventos) {
                 status: supervisionHecha ? "Supervisión realizada" : "Supervisión no realizada",
                 sup_hecha: supervisionHecha,
                 nombreMateria: horarioAgendado.materia,
+                grupo: horarioAgendado.grupo,
                 idAgenda: e.detalles.id_agenda,
                 detalles: e,
                 tipo: tiposEventos.SUPERVISION
