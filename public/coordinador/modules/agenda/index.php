@@ -183,6 +183,10 @@
                                             <div class="col-4"><strong>Materia:</strong></div>
                                             <div class="col-8"><span id="modalMateria"></span></div>
                                         </div>
+                                        <div class="row">
+                                            <div class="col-4"><strong>Grupo:</strong></div>
+                                            <div class="col-8"><span id="modalGrupo"></span></div>
+                                        </div>
                                     </div>
 
                                     <!-- Fechas de Supervisión -->
