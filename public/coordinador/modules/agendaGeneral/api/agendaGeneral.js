@@ -71,6 +71,7 @@ function construirAgenda(agenda) {
             borderColor: borderColor,
             textColor: textColor,
             extendedProps: {
+                grupo: a.grupo,
                 carrera: a.carrera,
                 nombre_materia: a.nombre_materia,
                 plantel: a.plantel,
@@ -85,7 +86,7 @@ function construirAgenda(agenda) {
 function mostrarDetallesEvento(evento) {
     const horaInicio = new Date(evento.start);
     const horaFin = new Date(evento.end);
-
+    print(evento.extendedProps);
     const horaInicioFormateada = `${horaInicio.getUTCHours().toString().padStart(2, '0')}:${horaInicio.getUTCMinutes().toString().padStart(2, '0')}`;
     const horaFinFormateada = `${horaFin.getUTCHours().toString().padStart(2, '0')}:${horaFin.getUTCMinutes().toString().padStart(2, '0')}`;
     const detalles = `
@@ -93,6 +94,7 @@ function mostrarDetallesEvento(evento) {
         <h6><i class="ti ti-user"></i> <strong>Docente:</strong> ${evento.title}</h6>
         <h6><i class="ti ti-book"></i> <strong>Materia:</strong> ${evento.extendedProps.nombre_materia}</h6>
         <h6><i class="ti ti-clock"></i> <strong>Hora:</strong> ${horaInicioFormateada} - ${horaFinFormateada}</h6>
+        <h6><i class="ti ti-users"></i> <strong>Grupo:</strong> ${evento.extendedProps.grupo}</h6>
         <h6><i class="ti ti-school"></i> <strong>Carrera:</strong> ${evento.extendedProps.carrera}</h6>
         <h6><i class="ti ti-location"></i> <strong>Plantel:</strong> ${evento.extendedProps.plantel}</h6>
     </div>
