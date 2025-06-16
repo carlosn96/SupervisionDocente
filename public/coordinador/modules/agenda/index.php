@@ -58,6 +58,9 @@
                                                 <li class="nav-item">
                                                     <a class="nav-link" id="agendadosTab" data-bs-toggle="tab" href="#agendados">Agendados</a>
                                                 </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" id="agendadosTab" data-bs-toggle="tab" href="#supervisiones">Supervisiones</a>
+                                                </li>
                                             </ul>
                                             <div class="tab-content mt-3">
                                                 <!-- Pestaña de Sin Agendar -->
@@ -67,6 +70,24 @@
                                                 <!-- Pestaña de Agendados -->
                                                 <div class="tab-pane fade" id="agendados">
                                                     <div id="listaSinAgendar"></div>
+                                                </div>
+                                                <!-- Pestaña de Supervisiones -->
+                                                <div class="tab-pane fade" id="supervisiones">
+                                                    <!-- Filtro de supervisiones -->
+                                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                                        <h5 class="mb-0">Filtrar Supervisiones</h5>
+                                                        <div class="btn-group btn-group-sm mb-3" role="group" aria-label="Segmented filter" style="border: 1px solid #ced4da; border-radius: 0.5rem; overflow: hidden;">
+                                                            <input type="radio" class="btn-check" name="filtro" id="filtroTodos" data-filtro="docentesTodos" checked>
+                                                            <label class="btn btn-outline-secondary" for="filtroTodos">Todos</label>
+
+                                                            <input type="radio" class="btn-check" name="filtro" id="filtroSupervisados" data-filtro="docentesSupervisados">
+                                                            <label class="btn btn-outline-success" for="filtroSupervisados">Supervisados</label>
+
+                                                            <input type="radio" class="btn-check" name="filtro" id="filtroPendientes" data-filtro="docentesPendientes">
+                                                            <label class="btn btn-outline-warning" for="filtroPendientes">No Supervisados</label>
+                                                        </div>
+                                                    </div>
+                                                    <div id="listaSupervisiones"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -218,7 +239,7 @@
 
                                     <!-- QR Code Section -->
                                     <div id="qrcode" class="text-center mb-3">
-                                        
+
                                     </div>
                                 </div>
                                 <div class="modal-footer d-flex justify-content-between">
@@ -230,7 +251,7 @@
                                     <button onclick="eliminarSupervision()" class="btn btn-outline-danger btn-sm" id="btnEliminarSupervision">
                                         <i class="ti ti-trash me-2"></i> Eliminar supervisión
                                     </button>
-                                    
+
                                 </div>
                             </div>
                         </div>
