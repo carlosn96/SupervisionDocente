@@ -361,23 +361,75 @@ function construirEventosSupervision(supervisiones, eventos) {
 
 function limipiarContenedoresDocentes() {
     $('#listaSinAgendar').empty();
+    $('#listaSupervisados').empty();
+    $('#listaNoSupervisados').empty();
     $('#listaMateriasContainer').empty();
 }
 
+
+
 function crearListaProfesores(data) {
     var supervisionesAgendadas = [];
+    var listaSupervisiones = [];
     limipiarContenedoresDocentes();
     if (Object.keys(data).length) {
         $.each(data, function (nombre, detalles) {
+            //print(detalles);
             if (detalles.es_profesor_agendado) {
                 supervisionesAgendadas.push({"nombre": nombre, "detalles": detalles});
                 agregarListaAgendados(nombre, detalles);
+                listaSupervisiones.push({nombre:nombre, fecha:detalles.fecha_agenda, supervision_hecha: detalles.supervision_hecha});
             } else {
                 agregarListaSinAgendar(nombre, detalles);
             }
         });
     }
+    crearListaSupervisadosNoSupervisados(listaSupervisiones);
+    $('input[type=radio][data-filtro]').on('change', function() {
+        const filtro = $(this).data('filtro');
+        crearListaSupervisadosNoSupervisados(listaSupervisiones, filtro);
+    });
     return supervisionesAgendadas;
+}
+
+
+function crearListaSupervisadosNoSupervisados(lista, filtro = 'todos') {
+    const $contenedor = $('#listaSupervisiones');
+    $contenedor.empty();
+
+    let supervisionesFiltradas = lista;
+
+    if (filtro === 'docentesSupervisados') {
+        supervisionesFiltradas = lista.filter(item => item.supervision_hecha);
+    } else if (filtro === 'docentesPendientes') {
+        supervisionesFiltradas = lista.filter(item => !item.supervision_hecha);
+    }
+
+    if (supervisionesFiltradas.length === 0) {
+        $contenedor.append('<p class="text-muted">No hay supervisiones en esta categoría.</p>');
+        return;
+    }
+
+    const listaElement = $('<div class="list-group"></div>');
+
+    supervisionesFiltradas.forEach(function(item) {
+        const estado = item.supervision_hecha ? 'Supervisado' : 'Pendiente';
+        const badgeClass = item.supervision_hecha ? 'bg-success' : 'bg-warning text-dark';
+        const itemClass = item.supervision_hecha ? 'list-group-item-success' : 'list-group-item-warning';
+
+        const elemento = $(`
+            <div class="list-group-item ${itemClass} d-flex justify-content-between align-items-center">
+                <div>
+                    <h6 class="mb-1">${item.nombre}</h6>
+                    <small>Fecha: ${item.fecha}</small>
+                </div>
+                <span class="badge ${badgeClass}">${estado}</span>
+            </div>
+        `);
+        listaElement.append(elemento);
+    });
+
+    $contenedor.append(listaElement);
 }
 
 function agregarListaAgendados(nombre, detalles) {
