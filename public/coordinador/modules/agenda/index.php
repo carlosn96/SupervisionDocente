@@ -69,17 +69,20 @@
                                                 </div>
                                                 <!-- Pestaña de Agendados -->
                                                 <div class="tab-pane fade" id="agendados">
+                                                    <!-- Filtro de búsqueda -->
+                                                    <div class="mb-3">
+                                                        <input type="text" id="buscarAgendados" class="form-control" placeholder="Buscar por nombre o materia...">
+                                                    </div>
                                                     <div id="listaSinAgendar"></div>
                                                 </div>
                                                 <!-- Pestaña de Supervisiones -->
                                                 <div class="tab-pane fade" id="supervisiones">
                                                     <!-- Filtro de supervisiones -->
-                                                    <div class="d-flex justify-content-between align-items-center mb-3">
-                                                        <h5 class="mb-0">Filtrar Supervisiones</h5>
-                                                        <div class="btn-group btn-group-sm mb-3" role="group" aria-label="Segmented filter" style="border: 1px solid #ced4da; border-radius: 0.5rem; overflow: hidden;">
+                                                    <div class="mb-3">
+                                                        <h5 class="mb-2">Filtrar Supervisiones</h5>
+                                                        <div class="btn-group btn-group-sm" role="group" aria-label="Segmented filter">
                                                             <input type="radio" class="btn-check" name="filtro" id="filtroTodos" data-filtro="docentesTodos" checked>
                                                             <label class="btn btn-outline-secondary" for="filtroTodos">Todos</label>
-
                                                             <input type="radio" class="btn-check" name="filtro" id="filtroSupervisados" data-filtro="docentesSupervisados">
                                                             <label class="btn btn-outline-success" for="filtroSupervisados">Supervisados</label>
 

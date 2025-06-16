@@ -45,7 +45,22 @@ function ready() {
         }
     });
     $("#btnEliminarEvento").click(eliminarEvento);
-    // Función de búsqueda (también actualizada para usar Bootstrap 5.3)
+    $('#buscarAgendados').on('input', function() {
+        const query = $(this).val().toLowerCase();  // Obtener el texto del buscador
+        $('#listaSinAgendar .card').each(function() {
+            const nombre = $(this).find('.card-title button').text().toLowerCase();
+            const materias = $(this).find('strong').map(function() {
+                return $(this).text().toLowerCase();
+            }).get().join(' '); // Unir materias en un solo string
+
+            // Si el nombre o las materias contienen el texto del buscador, mostrar la card
+            if (nombre.includes(query) || materias.includes(query)) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    });
     $('#searchButton').click(function () {
         const searchTerm = $('#searchMateria').val().toLowerCase();
         $('.card').each(function () {
@@ -57,6 +72,7 @@ function ready() {
             }
         });
     });
+    
 
 }
 
@@ -454,7 +470,7 @@ function agregarListaAgendados(nombre, detalles) {
                     <li class="mb-3">
                         <strong>${materia}</strong>
                         <ul class="list-unstyled">
-                            ${infoMateria.horarios.map(horario => `
+                            ${infoMateria.horarios.map(horario => ` 
                                 <li class="d-flex justify-content-between align-items-center">
                                     <div class="flex-grow-1 ms-3">
                                         <h6 class="text-${horario.es_horario_agendado ? "danger" : "primary"}">
@@ -463,10 +479,10 @@ function agregarListaAgendados(nombre, detalles) {
                                         </h6>
                                     </div>
                                 </li>
-                            `).join('')}
+                            `).join('') }
                         </ul>
                     </li>
-                `;
+                `; 
     }).join('')}
             </ul>
         </div>
