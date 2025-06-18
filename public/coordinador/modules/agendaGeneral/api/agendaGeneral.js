@@ -82,36 +82,100 @@ function construirAgenda(agenda) {
     return listaEventos;
 }
 
-
 function mostrarDetallesEvento(evento) {
     const horaInicio = new Date(evento.start);
     const horaFin = new Date(evento.end);
-    print(evento.extendedProps);
+    const diasSemana = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+    const diaNombre = diasSemana[horaInicio.getDay()];
+
+    const fechaEvento = `${diaNombre}, ${horaInicio.getDate().toString().padStart(2, '0')}-${(horaInicio.getMonth() + 1).toString().padStart(2, '0')}-${horaInicio.getFullYear()}`;
     const horaInicioFormateada = `${horaInicio.getUTCHours().toString().padStart(2, '0')}:${horaInicio.getUTCMinutes().toString().padStart(2, '0')}`;
     const horaFinFormateada = `${horaFin.getUTCHours().toString().padStart(2, '0')}:${horaFin.getUTCMinutes().toString().padStart(2, '0')}`;
+
+    // Estilo dinámico para el estado
+    const estadoClase = evento.extendedProps.status === 'Realizada'
+        ? 'bg-success-subtle text-success'
+        : 'bg-warning-subtle text-warning';
+
     const detalles = `
-    <div class="mb-3">
-        <h6><i class="ti ti-user"></i> <strong>Docente:</strong> ${evento.title}</h6>
-        <h6><i class="ti ti-book"></i> <strong>Materia:</strong> ${evento.extendedProps.nombre_materia}</h6>
-        <h6><i class="ti ti-clock"></i> <strong>Hora:</strong> ${horaInicioFormateada} - ${horaFinFormateada}</h6>
-        <h6><i class="ti ti-users"></i> <strong>Grupo:</strong> ${evento.extendedProps.grupo}</h6>
-        <h6><i class="ti ti-school"></i> <strong>Carrera:</strong> ${evento.extendedProps.carrera}</h6>
-        <h6><i class="ti ti-location"></i> <strong>Plantel:</strong> ${evento.extendedProps.plantel}</h6>
-    </div>
-`;
+        <div class="mb-4">
+            <h5 class="fw-semibold text-primary mb-1"><i class="ti ti-calendar"></i> ${fechaEvento}</h5>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="p-3 border rounded border-opacity-25">
+                    <div class="fw-semibold text-dark text-uppercase small mb-1">
+                        <i class="ti ti-user me-1"></i> Docente
+                    </div>
+                    <div class="fs-6 text-body">${evento.title}</div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="p-3 border rounded border-opacity-25">
+                    <div class="fw-semibold text-dark text-uppercase small mb-1">
+                        <i class="ti ti-book me-1"></i> Materia
+                    </div>
+                    <div class="fs-6 text-body">${evento.extendedProps.nombre_materia}</div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="p-3 border rounded border-opacity-25">
+                    <div class="fw-semibold text-dark text-uppercase small mb-1">
+                        <i class="ti ti-clock me-1"></i> Hora
+                    </div>
+                    <div class="fs-6 text-body">${horaInicioFormateada} - ${horaFinFormateada}</div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="p-3 border rounded border-opacity-25">
+                    <div class="fw-semibold text-dark text-uppercase small mb-1">
+                        <i class="ti ti-users me-1"></i> Grupo
+                    </div>
+                    <div><span class="badge bg-secondary-subtle text-dark">${evento.extendedProps.grupo}</span></div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="p-3 border rounded border-opacity-25">
+                    <div class="fw-semibold text-dark text-uppercase small mb-1">
+                        <i class="ti ti-school me-1"></i> Carrera
+                    </div>
+                    <div class="fs-6 text-body">${evento.extendedProps.carrera}</div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="p-3 border rounded border-opacity-25">
+                    <div class="fw-semibold text-dark text-uppercase small mb-1">
+                        <i class="ti ti-location me-1"></i> Plantel
+                    </div>
+                    <div class="fs-6 text-body">${evento.extendedProps.plantel}</div>
+                </div>
+            </div>
+        </div>
+    `;
+
     const modalHTML = `
         <div class="modal fade" id="eventoModal" tabindex="-1" aria-labelledby="eventoModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="eventoModalLabel">Supervisión ${evento.extendedProps.status}</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content border-0 shadow-sm">
+                    <div class="modal-header border-bottom">
+                        <h5 class="modal-title fw-semibold" id="eventoModalLabel">
+                            Supervisión <span class="badge ms-2 ${estadoClase}">${evento.extendedProps.status}</span>
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                     </div>
                     <div class="modal-body">
                         ${detalles}
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <div class="modal-footer border-top">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <i class="ti ti-x me-1"></i> Cerrar
+                        </button>
                     </div>
                 </div>
             </div>
@@ -119,11 +183,9 @@ function mostrarDetallesEvento(evento) {
     `;
 
     $('body').append(modalHTML);
-    
     const modal = new bootstrap.Modal($('#eventoModal')[0]);
     modal.show();
 
-    // Eliminar el modal después de cerrarlo para evitar duplicados
     $('#eventoModal').on('hidden.bs.modal', function () {
         $(this).remove();
     });
