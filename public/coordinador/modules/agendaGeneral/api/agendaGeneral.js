@@ -83,73 +83,109 @@ function construirAgenda(agenda) {
 }
 
 function mostrarDetallesEvento(evento) {
+    const ahora = new Date();
     const horaInicio = new Date(evento.start);
     const horaFin = new Date(evento.end);
-    const diasSemana = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+
+    const diasSemana = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sabado'];
     const diaNombre = diasSemana[horaInicio.getDay()];
-
     const fechaEvento = `${diaNombre}, ${horaInicio.getDate().toString().padStart(2, '0')}-${(horaInicio.getMonth() + 1).toString().padStart(2, '0')}-${horaInicio.getFullYear()}`;
-    const horaInicioFormateada = `${horaInicio.getUTCHours().toString().padStart(2, '0')}:${horaInicio.getUTCMinutes().toString().padStart(2, '0')}`;
-    const horaFinFormateada = `${horaFin.getUTCHours().toString().padStart(2, '0')}:${horaFin.getUTCMinutes().toString().padStart(2, '0')}`;
 
-    // Estilo dinámico para el estado
+    const horaInicioLocal = horaInicio.toLocaleTimeString('es-MX', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+    });
+
+    const horaFinLocal = horaFin.toLocaleTimeString('es-MX', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+    });
+
+    function calcularProximidad() {
+        const ahora = new Date();
+        const hoy = new Date();
+        hoy.setHours(0, 0, 0, 0);
+
+        const inicio = new Date(horaInicio);
+        const inicioSinHora = new Date(inicio);
+        inicioSinHora.setHours(0, 0, 0, 0);
+
+        const diffMs = inicio - ahora;
+        const diffDias = Math.floor((inicioSinHora - hoy) / (1000 * 60 * 60 * 24));
+        const horasFaltantes = Math.floor(diffMs / (1000 * 60 * 60));
+        const minutosFaltantes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+
+        if (diffMs < 0) {
+            return `<span class="badge bg-danger"><i class="ti ti-alert-circle me-1"></i> Supervisión pasada</span>`;
+        }
+
+        if (diffDias === 0) {
+            return `<span class="badge bg-info text-dark"><i class="ti ti-calendar-event me-1"></i> Hoy - en ${horasFaltantes}h ${minutosFaltantes}m</span>`;
+        }
+
+        if (diffDias === 1) {
+            return `<span class="badge bg-warning text-dark"><i class="ti ti-alarm me-1"></i> Mañana - en ${horasFaltantes}h ${minutosFaltantes}m</span>`;
+        }
+
+        return `<span class="badge bg-primary"><i class="ti ti-clock me-1"></i> En ${diffDias} días, ${horasFaltantes % 24}h ${minutosFaltantes}m</span>`;
+    }
+
+
     const estadoClase = evento.extendedProps.status === 'Realizada'
-        ? 'bg-success-subtle text-success'
-        : 'bg-warning-subtle text-warning';
+            ? 'bg-success-subtle text-success'
+            : 'bg-warning-subtle text-warning';
 
     const detalles = `
         <div class="mb-4">
-            <h5 class="fw-semibold text-primary mb-1"><i class="ti ti-calendar"></i> ${fechaEvento}</h5>
+            <h5 class="fw-semibold text-primary mb-2"><i class="ti ti-calendar"></i> ${fechaEvento}</h5>
+            ${calcularProximidad()}
         </div>
 
         <div class="row g-4">
             <div class="col-md-6">
-                <div class="p-3 border rounded border-opacity-25">
+                <div class="p-3 border rounded">
                     <div class="fw-semibold text-dark text-uppercase small mb-1">
                         <i class="ti ti-user me-1"></i> Docente
                     </div>
                     <div class="fs-6 text-body">${evento.title}</div>
                 </div>
             </div>
-
             <div class="col-md-6">
-                <div class="p-3 border rounded border-opacity-25">
+                <div class="p-3 border rounded">
                     <div class="fw-semibold text-dark text-uppercase small mb-1">
                         <i class="ti ti-book me-1"></i> Materia
                     </div>
                     <div class="fs-6 text-body">${evento.extendedProps.nombre_materia}</div>
                 </div>
             </div>
-
             <div class="col-md-6">
-                <div class="p-3 border rounded border-opacity-25">
+                <div class="p-3 border rounded">
                     <div class="fw-semibold text-dark text-uppercase small mb-1">
                         <i class="ti ti-clock me-1"></i> Hora
                     </div>
-                    <div class="fs-6 text-body">${horaInicioFormateada} - ${horaFinFormateada}</div>
+                    <div class="fs-6 text-body">${horaInicioLocal} - ${horaFinLocal}</div>
                 </div>
             </div>
-
             <div class="col-md-6">
-                <div class="p-3 border rounded border-opacity-25">
+                <div class="p-3 border rounded">
                     <div class="fw-semibold text-dark text-uppercase small mb-1">
                         <i class="ti ti-users me-1"></i> Grupo
                     </div>
                     <div><span class="badge bg-secondary-subtle text-dark">${evento.extendedProps.grupo}</span></div>
                 </div>
             </div>
-
             <div class="col-md-6">
-                <div class="p-3 border rounded border-opacity-25">
+                <div class="p-3 border rounded">
                     <div class="fw-semibold text-dark text-uppercase small mb-1">
                         <i class="ti ti-school me-1"></i> Carrera
                     </div>
                     <div class="fs-6 text-body">${evento.extendedProps.carrera}</div>
                 </div>
             </div>
-
             <div class="col-md-6">
-                <div class="p-3 border rounded border-opacity-25">
+                <div class="p-3 border rounded">
                     <div class="fw-semibold text-dark text-uppercase small mb-1">
                         <i class="ti ti-location me-1"></i> Plantel
                     </div>
