@@ -41,7 +41,6 @@ function renderizarCalendario(agenda) {
             right: 'dayGridMonth,timeGridWeek,timeGridDay,list,multiMonthYear'
         },
         locale: 'es',
-        timeZone: 'UTC',
         initialView: 'dayGridMonth',
         editable: false,
         selectable: true,
@@ -54,15 +53,25 @@ function renderizarCalendario(agenda) {
 }
 
 function construirAgenda(agenda) {
-    var listaEventos = [];
+    const listaEventos = [];
+
     agenda.forEach(function (a) {
-        const fechaAgenda = new Date(a.fecha);
+        // Separar componentes de la fecha
+        const partesFecha = a.fecha.split('-'); // formato: "YYYY-MM-DD"
+        const anio = parseInt(partesFecha[0], 10);
+        const mes = parseInt(partesFecha[1], 10) - 1; // meses: 0 a 11
+        const dia = parseInt(partesFecha[2], 10);
+
+        // Crear string de fecha local para combinar con hora
+        const fechaStr = `${anio}-${(mes + 1).toString().padStart(2, '0')}-${dia.toString().padStart(2, '0')}`;
+        const startDate = `${fechaStr}T${a.hora_inicio}`; // ejemplo: "2025-06-20T08:00:00"
+        const endDate = `${fechaStr}T${a.hora_fin}`;
+
         const supervisionHecha = a.status === "Realizada";
         const color = supervisionHecha ? '#28a745' : '#dc3545';
         const borderColor = supervisionHecha ? '#155724' : '#721c24';
-        const textColor = 'white';
-        const startDate = `${fechaAgenda.toISOString().split('T')[0]}T${a.hora_inicio}`;
-        const endDate = `${fechaAgenda.toISOString().split('T')[0]}T${a.hora_fin}`;
+        const textColor = '#ffffff';
+
         listaEventos.push({
             title: a.nombre_docente,
             start: startDate,
