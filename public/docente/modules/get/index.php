@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * No cambiar el directorio
+ */
 include_once '../../../../loader.php';
 
 $id_agenda = $_GET["exp"] ?? null;
