@@ -56,13 +56,20 @@
 
                 <div class="container-fluid" id="content">
                     <div class="card">
-                        <input hidden="" id="id_agenda" value="<?= $_GET["id_agenda"] ?? "0" ?>">
-                        <input hidden="" id="id_supervision">
+                        <input hidden id="id_agenda" value="<?= $_GET["id_agenda"] ?? "0" ?>">
+                        <input hidden id="id_supervision">
                         <div class="card-body">
-                            <h5 class="card-title fw-semibold mb-4">Reporte de Supervision docente</h5>
-                            <div class="input-group">
+                            <h5 class="card-title fw-semibold mb-4">Reporte de Supervisión docente</h5>
+
+                            <div class="input-group mb-3">
                                 <span class="input-group-text" id="inputGroup-sizing-lg">Fecha y hora</span>
                                 <input onchange="actualizarFecha()" id="fechaHoraSupervision" type="datetime-local" class="form-control" aria-label="Fecha y hora" aria-describedby="inputGroup-sizing-lg">
+                            </div>
+
+                            <div class="d-flex justify-content-end">
+                                <button id="btnDescargarReporte" class="btn btn-primary" onclick="descargarReporte()">
+                                    <i class="ti ti-download me-2"></i> Descargar reporte
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -76,7 +83,7 @@
                         </div>
                         <div class="card-body">
                             <h5 class="card-title">Conclusiones y comentarios sobre la clase</h5>
-                            <p class="card-text" id="conclusionGeneral"></p>
+                            <div id="conclusionGeneral"></div>
                             <button data-column="conclusion_general" class="btn btn-outline-primary btn-sm edit-button-footer" data-bs-toggle="modal" data-bs-target="#editModal" data-id="conclusionGeneral" data-type="conclusion" title="Editar Conclusiones">
                                 <i class="ti ti-pencil text-primary"></i>
                             </button>
@@ -185,7 +192,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -211,6 +218,7 @@
         <?php
         include_once '../../includes/script.php';
         ?>
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script src="api/supervision_preview.js"></script>
     </body>
