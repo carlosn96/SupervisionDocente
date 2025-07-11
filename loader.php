@@ -2,6 +2,18 @@
 
 class Util {
 
+    public static function obtener_avatar_rand() {
+        $fotos = [];
+        $dir = ROOT_APP . "public" . DIRECTORY_SEPARATOR . "assets" . DIRECTORY_SEPARATOR . "images" . DIRECTORY_SEPARATOR . "profile";
+        if (is_dir($dir)) {
+            $archivos = array_diff(scandir($dir), array('.', '..'));
+            foreach ($archivos as $fotografias) {
+                $fotos[] = $dir . DIRECTORY_SEPARATOR . $fotografias;
+            }
+        }
+        return $fotos[rand(0, count($fotos) - 1)];
+    }
+
     public static function generarCadenaAleatoria($len = 5) {
         return substr(bin2hex(random_bytes($len)), 0, $len);
     }
@@ -61,7 +73,7 @@ class Util {
             // echo "<script>window.location = '$url';</script>";
             //echo "<script type='text/javascript'>window.location.replace('$url');</script>";
         } else {
-            //header('Location: ' . $url, true, $permanent ? 301 : 302);
+            header('Location: ' . $url, true, $permanent ? 301 : 302);
         }
     }
 
@@ -72,7 +84,7 @@ class Util {
     }
 
     public static function print($val) {
-        echo orint_r($val);
+        echo print_r($val);
     }
 
     public static function enum($mensaje, $esError): array {
@@ -109,7 +121,6 @@ class Util {
 define("NO_API_KEY", Util::enum("No se ha establecido el API KEY", true));
 
 define("ROOT_APP", __DIR__ . DIRECTORY_SEPARATOR);
-define("INDEX", "FundacionCardenalGaribiRivera2024" . DIRECTORY_SEPARATOR);
 
 define("ERROR_INSERTAR", Util::enum('Ha ocurrido un error al intentar almacenar la información proporcionada. Verifique los datos', true));
 define("REGISTRO_COMPLETO", Util::enum('Registro completo', false));
