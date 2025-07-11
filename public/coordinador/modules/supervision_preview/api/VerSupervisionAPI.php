@@ -7,10 +7,12 @@ class VerSupervisionAPI extends API {
     public function recuperar_supervision() {
         $id_agenda = $this->data["id_agenda"];
         $adminSupervision = new AdminSupervision();
-        $this->enviar_respuesta([
+        $info_agenda = [
             "info_agenda" => $this->resumir_info_agenda((new AdminDocente())->obtener_info_agenda($id_agenda)),
             "supervision" => $adminSupervision->recuperar_supervision($id_agenda)
-        ]);
+        ];
+        Sesion::setInfoTemporal("supervision", $info_agenda);
+        $this->enviar_respuesta($info_agenda);
     }
 
     public function actualizar_supervision() {
@@ -68,6 +70,10 @@ class VerSupervisionAPI extends API {
         $id_agenda = $this->get_data("id_agenda");
         $fecha = $this->get_data("fecha");
         $this->enviar_resultado_operacion((new AdminSupervision)->actualizar_fecha_hora($fecha, $id_agenda));
+    }
+
+    public function consultar_supervision_temp() {
+        $this->enviar_respuesta(Sesion::getInfoTemporal("supervision"));
     }
 }
 

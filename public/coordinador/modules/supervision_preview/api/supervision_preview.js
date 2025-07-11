@@ -6,62 +6,60 @@ let rubroNoContablesContainer;
 
 
 function ready() {
-    $(document).ready(function () {
-        let idAgenda = $("#id_agenda").val();
-        const redirigir = function () {
-            redireccionar("../agenda");
-        };
-        if (idAgenda) {
-            crearPeticion(urlAPI, {case: "recuperar_supervision", data: "id_agenda=" + idAgenda}, function (res) {
-                //print(res);
-                if ((Array.isArray(res) && res.length === 0) || res.info_agenda.length === 0) {
-                    redirigir();
-                } else {
-                    print(res);
-                    const supervision = res.supervision.info_supervision;
-                    const criteriosSupervision = res.supervision.detalles_criterios;
-                    const criteriosContables = criteriosSupervision.contables;
-                    const criteriosNoContables = criteriosSupervision.no_contables;
-
-                    construirCardInfoSupervision(supervision, res.info_agenda);
-                    construirTablaValoracionGlobal(criteriosContables);
-                    construirSeccionCriterios(criteriosContables, $('#tarjetas-rubros-contables'), "contable");
-                    construirSeccionCriterios(criteriosNoContables, $('#tarjetas-rubros-no-contables'), "no_contable");
-                    construirSeccionCompatirResultados(supervision);
-                    $("#id_supervision").val(supervision.id_supervision);
-                }
-            }, "json");
-        } else {
-            redirigir();
-        }
-        $('#editModal').on('show.bs.modal', function (event) {
-            const button = $(event.relatedTarget); // Botón que abrió el modal
-            const id = button.data('id'); // ID del elemento a editar
-            const type = button.data('type'); // Tipo de contenido a editar
-            const column = button.data('column'); // Nombre de la columna de la base de datos
-
-            const element = $('#' + id);
-            const currentText = element.text().trim(); // Obtener el texto actual
-
-            const modal = $(this);
-            modal.find('.modal-title').text(`Editar ${type === 'tema' ? 'Tema' : 'Conclusiones'}`);
-            modal.find('#editInput').val(currentText);
-
-            modal.data('id', id);
-            modal.data('column', column); // Guardar el nombre de la columna en los datos del modal
-        });
-
-        $('#saveChanges').on('click', function () {
-            const modal = $('#editModal');
-            const id = modal.data('id');
-            const column = modal.data('column'); // Obtener el nombre de la columna del modal
-            const newText = $('#editInput').val();
-            $('#' + id).text(newText);
-            modal.modal('hide');
-
-            crearPeticion(urlAPI, {case: "actualizar_supervision", data: `columna=${column}&valor=${newText}&id_agenda=${$("#id_agenda").val()}`}, function (res) {
+    let idAgenda = $("#id_agenda").val();
+    const redirigir = function () {
+        redireccionar("../agenda");
+    };
+    if (idAgenda) {
+        crearPeticion(urlAPI, {case: "recuperar_supervision", data: "id_agenda=" + idAgenda}, function (res) {
+            //print(res);
+            if ((Array.isArray(res) && res.length === 0) || res.info_agenda.length === 0) {
+                redirigir();
+            } else {
                 print(res);
-            });
+                const supervision = res.supervision.info_supervision;
+                const criteriosSupervision = res.supervision.detalles_criterios;
+                const criteriosContables = criteriosSupervision.contables;
+                const criteriosNoContables = criteriosSupervision.no_contables;
+
+                construirCardInfoSupervision(supervision, res.info_agenda);
+                construirTablaValoracionGlobal(criteriosContables);
+                construirSeccionCriterios(criteriosContables, $('#tarjetas-rubros-contables'), "contable");
+                construirSeccionCriterios(criteriosNoContables, $('#tarjetas-rubros-no-contables'), "no_contable");
+                construirSeccionCompatirResultados(supervision);
+                $("#id_supervision").val(supervision.id_supervision);
+            }
+        }, "json");
+    } else {
+        redirigir();
+    }
+    $('#editModal').on('show.bs.modal', function (event) {
+        const button = $(event.relatedTarget); // Botón que abrió el modal
+        const id = button.data('id'); // ID del elemento a editar
+        const type = button.data('type'); // Tipo de contenido a editar
+        const column = button.data('column'); // Nombre de la columna de la base de datos
+
+        const element = $('#' + id);
+        const currentText = element.text().trim(); // Obtener el texto actual
+
+        const modal = $(this);
+        modal.find('.modal-title').text(`Editar ${type === 'tema' ? 'Tema' : 'Conclusiones'}`);
+        modal.find('#editInput').val(currentText);
+
+        modal.data('id', id);
+        modal.data('column', column); // Guardar el nombre de la columna en los datos del modal
+    });
+
+    $('#saveChanges').on('click', function () {
+        const modal = $('#editModal');
+        const id = modal.data('id');
+        const column = modal.data('column'); // Obtener el nombre de la columna del modal
+        const newText = $('#editInput').val();
+        $('#' + id).text(newText);
+        modal.modal('hide');
+
+        crearPeticion(urlAPI, {case: "actualizar_supervision", data: `columna=${column}&valor=${newText}&id_agenda=${$("#id_agenda").val()}`}, function (res) {
+            print(res);
         });
     });
 }
@@ -94,7 +92,7 @@ function construirCardInfoSupervision(supervision, agenda) {
     $("#infoDocente").html(cardContent);
     $("#fechaHoraSupervision").val(supervision.fecha_supervision);
     $("#temaSupervision").append(supervision.tema);
-    $("#conclusionGeneral").html(supervision.conclusion_general.replace(/\n/g, "<br>"));
+    $("#conclusionGeneral").html(marked.parse(supervision.conclusion_general));
     let enviarMail = "https://mail.google.com/mail/?view=cm&fs=1&to=" + profesor.correo_electronico
             + "&su=" + encodeURIComponent("Retroalimentación de Supervisión Docente " + profesor.fecha_agenda)
             + "&body=" + encodeURIComponent("Estimado " + nombreProfesor + "\n ...");
@@ -265,4 +263,49 @@ function actualizarFecha() {
                 id_agenda: $("#id_agenda").val()
             })}, print);
     }
+}
+
+function descargarReporte() {
+    crearPeticion(urlAPI, {case: "consultar_supervision_temp"}, generarInformeTxt, "json");
+}
+
+function generarInformeTxt(data) {
+  const info = data.supervision.info_supervision;
+  const criteriosContables = data.supervision.detalles_criterios.contables;
+  const criteriosNoContables = data.supervision.detalles_criterios.no_contables;
+
+  let contenido = "";
+
+  // Encabezado
+  contenido += "=== INFORME DE SUPERVISIÓN DE CLASE ===\n\n";
+  contenido += `Tema: ${info.tema}\n`;
+  contenido += `Conclusión general de la clase:\n${info.conclusion_general}\n\n`;
+
+  // Función auxiliar para procesar rubros
+  const procesarRubros = (rubros) => {
+    rubros.forEach(rubro => {
+      contenido += `\n--- Rubro: ${rubro.descripcion} ---\n`;
+
+      rubro.criterios.forEach(criterio => {
+        const cumple = criterio.cumplido ? "Cumple" : "No cumple";
+        const comentario = criterio.comentario?.trim() || "Sin observaciones.";
+        contenido += `\nCriterio: ${criterio.descripcion}\nEstado: ${cumple}\nObservaciones: ${comentario}\n`;
+      });
+    });
+  };
+
+  // Añadir rubros contables y no contables
+  procesarRubros(criteriosContables);
+  procesarRubros(criteriosNoContables);
+
+  // Crear y descargar el archivo .txt codificado en UTF-8
+  const blob = new Blob([contenido], { type: "text/plain;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement("a");
+  link.setAttribute("href", url);
+  link.setAttribute("download", "informe_supervision-"+getFechaActual("_")+".txt");
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 }
