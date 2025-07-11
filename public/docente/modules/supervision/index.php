@@ -48,7 +48,7 @@
                         </div>
                         <div class="card-body">
                             <h5 class="card-title">Conclusiones y comentarios sobre la clase</h5>
-                            <p class="card-text" id="conclusionGeneral"></p>
+                            <div id="conclusionGeneral"></div>
                         </div>
                     </div>
                     <div class="card">
@@ -112,6 +112,7 @@
         <?php
         include_once '../../includes/script.php';
         ?>
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script src="api/supervision.js"></script>
     </body>
