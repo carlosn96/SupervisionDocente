@@ -11,8 +11,32 @@ function ready() {
     });
 }
 
+function generarTextoReporte(datos) {
+    let texto = '';
+    datos.forEach((item, index) => {
+        texto += `Docente: ${item.docente}\n`;
+        texto += `Fecha de supervisión: ${item.fecha_supervision}\n`;
+        texto += `Promedio de cumplimiento: ${item.promedio_cumplimiento}%\n`;
+        texto += `Conclusión general:\n${item.conclusion_general}\n`;
+        texto += `------------------------------------------------------------\n\n`;
+    });
+    return texto;
+}
+
+function descargarArchivo(nombreArchivo, contenido) {
+    const blob = new Blob([contenido], {type: 'text/plain;charset=utf-8'});
+    const enlace = document.createElement('a');
+    enlace.href = URL.createObjectURL(blob);
+    enlace.download = nombreArchivo;
+    document.body.appendChild(enlace);
+    enlace.click();
+    document.body.removeChild(enlace);
+}
 
 function fillTable(data) {
+    $('#btnDescargar').on('click', function () {
+        descargarArchivo('reporte_docentes.txt', generarTextoReporte(data));
+    });
     const container = $("#container");  // Asegúrate de tener un contenedor en tu HTML donde colocar la tabla y el mensaje.
     container.empty();
     const carrera = $("#selectorCarrera").find('option:selected').text();

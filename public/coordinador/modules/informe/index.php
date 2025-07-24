@@ -23,15 +23,18 @@
                 <div class="container-fluid">
                     <div class="card">
                         <div class="card-body position-relative">
-                            <?php
-                            include_once '../../includes/selectorCarrera.php';
-                            ?>
-                            
-                                    <div class="text-center mb-4">
-                                        <h2 class="card-title">Informe de Supervisión</h2>
-                                    </div>
-                                    <div id="container"></div>
-                                
+                            <?php include_once '../../includes/selectorCarrera.php'; ?>
+                            <div class="text-center mb-4">
+                                <h2 class="card-title">Informe de Supervisión</h2>
+                            </div>
+                            <!-- Botón centrado debajo del título y encima del contenido dinámico -->
+                            <div class="d-flex justify-content-center mb-3">
+                                <button id="btnDescargar" class="btn btn-primary">
+                                    Descargar informe
+                                </button>
+                            </div>
+
+                            <div id="container"></div>
                         </div>
                     </div>
                 </div>
